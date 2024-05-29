@@ -11,5 +11,9 @@ export default async function layout({
      const session = await getUserAuth();
      if (session?.session) redirect(dashRoutes.default);
 
-     return { children }
+     return (
+          <div className="flex w-full h-full justify-center items-center">
+               {children}
+          </div>
+     )
 }

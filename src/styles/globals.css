@@ -106,3 +106,13 @@ body {
   transform: rotateX(20deg) rotateY(-10deg) rotateZ(130deg);
   transition: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
+
+.none-scroll-bar {
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
+}
+
+.none-scroll-bar::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}

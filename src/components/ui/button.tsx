@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
   {
     variants: {
       variant: {
@@ -15,12 +15,12 @@ const buttonVariants = cva(
         outline:
           "border-input border-[3px] border-primary/20 text-primary bg-primary/5 hover:bg-primary/10",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-primary/5 text-text hover:bg-primary/10",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "py-[12px] px-[15px] sm:py-[15px] sm:px-[18px]",
+        default: "py-[12px] px-[15px] sm:py-[10px] sm:px-[15px]",
         sm: "py-[8px] px-[10px] sm:py-[10px] sm:px-[12px] px-3 text-[12px] sm:text-[15px]",
         lg: "rounded-md text-[20px] py-[12px] px-[15px] sm:py-[15px] sm:px-[25px]",
         icon: "h-10 w-10",

@@ -1,10 +1,11 @@
 import { db } from "@/lib/db/index";
-import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import { redirect } from "next/navigation";
-import { env } from "@/lib/env.mjs"
+import { env } from "@/lib/env.mjs";
 import GoogleProvider from "next-auth/providers/google";
+import { authRoutes } from "@/config/routes";
 
 declare module "next-auth" {
   interface Session {
@@ -33,13 +34,12 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-     GoogleProvider({
+    GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
   ],
 };
-
 
 export const getUserAuth = async () => {
   const session = await getServerSession(authOptions);
@@ -48,6 +48,5 @@ export const getUserAuth = async () => {
 
 export const checkAuth = async () => {
   const { session } = await getUserAuth();
-  if (!session) redirect("/api/auth/signin");
+  if (!session) redirect(authRoutes.default);
 };
-

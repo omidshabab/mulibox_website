@@ -133,100 +133,76 @@ export default Page;
 const cards = [
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   }, {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
-  }, {
-    active: true,
-    content: "Lorem"
-  },
-  {
-    active: false,
-    content: "Lorem"
   },
   {
     active: true,
-    content: "Lorem"
   },
   {
     active: false,
-    content: "Lorem"
+  },
+  {
+    active: true,
   },
   {
     active: false,
-    content: "Lorem"
+  },
+  {
+    active: false,
   }
 ];
