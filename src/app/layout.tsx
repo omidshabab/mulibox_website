@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { LangDir, LangFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { NextIntlClientProvider } from "next-intl";
@@ -35,22 +34,15 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir}>
       <body
-        suppressHydrationWarning={true}
         className={cn(
           font,
           "relative flex min-h-screen w-full items-center justify-center"
         )}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange>
-          <NextIntlClientProvider
-            locale={locale}
-            messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </ThemeProvider>
+        <NextIntlClientProvider
+          locale={locale}
+          messages={messages}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );
