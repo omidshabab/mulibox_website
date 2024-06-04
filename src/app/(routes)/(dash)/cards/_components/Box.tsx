@@ -11,7 +11,7 @@ export enum BoxSectionType {
 
 const Box = () => {
      return (
-          <div className="grid grid-cols-4 md:grid-cols-10 gap-5">
+          <div className="grid grid-cols-4 md:grid-cols-10 gap-x-5 gap-y-10">
                {/*
                     -- 1: EVERY DAY --
                */}
