@@ -85,16 +85,6 @@ body {
   }
 }
 
-.highlight {
-  height: 80px;
-  background: linear-gradient(
-    to bottom,
-    transparent 55%,
-    #fce041 45%
-  );
-  background-origin: content-box, padding-box;
-}
-
 .slider {
   transform: translate3d(-50%, -50%, 0) rotateX(0deg) rotateY(-25deg) rotateZ(-120deg);
   transform-style: preserve-3d;

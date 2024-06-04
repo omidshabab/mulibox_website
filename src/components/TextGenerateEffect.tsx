@@ -40,8 +40,8 @@ const TextGenerateEffect = ({
                                    key={word + idx}
                                    className={cn(
                                         bolds.some(index => word === tGeneral(index))
-                                             ? "text-black opacity-0 inline-flex highlight px-[10px] -z-1 -rotate-2 transform hover:-translate-y-4 transition duration-400 cursor-pointer"
-                                             : "font-bold text-slate-800 opacity-0"
+                                             ? "text-black md:opacity-0 inline-flex h-[50px] md:h-[80px] bg-highlight px-[8px] md:px-[10px] -z-1 -rotate-2 transform hover:-translate-y-4 transition duration-400 cursor-pointer"
+                                             : "font-bold text-slate-800 md:opacity-0"
                                    )}>
                                    {word}{" "}
                               </motion.span>
@@ -53,7 +53,7 @@ const TextGenerateEffect = ({
 
      return (
           <div className={className}>
-               <div className="text-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text text-[50px] font-extrabold leading-[5.5rem] text-transparent cursor-text">
+               <div className="text-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text leading-[3.5rem] text-[30px] md:text-[50px] font-extrabold md:leading-[5.5rem] text-transparent cursor-text">
                     {renderWords()}
                </div>
           </div>

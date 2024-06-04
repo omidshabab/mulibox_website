@@ -9,7 +9,7 @@ export default async function layout({
      await checkAuth();
 
      return (
-          <div className="flex w-full h-full justify-center items-center">
+          <div className="flex w-full h-full justify-center">
                {children}
           </div>
      )

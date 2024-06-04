@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex w-full h-screen items-center justify-center">
       <div className="grid place-items-center animate-pulse text-neutral-300 p-4">
         <div
           className="p-5 rounded-lg text-primary bg-primary/5 backdrop-blur-sm"

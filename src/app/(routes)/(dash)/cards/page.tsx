@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Box from "./_components/Box";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import ProfileAvatar from "./_components/ProfileAvatar";
 
 const Page = () => {
      return (
@@ -14,7 +15,7 @@ const Page = () => {
                               MuliBox
                          </div>
 
-                         <div className="flex gap-x-[10px] items-center">
+                         <div className="hidden md:flex gap-x-[10px] items-center">
                               <p className="text-[15px] text-slate-800">
                                    Start reviewing all today&apos;s cards
                               </p>
@@ -24,9 +25,7 @@ const Page = () => {
                                    <Plus className="w-[15px] h-[15px]" />
                               </Button>
 
-                              <div className="w-[40px] h-[40px] rounded-full bg-primary/5 cursor-pointer hover:bg-primary/10 transition-all duration-500">
-
-                              </div>
+                              <ProfileAvatar />
                          </div>
                     </div>
 
