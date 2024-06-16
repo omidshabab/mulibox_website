@@ -52,12 +52,50 @@ model User {
 
   name          String?
   email         String?   @unique
-  emailVerified DateTime?
   image         String?
   accounts      Account[]
+  cards         Card[]
+  collections   Collection[]
   sessions      Session[]
   
   subscription Subscription?
+}
+
+model Card {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId       String   @db.ObjectId
+  collectionId  String @db.ObjectId
+  front        String   @db.String
+  back        String   @db.String
+  history     History[]
+
+  collection         Collection     @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model History {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  cardId       String   @db.ObjectId
+  date    DateTime @default(now())
+  status Boolean
+
+  card    Card     @relation(fields: [cardId], references: [id],onDelete: Cascade)
+}
+
+model Collection {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId       String   @db.ObjectId
+  name        String   @db.String
+  desc        String?   @db.String
+  price       Float?  @default(0)
+  slug        String?
+  tags        String[] @default([])
+  cards     Card[]
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
