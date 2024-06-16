@@ -19,25 +19,34 @@ const AuthForm = () => {
      const [isLoading, setIsLoading] = React.useState<boolean>(false)
      const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
 
+     const [email, setEmail] = React.useState<string>("")
+
      const form = useForm<AuthFormSchema>({
-          resolver: zodResolver(registerSchema)
+          resolver: zodResolver(registerSchema),
+          defaultValues: {
+               email,
+          },
      })
 
      async function onSubmit(values: AuthFormSchema) {
           setIsLoading(true);
 
-          toast.promise(signIn("email", {
+          toast.loading(`${tRegister("in_progress")}`,)
+
+          const signInResult = await signIn("email", {
                email: values.email,
                redirect: false,
-          }).then(async (callback) => {
-               if (!callback) return
-
-               console.log("values are: ", values.email)
-          }).finally(() => {
-               setIsLoading(false)
-          }), {
-               loading: `${tRegister("in_progress")}`,
           })
+
+          setIsLoading(false)
+
+          toast.dismiss()
+
+          if (!signInResult?.ok) {
+               return toast.error("Something went wrong. Try again later.", { duration: Infinity, closeButton: true })
+          }
+
+          return toast.success("Check your email to verify and register", { duration: Infinity, closeButton: true })
      }
 
      function googleRegister() {
@@ -65,7 +74,7 @@ const AuthForm = () => {
                          {tRegister("google")}
                     </GoogleButton>
                </div>
-               <div className="text-[30px] text-slate-800 font-bold leading-[3.5rem] cursor-text">
+               <div className="text-[25px] sm:text-[30px] text-slate-800 font-bold leading-[3rem] sm:leading-[3.5rem] cursor-text">
                     {tRegister("description")}
                </div>
                <Form {...form} formState={form.formState}>
@@ -89,19 +98,19 @@ const AuthForm = () => {
                                         aria-autocomplete="none"
                                         disabled={isLoading || isGoogleLoading}
                                         className={cn(
-                                             "text-[30px] caret-primary border-b text-slate-800 border-opacity-20 text-center py-3",
+                                             "text-[25px] sm:text-[30px] caret-primary border-b text-slate-800 border-black/5 focus:border-black/10 transition-opacity duration-500 text-center py-3",
                                              englishBricolageGrotesqueFont.className,
                                         )}
                                         {...field} />
                               )}
                          />
                          <div
-                              className={cn("relative")}>
+                              className="relative flex gap-5">
                               <Button
                                    onClick={() => { }}
                                    size="lg"
                                    disabled={isLoading || isGoogleLoading}
-                                   className="flex w-min text-[20px] font-bold py-[30px] px-[25px] rounded-[12px] transform hover:-translate-y-1 transition duration-400 z-20"
+                                   className="flex w-min font-bold px-[20px] py-[25px] sm:px-[25px] sm:py-[30px] rounded-[12px] transform hover:-translate-y-1"
                                    variant="default">
                                    {tRegister("submit_email")}
                               </Button>

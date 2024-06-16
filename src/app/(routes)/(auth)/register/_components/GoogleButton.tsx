@@ -17,13 +17,13 @@ const GoogleButton = ({
           <div
                className={cn("relative")}>
                <Button
-                    size="lg"
                     onClick={onClick}
                     disabled={disabled}
-                    className="flex gap-2 w-min text-[20px] font-bold py-[30px] px-[25px] rounded-[12px] transform hover:-translate-y-1 transition duration-400 z-20"
+                    size="lg"
+                    className="flex gap-2 w-min font-bold px-[20px] py-[25px] sm:px-[25px] sm:py-[30px] rounded-[12px] transform hover:-translate-y-1"
                     variant="outline">
                     <GoogleIcon
-                         className="h-6 aspect-square" />
+                         className="aspect-square h-4 sm:h-6" />
                     {children}
                </Button>
           </div>

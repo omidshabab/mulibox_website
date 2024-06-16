@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { LangDir, LangFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider } from "next-intl";
 
 // Dynamic Metadata based on locales
@@ -16,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s - ${(await tMetadata)("name")}`,
     },
     description: (await tMetadata)("description"),
+    manifest: "/manifest.json",
   }
 }
 
@@ -36,12 +38,16 @@ export default async function RootLayout({
       <body
         className={cn(
           font,
-          "relative flex min-h-screen w-full items-center justify-center"
         )}>
         <NextIntlClientProvider
           locale={locale}
           messages={messages}>
           {children}
+          <Toaster
+            font={font}
+            others={{
+              position: "top-center",
+            }} />
         </NextIntlClientProvider>
       </body>
     </html>

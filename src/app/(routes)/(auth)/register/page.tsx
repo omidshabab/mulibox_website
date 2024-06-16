@@ -10,7 +10,7 @@ const Page = () => {
      const registerStatus = searchParams.get("status") as RegisterStatus
 
      return (
-          <div className="max-w-[600px] px-[30px] sm:px-0">
+          <div className="w-full max-w-[600px] px-[30px] sm:px-0">
                {registerStatus === "error" && (
                     <AuthStatus status="error" />
                )}
