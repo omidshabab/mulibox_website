@@ -3,8 +3,10 @@ import "@/styles/globals.css";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { LangDir, LangFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { GoogleAnalytics } from "@next/third-parties/google"
 import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider } from "next-intl";
+import { env } from "@/lib/env.mjs";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
@@ -50,6 +52,7 @@ export default async function RootLayout({
             }} />
         </NextIntlClientProvider>
       </body>
+      <GoogleAnalytics gaId={env.GOOGLE_ANALYTICS_ID} />
     </html>
   );
 }

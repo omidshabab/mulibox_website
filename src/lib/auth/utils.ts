@@ -7,7 +7,7 @@ import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import { resend } from "../email";
 import VerifyEmail from "emails/verify";
-import { authRoutes, dashRoutes } from "@/config/routes";
+import { authRoutes } from "@/config/routes";
 
 declare module "next-auth" {
   interface Session {
@@ -24,6 +24,7 @@ export type AuthSession = {
       id: string;
       name?: string;
       email?: string;
+      image?: string;
     };
   } | null;
 };
@@ -32,8 +33,7 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db) as any,
   pages: {
     error: authRoutes.error,
-    signIn: dashRoutes.default,
-    signOut: authRoutes.default,
+    signIn: authRoutes.default,
   },
   callbacks: {
     session: ({ session, user }) => {
