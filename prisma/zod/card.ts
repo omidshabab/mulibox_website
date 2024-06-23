@@ -7,6 +7,8 @@ export const cardSchema = z.object({
   collectionId: z.string(),
   front: z.string(),
   back: z.string(),
+  createdAt: z.date().nullish(),
+  updatedAt: z.date().nullish(),
 })
 
 export interface CompleteCard extends z.infer<typeof cardSchema> {

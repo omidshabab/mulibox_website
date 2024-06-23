@@ -1,3 +1,4 @@
+import { CardType } from "@/lib/cards";
 import { englishBricolageGrotesqueFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { Input } from "antd";
@@ -5,12 +6,7 @@ import { ChangeEventHandler } from "react";
 
 const { TextArea } = Input
 
-export enum CardType {
-  front = "front",
-  back = "back",
-}
-
-const Card = ({
+const CardItem = ({
   value,
   onChange,
   className,
@@ -51,4 +47,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default CardItem;

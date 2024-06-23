@@ -9,6 +9,8 @@ export const collectionSchema = z.object({
   price: z.number().nullish(),
   slug: z.string().nullish(),
   tags: z.string().array(),
+  createdAt: z.date().nullish(),
+  updatedAt: z.date().nullish(),
 })
 
 export interface CompleteCollection extends z.infer<typeof collectionSchema> {

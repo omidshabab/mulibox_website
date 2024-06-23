@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckCheck, CheckCircle, CheckCircle2, CheckCircle2Icon, CheckIcon, CheckSquareIcon, TriangleAlertIcon } from "lucide-react"
+import { CheckCheck, TriangleAlertIcon } from "lucide-react"
 import { Toaster as Sonner } from "sonner"
 
 interface ToasterProps {
