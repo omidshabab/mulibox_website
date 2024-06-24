@@ -9,7 +9,19 @@
     "lorem": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
   },
   "metadata": {
-    "name": "MuliBox",
+    "title": "mulibox.",
+    "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+  },
+  "register_metadata": {
+    "title": "register",
+    "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+  },
+  "cards_metadata": {
+    "title": "cards",
+    "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+  },
+  "guide_metadata": {
+    "title": "guide",
     "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
   },
   "not_found": {

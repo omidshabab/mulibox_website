@@ -4,6 +4,7 @@ import Link from "next/link";
 import { mainRoutes } from "@/config/routes";
 import AddNewCard from "@/components/AddNewCard";
 import { Spacer } from "@nextui-org/react";
+import MenuDrawer from "./_components/MenuDrawer";
 
 const Page = async () => {
      return (
@@ -36,6 +37,10 @@ const Page = async () => {
                                         <AddNewCard />
 
                                         <ProfileAvatar />
+                                   </div>
+
+                                   <div className="flex gap-x-[20px] md:hidden">
+                                        <MenuDrawer />
                                    </div>
                               </div>
                               <div className="flex justify-center items-center w-full max-w-6xl px-[20px] py-[8px] text-center bg-primary/[3%] border-primary/5 border-b-[2px] font-medium text-text text-[15px]">

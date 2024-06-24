@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
         };
 
         const result = await resend.emails.send({
-          from: "MuliBox <onboarding@resend.dev>",
+          from: "MuliBox <hey@mulibox.com>",
           to: [payload.email],
           subject: "Confirm Your Email to Access Your Leitner Box Account",
           react: VerifyEmail({ url: payload.url }),

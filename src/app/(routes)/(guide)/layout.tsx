@@ -1,11 +1,9 @@
-import { checkAuth } from "@/lib/auth/utils";
-import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import React from "react"
+import { Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
-     const tMetadata = getTranslations("cards_metadata")
+     const tMetadata = getTranslations("guide_metadata")
 
      return {
           title: (await tMetadata)("title"),
@@ -17,12 +15,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function layout({
      children
 }: {
-     children: React.ReactNode,
+     children: React.ReactNode
 }) {
-     await checkAuth();
-
      return (
-          <div className="flex w-full h-full justify-center lg:px-[20px]">
+          <div>
                {children}
           </div>
      )
