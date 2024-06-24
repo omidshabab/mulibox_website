@@ -10,13 +10,12 @@ import { env } from "@/lib/env.mjs";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
-  const tGeneral = getTranslations("general")
   const tMetadata = getTranslations("metadata")
 
   return {
     title: {
-      default: (await tGeneral)("mulibox"),
-      template: `%s - ${(await tMetadata)("name")}`,
+      default: (await tMetadata)("title"),
+      template: `%s, ${(await tMetadata)("title")}`,
     },
     description: (await tMetadata)("description"),
     manifest: "/manifest.json",
@@ -38,9 +37,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir}>
       <body
-        className={cn(
-          font,
-        )}>
+        className={font}>
         <NextIntlClientProvider
           locale={locale}
           messages={messages}>

@@ -1,7 +1,20 @@
 import { dashRoutes } from "@/config/routes";
 import { getUserAuth } from "@/lib/auth/utils";
+import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import React from "react"
+
+// Dynamic Metadata based on locales
+export async function generateMetadata(): Promise<Metadata> {
+     const tMetadata = getTranslations("register_metadata")
+
+     return {
+          title: (await tMetadata)("title"),
+          description: (await tMetadata)("description"),
+          manifest: "/manifest.json",
+     }
+}
 
 export default async function layout({
      children
