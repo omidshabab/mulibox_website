@@ -6,13 +6,13 @@ import {
   updateCardSchema,
   insertCardSchema,
   cardIdSchema,
-} from "@/lib/db/schema/card";
+} from "@/lib/db/schema/cards";
 import { getUserAuth } from "@/lib/auth/utils";
 
-export const createCard = async (post: NewCardParams) => {
+export const createCard = async (card: NewCardParams) => {
   const { session } = await getUserAuth();
   const newCard = insertCardSchema.parse({
-    ...post,
+    ...card,
     userId: session?.user.id!,
   });
   try {
@@ -25,11 +25,11 @@ export const createCard = async (post: NewCardParams) => {
   }
 };
 
-export const updateCard = async (id: CardId, post: UpdateCardParams) => {
+export const updateCard = async (id: CardId, card: UpdateCardParams) => {
   const { session } = await getUserAuth();
   const { id: cardId } = cardIdSchema.parse({ id });
   const newCard = updateCardSchema.parse({
-    ...post,
+    ...card,
     userId: session?.user.id!,
   });
   try {

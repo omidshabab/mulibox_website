@@ -9,8 +9,6 @@ const ProfileAvatar = async () => {
 
      const user = session?.user;
 
-     if (!user?.name || user.name.length == 0) return null;
-
      return (
           <Dialog>
                <DialogTrigger className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0">
@@ -25,8 +23,8 @@ const ProfileAvatar = async () => {
 
                <DialogContent className="max-w-[250px] backdrop-blur-3xl">
                     <ProfileModal
-                         title={user.name}
-                         image={user.image} />
+                         title={user?.name}
+                         image={user?.image} />
                </DialogContent>
           </Dialog>
      );

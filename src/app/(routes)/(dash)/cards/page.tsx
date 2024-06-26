@@ -6,7 +6,9 @@ import AddNewCard from "@/components/AddNewCard";
 import { Spacer } from "@nextui-org/react";
 import MenuDrawer from "./_components/MenuDrawer";
 
-const Page = async () => {
+export const revalidate = 0;
+
+const Page = () => {
      return (
           <div className="flex w-full">
                <div className="flex flex-col w-full h-full items-center mb-[80px]">

@@ -10,4 +10,6 @@ export const mainRoutes = {
 
 export const dashRoutes = {
   default: "/cards",
+  collections: "/collections",
+  profile: "/profile",
 };

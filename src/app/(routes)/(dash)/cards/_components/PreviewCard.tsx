@@ -7,8 +7,7 @@ import {
 } from "@/components/ui/context-menu";
 import { Delete, EditSquare } from "react-iconly";
 import CardDialog from "@/components/CardDialog";
-import { useCardStore } from "@/lib/cards";
-// import { cards } from "@/config/cards";
+import { cards } from "@/config/cards";
 
 const PreviewCard = ({ content }: { content: string }) => {
   if (content) {

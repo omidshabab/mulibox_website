@@ -1,7 +1,9 @@
+import NextAuthProvider from "@/lib/auth/Provider";
 import { checkAuth } from "@/lib/auth/utils";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import React from "react"
+import TrpcProvider from "@/lib/trpc/Provider";
+import { cookies } from "next/headers";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
@@ -22,8 +24,12 @@ export default async function layout({
      await checkAuth();
 
      return (
-          <div className="flex w-full h-full justify-center lg:px-[20px]">
-               {children}
-          </div>
+          <NextAuthProvider>
+               <TrpcProvider cookies={cookies().toString()}>
+                    <div className="flex w-full h-full justify-center lg:px-[20px]">
+                         {children}
+                    </div>
+               </TrpcProvider>
+          </NextAuthProvider>
      )
 }

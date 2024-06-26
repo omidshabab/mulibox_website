@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createCard, deleteCard, updateCard } from "@/lib/api/card/mutations";
+import { createCard, deleteCard, updateCard } from "@/lib/api/cards/mutations";
 import {
   CardId,
   NewCardParams,
@@ -9,7 +9,7 @@ import {
   cardIdSchema,
   insertCardParams,
   updateCardParams,
-} from "@/lib/db/schema/card";
+} from "@/lib/db/schema/cards";
 import { dashRoutes } from "@/config/routes";
 
 const handleErrors = (e: unknown) => {

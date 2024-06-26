@@ -8,9 +8,9 @@ import { ArrowLeft, ArrowRight, CheckIcon, FlipHorizontalIcon, HistoryIcon, Plus
 import IconButton from "@/components/IconButton";
 import { EditSquare } from "react-iconly";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { CardListFilter, CardType, useCardStore } from "@/lib/cards";
+import { CardListFilter, CardType } from "@/lib/cards";
 import CardItem from "@/components/CardItem";
-import { Card } from "@/lib/db/schema/card";
+import { Card } from "@/lib/db/schema/cards";
 import { DialogOverlay } from "../ui/dialog";
 
 const CardDialogContent = ({
@@ -75,7 +75,7 @@ const CardDialogContent = ({
      const handleEditMode = () => setEditMode(!editMode);
      const handleShowHistory = () => setShowHistory(!showHistory);
 
-     const addCard = useCardStore((state) => state.addCard);
+     // const addCard = useCardStore((state) => state.addCard);
 
      const handleAddCard = () => {
           // const newCard: CardProps = {

@@ -4,10 +4,10 @@ import { BoxSectionType } from "@/lib/cards";
 import AddNewCard from "@/components/AddNewCard";
 import Designer from "@/components/svg/designer"
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getCards } from "@/lib/api/card/queries";
+import { api } from "@/lib/trpc/api";
 
 const Box = async () => {
-     const { cards } = await getCards();
+     const { cards } = await api.cards.getCards.query();
 
      const categorizedCards = categorizeCards(cards);
 

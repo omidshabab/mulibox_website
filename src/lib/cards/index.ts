@@ -1,5 +1,3 @@
-import { create } from "zustand";
-
 export enum BoxSectionType {
   one = "EVERY DAY",
   two = "EVERY OTHER DAY",
@@ -44,17 +42,17 @@ interface CardState {
   deleteCard: (id: number) => void;
 }
 
-export const useCardStore = create<CardState>((set) => ({
-  cards: [],
-  addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
-  updateCard: (updatedCard) =>
-    set((state) => ({
-      cards: state.cards.map((card) =>
-        card.id === updatedCard.id ? updatedCard : card
-      ),
-    })),
-  deleteCard: (id) =>
-    set((state) => ({
-      cards: state.cards.filter((card) => card.id !== id),
-    })),
-}));
+// export const useCardStore = create<CardState>((set) => ({
+//   cards: [],
+//   addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
+//   updateCard: (updatedCard) =>
+//     set((state) => ({
+//       cards: state.cards.map((card) =>
+//         card.id === updatedCard.id ? updatedCard : card
+//       ),
+//     })),
+//   deleteCard: (id) =>
+//     set((state) => ({
+//       cards: state.cards.filter((card) => card.id !== id),
+//     })),
+// }));
