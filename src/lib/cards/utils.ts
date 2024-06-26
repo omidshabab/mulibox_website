@@ -1,6 +1,6 @@
 import { BoxSectionType } from ".";
-import { getCardByIdWithHistory } from "../api/card/queries";
-import { Card } from "../db/schema/card";
+import { getCardByIdWithHistory } from "../api/cards/queries";
+import { Card } from "../db/schema/cards";
 
 export const categorizeCards = (
   cards: Card[]

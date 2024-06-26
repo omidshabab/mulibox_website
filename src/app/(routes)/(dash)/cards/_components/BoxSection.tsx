@@ -3,7 +3,7 @@
 import React from "react";
 import PreviewCard from "./PreviewCard";
 import { BoxSectionType, CardProps } from "@/lib/cards";
-import { Card } from "@/lib/db/schema/card";
+import { Card } from "@/lib/db/schema/cards";
 
 const BoxSection = ({
      type,

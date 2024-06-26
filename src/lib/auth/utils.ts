@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import { redirect } from "next/navigation";
 import { env } from "@/lib/env.mjs";
+import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import { resend } from "../email";
@@ -18,7 +19,6 @@ declare module "next-auth" {
 }
 
 export type AuthSession = {
-  callbackUrl: "/cards";
   session: {
     user: {
       id: string;
@@ -30,7 +30,7 @@ export type AuthSession = {
 };
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(db) as any,
+  adapter: PrismaAdapter(db) as Adapter,
   pages: {
     error: authRoutes.error,
     signIn: authRoutes.default,

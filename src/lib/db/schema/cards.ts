@@ -1,9 +1,9 @@
 import { cardSchema } from "@/zodAutoGenSchemas";
 import { z } from "zod";
 import { timestamps } from "@/lib/utils";
-import { getCards } from "@/lib/api/card/queries";
+import { getCards } from "@/lib/api/cards/queries";
 
-// Schema for post - used to validate API requests
+// Schema for card - used to validate API requests
 const baseSchema = cardSchema.omit(timestamps);
 
 export const insertCardSchema = baseSchema.omit({ id: true });
@@ -18,14 +18,14 @@ export const updateCardParams = updateCardSchema.extend({}).omit({
 });
 export const cardIdSchema = baseSchema.pick({ id: true });
 
-// Types for post - used to type API request params and within Components
+// Types for card - used to type API request params and within Components
 export type Card = z.infer<typeof cardSchema>;
 export type NewCard = z.infer<typeof insertCardSchema>;
 export type NewCardParams = z.infer<typeof insertCardParams>;
 export type UpdateCardParams = z.infer<typeof updateCardParams>;
 export type CardId = z.infer<typeof cardIdSchema>["id"];
 
-// this type infers the return from getPost() - meaning it will include any joins
+// this type infers the return from getCard() - meaning it will include any joins
 export type CompleteCard = Awaited<
   ReturnType<typeof getCards>
 >["cards"][number];

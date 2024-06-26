@@ -1,6 +1,6 @@
 import { db } from "@/lib/db/index";
 import { getUserAuth } from "@/lib/auth/utils";
-import { type CardId, cardIdSchema } from "@/lib/db/schema/card";
+import { type CardId, cardIdSchema } from "@/lib/db/schema/cards";
 
 export const getCards = async () => {
   const { session } = await getUserAuth();
