@@ -4,7 +4,11 @@ import { getUser } from "@/lib/auth/user";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User } from "lucide-react";
 
-const ProfileAvatar = async () => {
+const ProfileAvatar = async ({
+     isMobile = false
+}: {
+     isMobile?: boolean
+}) => {
      const { session } = await getUser()
 
      const user = session?.user;
@@ -12,13 +16,17 @@ const ProfileAvatar = async () => {
      return (
           <Dialog>
                <DialogTrigger className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0">
-                    <div className="w-[40px] h-[40px] rounded-full bg-primary/5 cursor-pointer hover:bg-primary/10 transition-all duration-500">
-                         <Avatar>
-                              <AvatarFallback className="text-text bg-transparent font-semibold">
-                                   <User className="h-[20px]" />
-                              </AvatarFallback>
-                         </Avatar>
-                    </div>
+                    {!isMobile ? (
+                         <div className="w-[40px] h-[40px] rounded-full bg-primary/5 cursor-pointer hover:bg-primary/10 transition-all duration-500">
+                              <Avatar>
+                                   <AvatarFallback className="text-text bg-transparent font-semibold">
+                                        <User className="h-[20px]" />
+                                   </AvatarFallback>
+                              </Avatar>
+                         </div>
+                    ) : (
+                         <User className="h-[20px]" />
+                    )}
                </DialogTrigger>
 
                <DialogContent className="max-w-[250px] backdrop-blur-3xl">

@@ -1,13 +1,18 @@
 import {
      Dialog,
+     DialogDescription,
      DialogPortal,
+     DialogTitle,
      DialogTrigger,
 } from "@/components/ui/dialog";
 import CardDialogContent from "./card/CardDialogContent";
 import { trpc } from "@/lib/trpc/client";
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+import { CardListFilter } from "@/lib/cards";
 
 const CardDialog = ({
-     children
+     children,
+     ...props
 }: {
      children: React.ReactNode,
 }) => {
@@ -20,7 +25,14 @@ const CardDialog = ({
                </DialogTrigger>
 
                <DialogPortal>
-                    <CardDialogContent cards={cards} />
+                    <VisuallyHidden.Root>
+                         <DialogTitle />
+                         <DialogDescription />
+                    </VisuallyHidden.Root>
+                    <CardDialogContent
+                         cards={cards}
+                         type={CardListFilter.all}
+                         {...props} />
                </DialogPortal>
           </Dialog>
      );

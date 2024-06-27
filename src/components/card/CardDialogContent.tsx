@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, forwardRef } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import ReactCardFlip from "react-card-flip";
 import { cn } from "@/lib/utils";
@@ -8,12 +8,14 @@ import { ArrowLeft, ArrowRight, CheckIcon, FlipHorizontalIcon, HistoryIcon, Plus
 import IconButton from "@/components/IconButton";
 import { EditSquare } from "react-iconly";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { CardListFilter, CardType } from "@/lib/cards";
+import { CardListFilter, CardType, History } from "@/lib/cards";
 import CardItem from "@/components/CardItem";
-import { Card } from "@/lib/db/schema/cards";
+import { Card, CardId, NewCardParams } from "@/lib/db/schema/cards";
 import { DialogOverlay } from "../ui/dialog";
+import { trpc } from "@/lib/trpc/client";
+import { toast } from "sonner";
 
-const CardDialogContent = ({
+const CardDialogContent = forwardRef(({
      cards = [],
      index,
      type,
@@ -21,16 +23,15 @@ const CardDialogContent = ({
      cards?: Card[],
      index?: number,
      type?: CardListFilter
-}) => {
-     const [front, setFront] = useState<string>(
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque ad voluptates nemo ab illo impedit sit ipsa molestias. Doloremque fugit veniam",
-     );
-     const [back, setBack] = useState<string>("back");
+}, ref) => {
+     const [front, setFront] = useState<string>("");
+     const [back, setBack] = useState<string>("");
      const [checked, setChecked] = useState<boolean | null>();
      const [editMode, setEditMode] = useState<boolean>(false);
      const [isFlipped, setIsFlipped] = useState<boolean>(false);
      const [showHistory, setShowHistory] = useState(false);
-     const [activeIndex, setActiveIndex] = useState(0);
+     const [activeIndex, setActiveIndex] = useState(cards.length);
+     const [activeCardHistory, setActiveCardHistory] = useState<History[]>([]);
 
      const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
      const containerRef = useRef<HTMLDivElement | null>(null);
@@ -75,21 +76,50 @@ const CardDialogContent = ({
      const handleEditMode = () => setEditMode(!editMode);
      const handleShowHistory = () => setShowHistory(!showHistory);
 
-     // const addCard = useCardStore((state) => state.addCard);
+     const collection = trpc.collections.getDefaultCollection.useQuery().data?.collection;
+
+     const utils = trpc.useUtils();
+
+     const onSuccess = async (action: "create" | "update" | "delete", data?: { error?: string, card: Card }) => {
+          if (data?.error) {
+               toast.error(data.error);
+               return;
+          }
+
+          await utils.cards.getCards.invalidate();
+
+          action === "create" && setActiveIndex(cards.length)
+     };
+
+     const onError = async (action: "create" | "update" | "delete", data?: { error?: string }) => {
+          if (data?.error) {
+               toast.error(data.error);
+               return;
+          }
+
+          toast.error(`Card ${action} failed!`);
+     };
+
+     const { mutate: createCard, isLoading: isCreating } = trpc.cards.createCard.useMutation({
+          onSuccess: (data) => onSuccess("create", data),
+          onError: (err) => onError("create", { error: err.message }),
+     });
+
+     const { mutate: updateCard, isLoading: isUpdating } = trpc.cards.updateCard.useMutation({
+          onSuccess: () => onSuccess("update"),
+          onError: (err) => onError("update", { error: err.message }),
+     });
 
      const handleAddCard = () => {
-          // const newCard: CardProps = {
-          //      id: cards.length + 1,
-          //      front: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-          //      back: "back",
-          //      history: [],
-          //      createdAt: new Date(),
-          //      updatedAt: new Date(),
-          // };
+          if (collection) {
+               const newCardParams: NewCardParams = { front: "front", back: "back", collectionId: collection.id }
 
-          // addCard(newCard);
+               createCard(newCardParams);
+          }
+     };
 
-          // setActiveIndex(cards.length)
+     const handleWrapperClick = (onClick: () => void) => {
+          !(isCreating || isUpdating) && onClick()
      };
 
      useEffect(() => {
@@ -110,6 +140,13 @@ const CardDialogContent = ({
                offsetX.set(-offset);
           }
      }, [activeIndex, initOffset, offsetX]);
+
+     const activeCard = trpc.cards.getCardHistory.useQuery({ id: cards[activeIndex]?.id }, {
+          onSuccess: (data) => {
+               setActiveCardHistory(data?.history || []);
+          },
+          enabled: !!cards[activeIndex]?.id, // Ensure the query only runs when there's an active card ID
+     }).data;
 
      return (
           <>
@@ -135,10 +172,21 @@ const CardDialogContent = ({
 
                                              {type === CardListFilter.all && (
                                                   <div
-                                                       onClick={handleAddCard}
-                                                       className="group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center">
-                                                       <IconButton icon={PlusIcon} />
-                                                       <p className="w-full text-[15px] text-text font-semibold opacity-30 group-hover/new-button:opacity-100 transition-all duration-500 leading-[1.0rem]">
+                                                       onClick={() => handleWrapperClick(handleAddCard)}
+                                                       className={cn(
+                                                            "group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center",
+                                                            (isCreating || isUpdating) ? "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed" : ""
+                                                       )}>
+                                                       <IconButton
+                                                            disabled={isCreating || isUpdating}
+                                                            icon={PlusIcon}
+                                                            className={cn(
+                                                                 (isCreating || isUpdating) ? "group-hover/new-button:cursor-not-allowed" : ""
+                                                            )} />
+                                                       <p className={cn(
+                                                            "w-full text-[15px] text-text font-semibold opacity-30 group-hover/new-button:opacity-100 transition-all duration-500 leading-[1.0rem]",
+                                                            (isCreating || isUpdating) ? "group-hover/new-button:opacity-30 group-hover/new-button:cursor-not-allowed" : ""
+                                                       )}>
                                                             New
                                                        </p>
                                                   </div>
@@ -177,16 +225,14 @@ const CardDialogContent = ({
                                                                                 <div
                                                                                      key={index}
                                                                                      className="flex flex-col items-end justify-end gap-y-[10px]">
-                                                                                     {index === (activeIndex + 1) && (
+                                                                                     {active && (
                                                                                           <div className="flex gap-x-[5px] items-end">
-                                                                                               {showHistory !== null && showHistory !== undefined && (
-                                                                                                    <div
-                                                                                                         onClick={() => handleShowHistory()}
+                                                                                               {(activeCard && activeCard.history.length > 0) && (
+                                                                                                    <div onClick={() => handleShowHistory()}
                                                                                                          className={cn(
                                                                                                               "flex gap-x-[8px] items-center text-text font-medium cursor-pointer hover:opacity-80 bg-primary/5 px-[5px] py-[5px] rounded-full border-[2px] border-primary/10 transition-all duration-500 hover:bg-primary/10 hover:border-primary/20",
                                                                                                               showHistory && "bg-primary/15 border-primary/20 hover:bg-primary/20 hover:border-primary/25",
-                                                                                                         )}
-                                                                                                    >
+                                                                                                         )}>
                                                                                                          <HistoryIcon className="h-[15px] w-[15px]" />
                                                                                                     </div>
                                                                                                )}
@@ -215,7 +261,7 @@ const CardDialogContent = ({
                                                                                           </div>
                                                                                      )}
 
-                                                                                     {index === (activeIndex + 1) ? (
+                                                                                     {active ? (
                                                                                           <ReactCardFlip
                                                                                                flipDirection="horizontal"
                                                                                                isFlipped={isFlipped}>
@@ -331,6 +377,6 @@ const CardDialogContent = ({
                )}
           </>
      );
-}
+})
 
 export default CardDialogContent;

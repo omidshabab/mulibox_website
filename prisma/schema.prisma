@@ -4,12 +4,12 @@ generator client {
 
 generator zod {
   provider              = "zod-prisma"
-  output                = "./zod" 
-  relationModel         = true 
-  modelCase             = "camelCase" 
-  modelSuffix           = "Schema" 
-  useDecimalJs          = true 
-  prismaJsonNullability = true 
+  output                = "./zod"
+  relationModel         = true
+  modelCase             = "camelCase"
+  modelSuffix           = "Schema"
+  useDecimalJs          = true
+  prismaJsonNullability = true
 }
 
 datasource db {
@@ -17,21 +17,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Account {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId             String   @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.String
-  access_token       String?  @db.String
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.String
-  session_state      String?
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -44,24 +43,24 @@ model Account {
 model Session {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  sessionToken String @unique
-  userId String @db.ObjectId
-  expires DateTime
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name String?
-  email String? @unique
+  name          String?
+  email         String?      @unique
   emailVerified DateTime?
-  image String?
-  accounts Account[]
-  cards Card[]
-  collections Collection[]
-  sessions Session[]
-  
+  image         String?
+  accounts      Account[]
+  cards         Card[]
+  collections   Collection[]
+  sessions      Session[]
+
   subscription Subscription?
 
   createdAt DateTime? @default(now())
@@ -71,14 +70,14 @@ model User {
 model Card {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId String @db.ObjectId
-  collectionId String @db.ObjectId
-  front String @db.String
-  back String @db.String
-  history History[]
+  userId       String    @db.ObjectId
+  collectionId String    @db.ObjectId
+  front        String    @db.String
+  back         String    @db.String
+  history      History[]
 
   collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
@@ -87,11 +86,11 @@ model Card {
 model History {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  cardId String @db.ObjectId
-  date DateTime @default(now())
+  cardId String   @db.ObjectId
+  date   DateTime @default(now())
   status Boolean
 
-  card Card @relation(fields: [cardId], references: [id],onDelete: Cascade)
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
@@ -100,13 +99,14 @@ model History {
 model Collection {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId String @db.ObjectId
-  name String @db.String
-  desc String? @db.String
-  price Float? @default(0)
-  slug String?
-  tags String[] @default([])
-  cards Card[]
+  userId  String   @db.ObjectId
+  name    String   @db.String
+  desc    String?  @db.String
+  price   Float?   @default(0)
+  slug    String?
+  default Boolean? @default(false)
+  tags    String[] @default([])
+  cards   Card[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -116,10 +116,10 @@ model Collection {
 
 model VerificationToken {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  
+
   identifier String
-  token String @unique
-  expires DateTime
+  token      String   @unique
+  expires    DateTime
 
   @@unique([identifier, token])
 }
@@ -127,10 +127,10 @@ model VerificationToken {
 model Subscription {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId String @unique @db.ObjectId
-  user User @relation(fields: [userId], references: [id])
-  stripeCustomerId String @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId String? @unique @map(name: "stripe_subscription_id")
-  stripePriceId String? @map(name: "stripe_price_id")
+  userId                 String    @unique @db.ObjectId
+  user                   User      @relation(fields: [userId], references: [id])
+  stripeCustomerId       String    @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }

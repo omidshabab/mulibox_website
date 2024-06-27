@@ -68,6 +68,46 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  events: {
+    async signIn(message) {
+      /* on successful sign in */
+    },
+    async signOut(message) {
+      /* on signout */
+    },
+    async createUser(data) {
+      /* user created */
+      const collection = await db.collection.create({
+        data: {
+          userId: data.user.id,
+          name: "my cards collection",
+          default: true,
+        },
+      });
+
+      console.log(`collection created: ${collection.id}`);
+    },
+    async updateUser(message) {
+      /* user updated - e.g. their email was verified */
+    },
+    async linkAccount(message) {
+      /* account (e.g. Twitter) linked to a user */
+    },
+    async session(message) {
+      /* session is active */
+    },
+  },
+  logger: {
+    error(code, metadata) {
+      //
+    },
+    warn(code) {
+      //
+    },
+    debug(code, metadata) {
+      //
+    },
+  },
 };
 
 export const getUserAuth = async () => {

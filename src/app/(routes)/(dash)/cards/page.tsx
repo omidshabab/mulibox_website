@@ -41,7 +41,9 @@ const Page = () => {
                                         <ProfileAvatar />
                                    </div>
 
-                                   <div className="flex gap-x-[20px] md:hidden">
+                                   <div className="flex gap-x-[10px] md:hidden">
+                                        <ProfileAvatar isMobile />
+
                                         <MenuDrawer />
                                    </div>
                               </div>
