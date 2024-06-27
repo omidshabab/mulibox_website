@@ -8,6 +8,17 @@ export const getCollections = async () => {
   return { collections: p };
 };
 
+export const getDefaultCollection = async () => {
+  const { session } = await getUserAuth();
+  const p = await db.collection.findMany({ where: {userId: session?.user.id!}});
+
+  for (const collection of p) {
+    if(collection.default){
+      return { collection };
+    }
+  }
+};
+
 export const getCollectionById = async (id: CollectionId) => {
   const { session } = await getUserAuth();
   const { id: collectionId } = collectionIdSchema.parse({ id });

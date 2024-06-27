@@ -45,6 +45,53 @@ export const updateCard = async (id: CardId, card: UpdateCardParams) => {
   }
 };
 
+export const updateCardHistory = async (id: CardId, status: boolean) => {
+  const { session } = await getUserAuth();
+  const { id: cardId } = cardIdSchema.parse({ id });
+
+  try {
+    // Fetch the card with its history
+    const card = await db.card.findUnique({
+      where: { id: cardId, userId: session?.user.id! },
+      include: { history: true },
+    });
+
+    if (!card) {
+      throw new Error("Card not found");
+    }
+
+    // Get today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize to the start of the day
+
+    // Check if the last history entry is from today
+    const lastHistory = card.history[card.history.length - 1];
+    if (
+      lastHistory &&
+      lastHistory.date.toISOString().slice(0, 10) ===
+        today.toISOString().slice(0, 10)
+    ) {
+      // Update the last history entry if it's from today
+      await db.history.update({
+        where: { id: lastHistory.id },
+        data: { status },
+      });
+    } else {
+      // Create a new history entry if the last one is not from today
+      await db.history.create({
+        data: {
+          cardId: cardId,
+          status: status,
+        },
+      });
+    }
+  } catch (err) {
+    const message = (err as Error).message ?? "Error, please try again";
+    console.error(message);
+    throw { error: message };
+  }
+};
+
 export const deleteCard = async (id: CardId) => {
   const { session } = await getUserAuth();
   const { id: cardId } = cardIdSchema.parse({ id });

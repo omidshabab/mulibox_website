@@ -8,6 +8,7 @@ export const collectionSchema = z.object({
   desc: z.string().nullish(),
   price: z.number().nullish(),
   slug: z.string().nullish(),
+  default: z.boolean().nullish(),
   tags: z.string().array(),
   createdAt: z.date().nullish(),
   updatedAt: z.date().nullish(),

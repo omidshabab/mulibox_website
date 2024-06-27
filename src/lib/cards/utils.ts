@@ -1,5 +1,5 @@
 import { BoxSectionType } from ".";
-import { getCardByIdWithHistory } from "../api/cards/queries";
+import { getCardHistory } from "../api/cards/queries";
 import { Card } from "../db/schema/cards";
 
 export const categorizeCards = (
@@ -16,7 +16,8 @@ export const categorizeCards = (
   const now = new Date();
 
   cards.forEach(async (card) => {
-    const { history } = await getCardByIdWithHistory(card.id);
+    const { history } = await getCardHistory(card.id);
+
     if (history) {
       if (history.length > 0) {
         const lastReview = history[history.length - 1].date;
