@@ -1,10 +1,11 @@
-import { cardSchema } from "@/zodAutoGenSchemas";
+import { cardSchema, historySchema } from "@/zodAutoGenSchemas";
 import { z } from "zod";
 import { timestamps } from "@/lib/utils";
 import { getCards } from "@/lib/api/cards/queries";
 
 // Schema for card - used to validate API requests
 const baseSchema = cardSchema.omit(timestamps);
+const historyBaseSchema = historySchema.omit(timestamps);
 
 export const insertCardSchema = baseSchema.omit({ id: true });
 export const insertCardParams = baseSchema.extend({}).omit({
@@ -17,6 +18,7 @@ export const updateCardParams = updateCardSchema.extend({}).omit({
   userId: true,
 });
 export const cardIdSchema = baseSchema.pick({ id: true });
+export const historyStatusSchema = historyBaseSchema.pick({ status: true });
 
 // Types for card - used to type API request params and within Components
 export type Card = z.infer<typeof cardSchema>;
