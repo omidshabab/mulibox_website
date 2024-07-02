@@ -12,7 +12,6 @@ export async function generateMetadata(): Promise<Metadata> {
      return {
           title: (await tMetadata)("title"),
           description: (await tMetadata)("description"),
-          manifest: "/manifest.json",
      }
 }
 

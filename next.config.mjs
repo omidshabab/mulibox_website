@@ -1,5 +1,5 @@
-const createNextIntlPlugin = require("next-intl/plugin");
-const { createContentlayerPlugin } = require("next-contentlayer");
+import createNextIntlPlugin from "next-intl/plugin";
+import { default as nextPWA } from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -19,13 +19,11 @@ const nextConfig = {
 
 const withNextIntl = createNextIntlPlugin();
 
-const withContentlayer = createContentlayerPlugin({});
-
-const withPWA = require("next-pwa")({
+const withPWA = nextPWA({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
   register: true,
   skipWaiting: true,
 });
 
-module.exports = withPWA(withNextIntl(withContentlayer(nextConfig)));
+export default withPWA(withNextIntl(nextConfig));

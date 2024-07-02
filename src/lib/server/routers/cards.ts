@@ -5,7 +5,12 @@ import {
   insertCardParams,
   updateCardParams,
 } from "@/lib/db/schema/cards";
-import { createCard, deleteCard, updateCard } from "@/lib/api/cards/mutations";
+import {
+  createCard,
+  deleteCard,
+  updateCard,
+  updateCardHistory,
+} from "@/lib/api/cards/mutations";
 
 export const cardsRouter = router({
   getCards: publicProcedure.query(async () => {
@@ -23,6 +28,11 @@ export const cardsRouter = router({
     .input(insertCardParams)
     .mutation(async ({ input }) => {
       return createCard(input);
+    }),
+  updateCardHistory: publicProcedure
+    .input(cardIdSchema)
+    .mutation(async ({ input }) => {
+      return updateCardHistory(input.id, true);
     }),
   updateCard: publicProcedure
     .input(updateCardParams)

@@ -26,7 +26,7 @@ export default async function layout({
      return (
           <NextAuthProvider>
                <TrpcProvider cookies={cookies().toString()}>
-                    <div className="flex w-full h-full justify-center lg:px-[20px]">
+                    <div className="flex w-full h-full justify-center">
                          {children}
                     </div>
                </TrpcProvider>

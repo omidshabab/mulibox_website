@@ -9,9 +9,9 @@ import {
      DrawerTrigger,
 } from "@/components/ui/drawer"
 import MenuIcon from "@/components/icons/Menu"
-import { Button } from "@/components/ui/button";
 import IconButton from "@/components/IconButton";
-import { BrickWallIcon, CalendarDaysIcon, ShrinkIcon, X } from "lucide-react";
+import { CalendarDaysIcon } from "lucide-react";
+import MyCards from "./MyCards";
 
 const MenuDrawer = () => {
      return (
@@ -30,30 +30,7 @@ const MenuDrawer = () => {
                          </div>
 
                          <div className="flex w-full gap-x-[15px] justify-center items-center">
-                              {/* <DrawerClose>
-                                   <Button
-                                        variant="secondary"
-                                        className="text-[15px] font-semibold">
-                                        my cards
-                                   </Button>
-                              </DrawerClose>
-
-                              <DrawerClose>
-                                   <Button
-                                        variant="secondary"
-                                        className="text-[15px] font-semibold">
-                                        today&apos;s cards
-                                   </Button>
-                              </DrawerClose> */}
-
-                              <DrawerClose>
-                                   <div className="group/close-button w-[80px] flex flex-col justify-center items-center gap-y-[10px] text-center bg-primary/5 hover:bg-primary/10 px-[15px] py-[10px] rounded-[15px]">
-                                        <IconButton icon={BrickWallIcon} />
-                                        <p className="w-full text-[15px] text-text font-semibold opacity-50 group-hover/close-button:opacity-100 transition-all duration-500 leading-[1.25rem]">
-                                             my cards
-                                        </p>
-                                   </div>
-                              </DrawerClose>
+                              <MyCards isMobile />
 
                               <DrawerClose>
                                    <div className="group/close-button w-[80px] flex flex-col justify-center items-center gap-y-[10px] text-center bg-primary/5 hover:bg-primary/10 px-[15px] py-[10px] rounded-[15px]">

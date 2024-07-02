@@ -12,11 +12,10 @@ import { CardListFilter } from "@/lib/cards";
 
 const CardDialog = ({
      children,
-     ...props
 }: {
      children: React.ReactNode,
 }) => {
-     const cards = trpc.cards.getCards.useQuery().data?.cards;
+     const cards = trpc.cards.getCards.useQuery().data?.cards ?? [];
 
      return (
           <Dialog>
@@ -32,7 +31,7 @@ const CardDialog = ({
                     <CardDialogContent
                          cards={cards}
                          type={CardListFilter.all}
-                         {...props} />
+                         index={cards.length - 1} />
                </DialogPortal>
           </Dialog>
      );

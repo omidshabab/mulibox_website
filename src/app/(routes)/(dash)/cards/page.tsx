@@ -5,16 +5,17 @@ import { mainRoutes } from "@/config/routes";
 import AddNewCard from "@/components/AddNewCard";
 import { Spacer } from "@nextui-org/react";
 import MenuDrawer from "./_components/MenuDrawer";
+import MyCards from './_components/MyCards';
 
 export const revalidate = 0;
 
 const Page = () => {
      return (
-          <div className="flex w-full">
+          <div className="flex w-full px-[30px] lg:px-[20px] max-w-6xl">
                <div className="flex flex-col w-full h-full items-center mb-[80px]">
-                    <div className="mx-auto flex justify-center w-full px-[30px] lg:px-0 z-[20]">
+                    <div className="mx-auto flex justify-center w-full z-[20]">
                          <div className="flex flex-col w-full items-center">
-                              <div className="flex w-full h-[80px] max-w-6xl gap-x-[15px] justify-between items-center py-[18px] border-primary/5 border-b-[2px]">
+                              <div className="flex w-full h-[80px] gap-x-[15px] justify-between items-center py-[18px] border-primary/5 border-b-[2px]">
                                    <div className="flex">
                                         <Link
                                              href={mainRoutes.default}
@@ -25,9 +26,7 @@ const Page = () => {
 
                                    <div className="hidden md:flex gap-x-[10px] items-center">
                                         <div className="flex gap-x-[20px]">
-                                             <p className="text-[15px] text-slate-800 font-medium">
-                                                  my cards
-                                             </p>
+                                             <MyCards />
 
                                              <p className="text-[15px] text-slate-800 font-medium">
                                                   today&apos;s cards

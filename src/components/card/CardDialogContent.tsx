@@ -330,9 +330,9 @@ const CardDialogContent = forwardRef(({
                                                                  setChecked(false);
                                                                  setIsFlipped(true);
                                                             }}
-                                                            disabled={checked === null && checked === undefined}
+                                                            // disabled={checked === null && checked === undefined}
                                                             className={cn(
-                                                                 checked === false && "bg-red-800 bg-opacity-10 border-red-900 border-opacity-15 text-red-800 hover:bg-red-800 hover:bg-opacity-15 hover:border-red-900 hover:border-opacity-20"
+                                                                 (activeCard && activeCard.history[0] && activeCard.history[0].status !== undefined && activeCard.history[0].status === false) && "bg-red-800 bg-opacity-10 border-red-900 border-opacity-15 text-red-800 hover:bg-red-800 hover:bg-opacity-15 hover:border-red-900 hover:border-opacity-20"
                                                             )} />
 
                                                        <IconButton
@@ -341,9 +341,9 @@ const CardDialogContent = forwardRef(({
                                                                  setChecked(true);
                                                                  setIsFlipped(true);
                                                             }}
-                                                            disabled={(!checked === null && !checked === undefined) ? true : false}
+                                                            // disabled={(!checked === null && !checked === undefined) ? true : false}
                                                             className={cn(
-                                                                 checked === true && "bg-green-800 bg-opacity-10 border-green-900 border-opacity-15 text-green-800 hover:bg-green-800 hover:bg-opacity-15 hover:border-green-900 hover:border-opacity-20"
+                                                                 (activeCard && activeCard.history[0] && activeCard.history[0].status !== undefined && activeCard?.history[0].status === true) && "bg-green-800 bg-opacity-10 border-green-900 border-opacity-15 text-green-800 hover:bg-green-800 hover:bg-opacity-15 hover:border-green-900 hover:border-opacity-20"
                                                             )} />
 
                                                        <IconButton disabled={!canScrollNext} onClick={scrollNext} icon={ArrowRight} />
