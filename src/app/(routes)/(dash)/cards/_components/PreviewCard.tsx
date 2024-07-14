@@ -7,18 +7,19 @@ import {
 } from "@/components/ui/context-menu";
 import { Delete, EditSquare } from "react-iconly";
 import CardDialog from "@/components/CardDialog";
-import { cards } from "@/config/cards";
 
 const PreviewCard = ({ content }: { content: string }) => {
   if (content) {
     return (
       <ContextMenu>
         <ContextMenuTrigger>
-          {/* <CardDialog index={cards.length - 1} cards={cards}> */}
-          <div className="bg-primary/5 border-[2px] border-primary/10 rounded-[15px] px-[20px] py-[15px] text-start hover:bg-primary/10 transition-all duration-500 cursor-pointer text-[18px] font-medium text-text">
-            {content}
-          </div>
-          {/* </CardDialog> */}
+          <CardDialog
+          // index={cards.length - 1} cards={cards}
+          >
+            <div className="bg-primary/5 border-[2px] border-primary/10 rounded-[15px] px-[20px] py-[15px] text-start hover:bg-primary/10 transition-all duration-500 cursor-pointer text-[18px] font-medium text-text">
+              {content}
+            </div>
+          </CardDialog>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-auto font-medium">
           <ContextMenuItem

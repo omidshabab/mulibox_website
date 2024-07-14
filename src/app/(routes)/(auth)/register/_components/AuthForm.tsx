@@ -75,7 +75,7 @@ const AuthForm = () => {
                     </GoogleButton>
                </div>
                <div className="text-[25px] sm:text-[30px] text-slate-800 font-bold leading-[3rem] sm:leading-[3.5rem] cursor-text">
-                    {tRegister("description")}
+                    {tRegister("desc")}
                </div>
                <Form {...form} formState={form.formState}>
                     <form

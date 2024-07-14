@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-import "@/styles/mdx.css"
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { LangDir, LangFont } from "@/lib/fonts";
 import { GoogleAnalytics } from "@next/third-parties/google"
@@ -10,14 +9,7 @@ import { env } from "@/lib/env.mjs";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
-  const tMetadata = getTranslations("metadata")
-
   return {
-    title: {
-      default: (await tMetadata)("title"),
-      template: `%s, ${(await tMetadata)("title")}`,
-    },
-    description: (await tMetadata)("description"),
     manifest: "/manifest.json",
   }
 }
