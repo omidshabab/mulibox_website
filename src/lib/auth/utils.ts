@@ -32,8 +32,8 @@ export type AuthSession = {
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db) as Adapter,
   pages: {
-    error: authRoutes.error,
     signIn: authRoutes.default,
+    error: authRoutes.error,
   },
   callbacks: {
     session: ({ session, user }) => {
@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
         };
 
         const result = await resend.emails.send({
-          from: "MuliBox <hey@mulibox.com>",
+          from: "mulibox. <hey@mulibox.com>",
           to: [payload.email],
           subject: "Confirm Your Email to Access Your Leitner Box Account",
           react: VerifyEmail({ url: payload.url }),

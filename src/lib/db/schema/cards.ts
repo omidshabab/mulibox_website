@@ -13,12 +13,16 @@ export const insertCardParams = baseSchema.extend({}).omit({
   userId: true,
 });
 
-export const updateCardSchema = baseSchema;
+export const updateCardSchema = baseSchema.omit({ collectionId: true });
 export const updateCardParams = updateCardSchema.extend({}).omit({
   userId: true,
+  // collectionId: true,
 });
 export const cardIdSchema = baseSchema.pick({ id: true });
-export const historyStatusSchema = historyBaseSchema.pick({ status: true });
+export const historyStatusSchema = historyBaseSchema.pick({
+  cardId: true,
+  status: true,
+});
 
 // Types for card - used to type API request params and within Components
 export type Card = z.infer<typeof cardSchema>;

@@ -1,6 +1,6 @@
 import { BoxSectionType } from ".";
-import { getCardHistory } from "../api/cards/queries";
 import { Card } from "../db/schema/cards";
+import { api } from "../trpc/api";
 
 export const categorizeCards = (
   cards: Card[]
@@ -16,7 +16,7 @@ export const categorizeCards = (
   const now = new Date();
 
   cards.forEach(async (card) => {
-    const { history } = await getCardHistory(card.id);
+    const history = await api.cards.getCardHistory.query({ id: card.id });
 
     if (history) {
       if (history.length > 0) {

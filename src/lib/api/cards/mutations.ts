@@ -45,14 +45,19 @@ export const updateCard = async (id: CardId, card: UpdateCardParams) => {
   }
 };
 
-export const updateCardHistory = async (id: CardId, status: boolean) => {
-  const { session } = await getUserAuth();
+export const updateCardHistory = async ({
+  id,
+  status,
+}: {
+  id: CardId;
+  status: boolean;
+}) => {
   const { id: cardId } = cardIdSchema.parse({ id });
 
   try {
     // Fetch the card with its history
     const card = await db.card.findUnique({
-      where: { id: cardId, userId: session?.user.id! },
+      where: { id: cardId },
       include: { history: true },
     });
 

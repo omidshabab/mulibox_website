@@ -17,15 +17,14 @@ export const getCardById = async (id: CardId) => {
 };
 
 export const getCardHistory = async (id: CardId) => {
-  const { session } = await getUserAuth();
   const { id: cardId } = cardIdSchema.parse({ id });
-  const p = await db.card.findFirst({
-    where: { id: cardId, userId: session?.user.id!},
-    include: { history: { include: {card: true } } }
-  });
-  if (p === null) return { card: null, history: [] };
-  const { history, ...card } = p;
 
-  return { card, history:history };
+  const p = await db.history.findMany({
+    where: { cardId },
+  });
+  
+  if (p === null) return []
+
+  return p
 };
 

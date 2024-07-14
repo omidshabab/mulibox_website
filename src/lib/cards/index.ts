@@ -6,11 +6,6 @@ export enum BoxSectionType {
   five = "ONCE A MONTH",
 }
 
-export type History = {
-  date: Date;
-  status: boolean;
-};
-
 export type CardProps = {
   id: number;
   front: string;

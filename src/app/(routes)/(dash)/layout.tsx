@@ -7,12 +7,15 @@ import { cookies } from "next/headers";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
+     const tGeneral = getTranslations("general")
      const tMetadata = getTranslations("cards_metadata")
 
      return {
-          title: (await tMetadata)("title"),
-          description: (await tMetadata)("description"),
-          manifest: "/manifest.json",
+          title: {
+               default: `${(await tMetadata)("title")}${(await tGeneral)("separator")} ${(await tGeneral)("mulibox")}.`,
+               template: `%s${(await tGeneral)("separator")} ${(await tMetadata)("title")}.`,
+          },
+          description: (await tMetadata)("desc"),
      }
 }
 

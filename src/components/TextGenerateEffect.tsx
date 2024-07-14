@@ -53,7 +53,7 @@ const TextGenerateEffect = ({
 
      return (
           <div className={className}>
-               <div className="text-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text leading-[3.5rem] text-[30px] md:text-[50px] font-extrabold md:leading-[5.5rem] text-transparent cursor-text">
+               <div className="text-gradient-to-b from-neutral-200 to-neutral-500 bg-clip-text leading-[3.8rem] text-[50px] md:text-[80px] font-bold md:leading-[5.5rem] text-transparent cursor-text">
                     {renderWords()}
                </div>
           </div>
