@@ -6,10 +6,14 @@ import AddNewCard from "@/components/AddNewCard";
 import { Spacer } from "@nextui-org/react";
 import MenuDrawer from "./_components/MenuDrawer";
 import MyCards from './_components/MyCards';
+import { trpc } from "@/lib/trpc/client";
+import { api } from "@/lib/trpc/api";
 
 export const revalidate = 0;
 
-const Page = () => {
+const Page = async () => {
+     const { cards } = await api.cards.getCards.query()
+
      return (
           <div className="flex w-full px-[30px] lg:px-[20px] max-w-6xl">
                <div className="flex flex-col w-full h-full items-center mb-[80px]">
@@ -52,7 +56,13 @@ const Page = () => {
                          </div>
                     </div>
 
-                    <Box />
+                    {cards && (
+                         <Box cards={cards} />
+                    )}
+
+                    {!cards && (
+                         <div>loading box ...</div>
+                    )}
                </div>
                <div className="block sm:hidden absolute bottom-0 right-0 pb-[15px] pr-[15px]">
                     <AddNewCard type="icon" />
