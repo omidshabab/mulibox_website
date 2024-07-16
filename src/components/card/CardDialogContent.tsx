@@ -131,14 +131,24 @@ const CardDialogContent = forwardRef(({
           }
      };
 
-     const handleWrapperClick = (onClick: () => void) => {
-          !(isCreating || isUpdating) && onClick()
+     const handleDeleteCard = (cardId: string) => {
+          deleteCard({ id: cardId })
+
+          setActiveIndex(cards.length - 1)
+     }
+
+     const handleWrapperClick = (onClick: VoidFunction) => {
+          !(isCreating || isUpdating || isHistoryUpdating || isDeleting) && onClick()
      };
 
      useEffect(() => {
           if (index && index > 0) setActiveIndex(index)
 
           if (index === 0) setActiveIndex(0)
+
+          if (!(cards.length > 0)) {
+               setShowHistory(false)
+          }
      }, [index])
 
      useEffect(() => {
@@ -154,7 +164,14 @@ const CardDialogContent = forwardRef(({
           }
      }, [activeIndex, initOffset, offsetX]);
 
-     const cardHistory = trpc.cards.getCardHistory.useQuery({ id: cards[activeIndex]?.id }).data
+     const cardHistory = trpc.cards.getCardHistory.useQuery({ id: cards[activeIndex]?.id }).data?.history
+
+     const now = new Date();
+
+     const daysSinceLastReview = (cardHistory && cardHistory[cardHistory.length - 1]) && Math.floor(
+          (now.getTime() - new Date(cardHistory[cardHistory.length - 1].date).getTime()) /
+          (1000 * 60 * 60 * 24)
+     );
 
      return (
           <div
@@ -175,7 +192,7 @@ const CardDialogContent = forwardRef(({
 
                          {type === CardListFilter.all && (
                               <div
-                                   onClick={() => handleWrapperClick(handleAddCard)}
+                                   onClick={() => handleWrapperClick(() => handleAddCard())}
                                    className={cn(
                                         "group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center",
                                         (isCreating || isUpdating) ? "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed" : ""
@@ -243,7 +260,7 @@ const CardDialogContent = forwardRef(({
                                                                                           </div>
                                                                                      )}
 
-                                                                                     {checked !== null && checked !== undefined && (
+                                                                                     {((cardHistory && cardHistory.length === 0) || (daysSinceLastReview && daysSinceLastReview < 1)) ? (
                                                                                           <div
                                                                                                onClick={() => handleFlip()}
                                                                                                className={cn(
@@ -253,7 +270,7 @@ const CardDialogContent = forwardRef(({
                                                                                           >
                                                                                                <FlipHorizontalIcon className="h-[15px] w-[15px]" />
                                                                                           </div>
-                                                                                     )}
+                                                                                     ) : (<></>)}
 
                                                                                      {!editMode && (
                                                                                           <div
@@ -309,7 +326,7 @@ const CardDialogContent = forwardRef(({
                                                                                 </ContextMenuTrigger>
                                                                                 <ContextMenuContent className="w-auto font-medium">
                                                                                      <ContextMenuItem
-                                                                                          onClick={() => deleteCard({ id: card.id })}
+                                                                                          onClick={() => handleWrapperClick(() => handleDeleteCard(card.id))}
                                                                                           className="flex gap-x-2 text-text">
                                                                                           <Delete
                                                                                                style={{ width: "16px", height: "16px" }}
@@ -343,14 +360,16 @@ const CardDialogContent = forwardRef(({
 
                                              <IconButton
                                                   onClick={() => {
-                                                       updateCard({
-                                                            id: cards[activeIndex].id,
-                                                            front: front,
-                                                            back: back,
-                                                            // collectionId: cards[activeIndex].collectionId,
-                                                       })
+                                                       if (collection) {
+                                                            updateCard({
+                                                                 id: cards[activeIndex].id,
+                                                                 front: front,
+                                                                 back: back,
+                                                                 collectionId: cards[activeIndex].collectionId,
+                                                            })
 
-                                                       setEditMode(false)
+                                                            setEditMode(false)
+                                                       }
                                                   }}
                                                   icon={CheckIcon} />
                                         </>
@@ -367,7 +386,7 @@ const CardDialogContent = forwardRef(({
 
                                                        updateCardHistory({ cardId: cards[activeIndex].id, status: false });
 
-                                                       setIsFlipped(false);
+                                                       setIsFlipped(true);
                                                   }}
                                                   disabled={isHistoryUpdating ? true : false}
                                                   className={cn(
@@ -400,7 +419,7 @@ const CardDialogContent = forwardRef(({
                     )}
                </div>
 
-               {(cards.length > 0 && (cardHistory && cardHistory.length > 0)) && (
+               {(cards.length > 0) && (
                     <div className={cn(
                          "absolute flex flex-grow flex-col gap-y-[10px] bg-primary/5 max-w-[350px] w-full h-full px-[25px] py-[20px] font-medium text-text backdrop-blur-md -translate-x-full ease-in-out duration-300 z-30",
                          showHistory && "translate-x-0"
@@ -416,7 +435,7 @@ const CardDialogContent = forwardRef(({
                               <div
                                    key={index}
                                    className="text-slate-800 text-[15px] font-normal bg-primary/5 rounded-[10px] px-[15px] py-[10px] cursor-pointer border-[2px] border-text/5 hover:bg-primary/10 transition-all duration-500 hover:border-text/10">
-                                   Reviewed at 25 September 2024 - <span className="font-semibold">{history.status ? `Checked` : `Wrong`}</span>
+                                   Reviewed at {`${history.date.toLocaleDateString()}`} - <span className="font-semibold">{history.status ? `Checked` : `Wrong`}</span>
                               </div>
                          )) : (
                               <div>

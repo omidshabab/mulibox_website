@@ -13,10 +13,9 @@ export const insertCardParams = baseSchema.extend({}).omit({
   userId: true,
 });
 
-export const updateCardSchema = baseSchema.omit({ collectionId: true });
+export const updateCardSchema = baseSchema;
 export const updateCardParams = updateCardSchema.extend({}).omit({
   userId: true,
-  // collectionId: true,
 });
 export const cardIdSchema = baseSchema.pick({ id: true });
 export const historyStatusSchema = historyBaseSchema.pick({

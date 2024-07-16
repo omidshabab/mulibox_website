@@ -8,39 +8,56 @@ import {
   cardIdSchema,
 } from "@/lib/db/schema/cards";
 import { getUserAuth } from "@/lib/auth/utils";
+import { api } from "@/lib/trpc/api";
 
 export const createCard = async (card: NewCardParams) => {
   const { session } = await getUserAuth();
+
   const newCard = insertCardSchema.parse({
     ...card,
     userId: session?.user.id!,
   });
+
   try {
     const p = await db.card.create({ data: newCard });
+
     return { card: p };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
+
     console.error(message);
+
     throw { error: message };
   }
 };
 
 export const updateCard = async (id: CardId, card: UpdateCardParams) => {
   const { session } = await getUserAuth();
+
   const { id: cardId } = cardIdSchema.parse({ id });
+
+  const p = await api.collections.getDefaultCollection.query();
+
   const newCard = updateCardSchema.parse({
     ...card,
     userId: session?.user.id!,
+    collectionId: p?.collection.id,
   });
+
+  const { id: omitId, ...cardData } = newCard;
+
   try {
     const p = await db.card.update({
-      where: { id: cardId, userId: session?.user.id! },
-      data: newCard,
+      where: { id: cardId },
+      data: cardData,
     });
+
     return { card: p };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
+
     console.error(message);
+
     throw { error: message };
   }
 };
