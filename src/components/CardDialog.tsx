@@ -12,6 +12,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { CardListFilter } from "@/lib/cards";
 import Loading from "@/app/(routes)/loading";
+import { useCardDialog } from "@/hooks/use-card-dialog-store";
 
 const CardDialog = ({
      children,
@@ -20,8 +21,10 @@ const CardDialog = ({
 }) => {
      const cards = trpc.cards.getCards.useQuery().data?.cards;
 
+     const isOpen = useCardDialog((state) => state.isOpen)
+
      return (
-          <Dialog>
+          <Dialog open={isOpen}>
                <DialogTrigger asChild className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0">
                     {children}
                </DialogTrigger>

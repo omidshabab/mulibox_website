@@ -6,7 +6,6 @@ import AddNewCard from "@/components/AddNewCard";
 import { Spacer } from "@nextui-org/react";
 import MenuDrawer from "./_components/MenuDrawer";
 import MyCards from './_components/MyCards';
-import { trpc } from "@/lib/trpc/client";
 import { api } from "@/lib/trpc/api";
 
 export const revalidate = 0;

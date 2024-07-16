@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Plus, PlusIcon } from "lucide-react";
-import CardDialog from "./CardDialog";
 import IconButton from "./IconButton";
 import { toast } from "sonner";
 import { Card, NewCardParams } from "@/lib/db/schema/cards";
 import { trpc } from "@/lib/trpc/client";
+import { useCardDialog } from "@/hooks/use-card-dialog-store";
 
 type AddCardButtonType = "default" | "icon"
 
@@ -15,6 +15,8 @@ const AddNewCard = ({
 }: {
      type?: AddCardButtonType
 }) => {
+     const setCardDialogOpen = useCardDialog((state) => state.setOpen)
+
      const collection = trpc.collections.getDefaultCollection.useQuery().data?.collection;
 
      const utils = trpc.useUtils();
@@ -56,25 +58,23 @@ const AddNewCard = ({
      };
 
      return (
-          <CardDialog>
-               <div>
-                    {type === "icon" && (
-                         <IconButton
-                              onClick={() => handleAddCard()}
-                              icon={PlusIcon} />
-                    )}
+          <div onClick={() => setCardDialogOpen()}>
+               {type === "icon" && (
+                    <IconButton
+                         onClick={() => handleAddCard()}
+                         icon={PlusIcon} />
+               )}
 
-                    {type === "default" && (
-                         <Button
-                              variant="secondary"
-                              onClick={() => handleAddCard()}
-                              className="flex text-[12px] sm:text-[14px] gap-x-[5px] font-semibold">
-                              Add New Card
-                              <Plus className="w-[15px] h-[15px]" />
-                         </Button>
-                    )}
-               </div>
-          </CardDialog>
+               {type === "default" && (
+                    <Button
+                         variant="secondary"
+                         onClick={() => handleAddCard()}
+                         className="flex text-[12px] sm:text-[14px] gap-x-[5px] font-semibold">
+                         Add New Card
+                         <Plus className="w-[15px] h-[15px]" />
+                    </Button>
+               )}
+          </div>
      );
 }
 

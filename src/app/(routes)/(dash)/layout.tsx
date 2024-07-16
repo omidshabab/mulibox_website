@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import TrpcProvider from "@/lib/trpc/Provider";
 import { cookies } from "next/headers";
+import CardDialogProvider from "@/lib/cards/Provider";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,9 +30,11 @@ export default async function layout({
      return (
           <NextAuthProvider>
                <TrpcProvider cookies={cookies().toString()}>
-                    <div className="flex w-full h-full justify-center">
-                         {children}
-                    </div>
+                    <CardDialogProvider>
+                         <div className="flex w-full h-full justify-center">
+                              {children}
+                         </div>
+                    </CardDialogProvider>
                </TrpcProvider>
           </NextAuthProvider>
      )

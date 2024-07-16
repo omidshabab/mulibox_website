@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect, forwardRef } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import ReactCardFlip from "react-card-flip";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, ArrowRight, CheckIcon, FlipHorizontalIcon, HistoryIcon, PlusIcon, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckIcon, FlipHorizontalIcon, HistoryIcon, PlusIcon, X, Trash2Icon } from 'lucide-react';
 import IconButton from "@/components/IconButton";
 import { Delete, EditSquare } from "react-iconly";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
@@ -13,8 +13,7 @@ import CardItem from "@/components/CardItem";
 import { Card, NewCardParams } from "@/lib/db/schema/cards";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
-import { getCardHistory } from '../../lib/api/cards/queries';
+import { useCardDialog } from "@/hooks/use-card-dialog-store";
 
 const CardDialogContent = forwardRef(({
      cards = [],
@@ -103,6 +102,8 @@ const CardDialogContent = forwardRef(({
           toast.error(`Card ${action} failed!`);
      };
 
+     const setCardDialogClose = useCardDialog((state) => state.setClose)
+
      const { mutate: createCard, isLoading: isCreating } = trpc.cards.createCard.useMutation({
           onSuccess: (data) => onSuccess("create", data),
           onError: (err) => onError("create", { error: err.message }),
@@ -173,6 +174,8 @@ const CardDialogContent = forwardRef(({
           (1000 * 60 * 60 * 24)
      );
 
+     const loadings = (isCreating || isUpdating || isDeleting || isHistoryUpdating)
+
      return (
           <div
                className="relative flex flex-col sm:flex-grow w-full h-full overflow-hidden">
@@ -181,7 +184,9 @@ const CardDialogContent = forwardRef(({
                     showHistory && "pl-[350px]"
                )}>
                     <div className="flex justify-between md:justify-center items-center px-[25px] py-[25px] gap-x-[20px]">
-                         <div className="group/close-button flex flex-col justify-center items-center gap-y-[10px] text-center">
+                         <div
+                              onClick={() => setCardDialogClose()}
+                              className="group/close-button flex flex-col justify-center items-center gap-y-[10px] text-center">
                               <DialogPrimitive.Close className="focus:outline-none">
                                    <IconButton icon={X} />
                               </DialogPrimitive.Close>
@@ -190,27 +195,49 @@ const CardDialogContent = forwardRef(({
                               </p>
                          </div>
 
-                         {type === CardListFilter.all && (
+                         <div className="flex gap-x-[20px]">
                               <div
-                                   onClick={() => handleWrapperClick(() => handleAddCard())}
+                                   onClick={() => handleWrapperClick(() => handleDeleteCard(cards[activeIndex]?.id))}
                                    className={cn(
                                         "group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center",
-                                        (isCreating || isUpdating) ? "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed" : ""
+                                        loadings && "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed"
                                    )}>
                                    <IconButton
-                                        disabled={isCreating || isUpdating}
-                                        icon={PlusIcon}
+                                        disabled={loadings}
+                                        icon={Delete}
                                         className={cn(
-                                             (isCreating || isUpdating) ? "group-hover/new-button:cursor-not-allowed" : ""
+                                             loadings && "group-hover/new-button:cursor-not-allowed"
                                         )} />
                                    <p className={cn(
                                         "w-full text-[15px] text-text font-semibold opacity-30 group-hover/new-button:opacity-100 transition-all duration-500 leading-[1.0rem]",
-                                        (isCreating || isUpdating) ? "group-hover/new-button:opacity-30 group-hover/new-button:cursor-not-allowed" : ""
+                                        loadings && "group-hover/new-button:opacity-30 group-hover/new-button:cursor-not-allowed"
                                    )}>
-                                        New
+                                        Delete
                                    </p>
                               </div>
-                         )}
+
+                              {type === CardListFilter.all && (
+                                   <div
+                                        onClick={() => handleWrapperClick(() => handleAddCard())}
+                                        className={cn(
+                                             "group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center",
+                                             loadings && "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed"
+                                        )}>
+                                        <IconButton
+                                             disabled={loadings}
+                                             icon={PlusIcon}
+                                             className={cn(
+                                                  loadings && "group-hover/new-button:cursor-not-allowed"
+                                             )} />
+                                        <p className={cn(
+                                             "w-full text-[15px] text-text font-semibold opacity-30 group-hover/new-button:opacity-100 transition-all duration-500 leading-[1.0rem]",
+                                             loadings && "group-hover/new-button:opacity-30 group-hover/new-button:cursor-not-allowed"
+                                        )}>
+                                             New
+                                        </p>
+                                   </div>
+                              )}
+                         </div>
                     </div>
 
                     {cards.length > 0 ? (
@@ -288,55 +315,38 @@ const CardDialogContent = forwardRef(({
                                                                                 </div>
                                                                            )}
 
-                                                                           <ContextMenu>
-                                                                                <ContextMenuTrigger>
-                                                                                     {active ? (
-                                                                                          <ReactCardFlip
-                                                                                               flipDirection="horizontal"
-                                                                                               isFlipped={isFlipped}>
+                                                                           {active ? (
+                                                                                <ReactCardFlip
+                                                                                     flipDirection="horizontal"
+                                                                                     isFlipped={isFlipped}>
 
-                                                                                               <CardItem
-                                                                                                    value={editMode ? front : card.front}
-                                                                                                    type={CardType.front}
-                                                                                                    readOnly={!editMode}
-                                                                                                    onChange={(value: any) => setFront(value.currentTarget.value)} />
+                                                                                     <CardItem
+                                                                                          value={editMode ? front : card.front}
+                                                                                          type={CardType.front}
+                                                                                          readOnly={!editMode}
+                                                                                          onChange={(value: any) => setFront(value.currentTarget.value)} />
 
-                                                                                               <CardItem
-                                                                                                    value={editMode ? back : card.back}
-                                                                                                    type={CardType.back}
-                                                                                                    readOnly={!editMode}
-                                                                                                    onChange={(value: any) => setBack(value.currentTarget.value)} />
-                                                                                          </ReactCardFlip>
-                                                                                     ) : (
-                                                                                          <div onClick={() => {
-                                                                                               if (isFlipped) handleFlip()
-                                                                                               if (editMode) handleEditMode()
-                                                                                               setChecked(null)
+                                                                                     <CardItem
+                                                                                          value={editMode ? back : card.back}
+                                                                                          type={CardType.back}
+                                                                                          readOnly={!editMode}
+                                                                                          onChange={(value: any) => setBack(value.currentTarget.value)} />
+                                                                                </ReactCardFlip>
+                                                                           ) : (
+                                                                                <div onClick={() => {
+                                                                                     if (isFlipped) handleFlip()
+                                                                                     if (editMode) handleEditMode()
+                                                                                     setChecked(null)
 
-                                                                                               setActiveIndex(index)
-                                                                                          }}>
-                                                                                               <CardItem
-                                                                                                    value={card.front}
-                                                                                                    type={CardType.front}
-                                                                                                    readOnly={!editMode}
-                                                                                                    onChange={(value: any) => setFront(value.currentTarget.value)} />
-                                                                                          </div>
-                                                                                     )}
-
-                                                                                </ContextMenuTrigger>
-                                                                                <ContextMenuContent className="w-auto font-medium">
-                                                                                     <ContextMenuItem
-                                                                                          onClick={() => handleWrapperClick(() => handleDeleteCard(card.id))}
-                                                                                          className="flex gap-x-2 text-text">
-                                                                                          <Delete
-                                                                                               style={{ width: "16px", height: "16px" }}
-                                                                                               stroke="bold" />
-                                                                                          Delete
-                                                                                     </ContextMenuItem>
-                                                                                </ContextMenuContent>
-                                                                           </ContextMenu>
-
-
+                                                                                     setActiveIndex(index)
+                                                                                }}>
+                                                                                     <CardItem
+                                                                                          value={card.front}
+                                                                                          type={CardType.front}
+                                                                                          readOnly={!editMode}
+                                                                                          onChange={(value: any) => setFront(value.currentTarget.value)} />
+                                                                                </div>
+                                                                           )}
                                                                       </div>
                                                                  </motion.div>
                                                             </React.Fragment>
@@ -344,8 +354,10 @@ const CardDialogContent = forwardRef(({
                                                   }).reverse()}
                                              </motion.div>
 
-                                             <div className="text-text font-medium">
-                                                  dolor sit amet consectetur
+                                             <div
+                                                  onClick={() => setShowHistory(true)}
+                                                  className="text-text font-medium">
+                                                  Last Review was at 3 days ago
                                              </div>
                                         </div>
                                    </div>
@@ -355,10 +367,12 @@ const CardDialogContent = forwardRef(({
                                    {editMode && (
                                         <>
                                              <IconButton
+                                                  disabled={loadings}
                                                   onClick={() => setEditMode(false)}
                                                   icon={X} />
 
                                              <IconButton
+                                                  disabled={loadings}
                                                   onClick={() => {
                                                        if (collection) {
                                                             updateCard({
@@ -377,7 +391,7 @@ const CardDialogContent = forwardRef(({
 
                                    {!editMode && (
                                         <>
-                                             <IconButton disabled={!canScrollPrev} onClick={scrollPrev} icon={ArrowLeft} />
+                                             <IconButton disabled={!canScrollPrev || loadings} onClick={scrollPrev} icon={ArrowLeft} />
 
                                              <IconButton
                                                   icon={X}
@@ -388,7 +402,7 @@ const CardDialogContent = forwardRef(({
 
                                                        setIsFlipped(true);
                                                   }}
-                                                  disabled={isHistoryUpdating ? true : false}
+                                                  disabled={loadings}
                                                   className={cn(
                                                        (cardHistory && cardHistory[cardHistory.length - 1]?.status === false) && "bg-red-800 bg-opacity-10 border-red-900 border-opacity-15 text-red-800 hover:bg-red-800 hover:bg-opacity-15 hover:border-red-900 hover:border-opacity-20"
                                                   )} />
@@ -402,12 +416,12 @@ const CardDialogContent = forwardRef(({
 
                                                        setIsFlipped(true);
                                                   }}
-                                                  disabled={isHistoryUpdating ? true : false}
+                                                  disabled={loadings}
                                                   className={cn(
                                                        (cardHistory && cardHistory[cardHistory.length - 1]?.status === true) && "bg-green-800 bg-opacity-10 border-green-900 border-opacity-15 text-green-800 hover:bg-green-800 hover:bg-opacity-15 hover:border-green-900 hover:border-opacity-20"
                                                   )} />
 
-                                             <IconButton disabled={!canScrollNext} onClick={scrollNext} icon={ArrowRight} />
+                                             <IconButton disabled={!canScrollNext || loadings} onClick={scrollNext} icon={ArrowRight} />
                                         </>
                                    )}
                               </div>
@@ -438,8 +452,8 @@ const CardDialogContent = forwardRef(({
                                    Reviewed at {`${history.date.toLocaleDateString()}`} - <span className="font-semibold">{history.status ? `Checked` : `Wrong`}</span>
                               </div>
                          )) : (
-                              <div>
-                                   Empty
+                              <div className="font-extralight text-slate-600">
+                                   Please review this card to show history
                               </div>
                          )}
                     </div>
