@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import {
   ContextMenu,
@@ -6,20 +8,20 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Delete, EditSquare } from "react-iconly";
-import CardDialog from "@/components/CardDialog";
+import { useCardDialog } from "@/hooks/use-card-dialog-store";
 
 const PreviewCard = ({ content }: { content: string }) => {
+  const setCardDialogOpen = useCardDialog((state) => state.setOpen)
+
   if (content) {
     return (
       <ContextMenu>
         <ContextMenuTrigger>
-          <CardDialog
-          // index={cards.length - 1} cards={cards}
-          >
+          <div onClick={() => setCardDialogOpen()}>
             <div className="bg-primary/5 border-[2px] border-primary/10 rounded-[15px] px-[20px] py-[15px] text-start hover:bg-primary/10 transition-all duration-500 cursor-pointer text-[18px] font-medium text-text">
               {content}
             </div>
-          </CardDialog>
+          </div>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-auto font-medium">
           <ContextMenuItem
