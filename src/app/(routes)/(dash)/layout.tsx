@@ -1,10 +1,12 @@
 import NextAuthProvider from "@/lib/auth/Provider";
 import { checkAuth } from "@/lib/auth/utils";
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import Document from "@/components/Document";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import TrpcProvider from "@/lib/trpc/Provider";
 import { cookies } from "next/headers";
 import CardDialogProvider from "@/lib/cards/Provider";
+import { NextIntlClientProvider } from "next-intl";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,15 +29,23 @@ export default async function layout({
 }) {
      await checkAuth();
 
+     const locale = await getLocale();
+
+     const messages = await getMessages();
+
      return (
-          <NextAuthProvider>
-               <TrpcProvider cookies={cookies().toString()}>
-                    <CardDialogProvider>
-                         <div className="flex w-full h-full justify-center">
-                              {children}
-                         </div>
-                    </CardDialogProvider>
-               </TrpcProvider>
-          </NextAuthProvider>
+          <Document locale={locale}>
+               <NextIntlClientProvider messages={messages}>
+                    <NextAuthProvider>
+                         <TrpcProvider cookies={cookies().toString()}>
+                              <CardDialogProvider>
+                                   <div className="flex w-full h-full justify-center">
+                                        {children}
+                                   </div>
+                              </CardDialogProvider>
+                         </TrpcProvider>
+                    </NextAuthProvider>
+               </NextIntlClientProvider>
+          </Document>
      )
 }

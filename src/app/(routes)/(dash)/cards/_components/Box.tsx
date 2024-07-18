@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { CompleteCard } from "@/lib/db/schema/cards"
 import { trpc } from "@/lib/trpc/client"
 import { categorizeCards } from "@/lib/cards/utils"
-import Loading from "@/app/(routes)/loading"
+import Loading from "../../loading"
 
 const Box = ({ cards }: { cards: CompleteCard[] }) => {
      const { data: t } = trpc.cards.getCards.useQuery(undefined, {
