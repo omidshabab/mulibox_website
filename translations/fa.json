@@ -1,45 +1,63 @@
 {
   "general": {
-    "mulibox": "مولی باکس",
-    "dashboard": "داشبورد",
-    "language": "زبان",
-    "save": "طراحی",
-    "manage": "ساخت",
-    "automate": "مدیریت",
-    "separator": "،",
-    "lorem": "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است"
+    "mulibox": "Mulibox",
+    "muliboxcom": "mulibox.com",
+    "dashboard": "dashboard",
+    "language": "language",
+    "create": "create",
+    "manage": "manage",
+    "automate": "automate",
+    "separator": ",",
+    "copyright": "Crafted with care by Mulibox. All Rights Preserved and Protected.",
+    "lorem": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
   },
   "metadata": {
-    "name": "مولی باکس",
+    "title": "Mulibox.",
     "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
   },
+  "homepage_metadata": {
+    "title": "The Free Online Leitner Box Tool",
+    "desc": "Your ultimate tool for mastering the Leitner Box system. Get ready to revolutionize your study habits with this innovative app."
+  },
+  "register_metadata": {
+    "title": "Register",
+    "desc": ""
+  },
+  "cards_metadata": {
+    "title": "Cards",
+    "desc": ""
+  },
+  "guide_metadata": {
+    "title": "Guide",
+    "desc": ""
+  },
   "not_found": {
-    "title": "صفحه ای که دنبالش بودی پیدا نشد",
-    "description": "می تونی دوباره جستجوش کنی یا به صفحه اصلی برگردی!",
-    "button": "بازگشت به صفحه اصلی"
+    "title": "Not found what you was looking for.",
+    "description": "You can search it again or back to home page",
+    "button": "Back to Home Page"
   },
   "languages": {
-    "english": "انگلیسی",
-    "persian": "فارسی"
+    "english": "English",
+    "persian": "Persian"
   },
   "navigation": {
-    "home": "صفحه اصلی",
-    "about": "درباره"
+    "home": "Home",
+    "about": "About"
   },
   "home": {
-    "title": "مولی باکس",
-    "description": "نحوه طراحی ☡، ساخت ⏚ و مدیریت 〄 اهدافی که برایتان اهمیت دارند. این کار را همراه با رودی مپ انجام دهید.",
-    "get_started": "همین الان شروع کنید"
+    "title": "mulibox",
+    "desc": "Create. Manage. Automate.",
+    "signup_now": "Sign up for Free"
   },
   "register": {
-    "title": "ورود به حساب کاربری",
-    "description": "فرقی نمی کنه حساب کاربری داری یا نه، برای ورود آدرس ایمیلت رو وارد کن. من یک لینک تأیید برات از طریق ایمیل ارسال می کنم.",
-    "submit_email": "تاییدیه رو به ایمیلم ارسال کن",
-    "google": "ورود به حساب کاربری با گوگل",
-    "github": "ورود به حساب کاربری با گیت هاب",
-    "in_progress": "یک لحظه صبر کن. در حال انجام است ...",
-    "success": "خیلی خوش آمدی 😊 ورودت موفقیت آمیز بود",
-    "error": "ورودت موفقیت آمیز نبود. باید دوباره امتحان کنی یا با پشتیبانی در تماس باشی 😔"
+    "title": "Register to account",
+    "desc": "Doesn't matter if you have an account or not. To register, enter your email address, and we will send you a verification link via email.",
+    "submit_email": "Send a verification email",
+    "google": "Register with Google",
+    "github": "Register with Github",
+    "in_progress": "Please wait a minute. It's in progress ...",
+    "success": "You are very welcome 😊 Your login was successful",
+    "error": "Your login was not successful. You should try again or contact support"
   },
   "server": {
     "error": "An error occurred while trying to connect to the server."

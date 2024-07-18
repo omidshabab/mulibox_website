@@ -1,28 +1,35 @@
 {
   "general": {
-    "mulibox": "MuliBox",
+    "mulibox": "Mulibox",
+    "muliboxcom": "mulibox.com",
     "dashboard": "dashboard",
     "language": "language",
-    "save": "save",
+    "create": "create",
     "manage": "manage",
     "automate": "automate",
+    "separator": ",",
+    "copyright": "Crafted with care by Mulibox. All Rights Preserved and Protected.",
     "lorem": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
   },
   "metadata": {
-    "title": "mulibox.",
+    "title": "Mulibox.",
     "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+  },
+  "homepage_metadata": {
+    "title": "The Free Online Leitner Box Tool",
+    "desc": "Your ultimate tool for mastering the Leitner Box system. Get ready to revolutionize your study habits with this innovative app."
   },
   "register_metadata": {
-    "title": "register",
-    "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+    "title": "Register",
+    "desc": ""
   },
   "cards_metadata": {
-    "title": "cards",
-    "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+    "title": "Cards",
+    "desc": ""
   },
   "guide_metadata": {
-    "title": "guide",
-    "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+    "title": "Guide",
+    "desc": ""
   },
   "not_found": {
     "title": "Not found what you was looking for.",
@@ -38,13 +45,13 @@
     "about": "About"
   },
   "home": {
-    "title": "MuliBox",
-    "description": "How to save ☡, manage ⏚ and automate 〄 memories that matter to you. MuliBox do it all for you.",
-    "get_started": "Get started now"
+    "title": "mulibox",
+    "desc": "Create. Manage. Automate.",
+    "signup_now": "Sign up for Free"
   },
   "register": {
     "title": "Register to account",
-    "description": "Doesn't matter if you have an account or not. To register, enter your email address, and we will send you a verification link via email.",
+    "desc": "Doesn't matter if you have an account or not. To register, enter your email address, and we will send you a verification link via email.",
     "submit_email": "Send a verification email",
     "google": "Register with Google",
     "github": "Register with Github",

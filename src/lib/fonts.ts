@@ -83,7 +83,7 @@ export const persianEstedadFont = localFont({
 // FUNCTIONS
 export function LangFont(locale: string): string {
   switch (locale) {
-    case "en":
+    case "en" || "da":
       return englishBricolageGrotesqueFont.className;
     case "fa":
       return persianEstedadFont.className;
@@ -93,8 +93,9 @@ export function LangFont(locale: string): string {
 }
 
 export function LangDir(locale: string): string {
+  console.log(`lang: --- ${locale}`);
   switch (locale) {
-    case "en" || "fr":
+    case "en" || "da":
       return "ltr";
     case "fa":
       return "rtl";

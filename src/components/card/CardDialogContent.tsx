@@ -165,14 +165,14 @@ const CardDialogContent = forwardRef(({
           }
      }, [activeIndex, initOffset, offsetX]);
 
-     const cardHistory = trpc.cards.getCardHistory.useQuery({ id: cards[activeIndex]?.id }).data?.history
-
      const now = new Date();
 
-     const daysSinceLastReview = (cardHistory && cardHistory[cardHistory.length - 1]) && Math.floor(
+     const cardHistory = trpc.cards.getCardHistory.useQuery({ id: cards[activeIndex]?.id }).data?.history
+
+     const daysSinceLastReview: number | null = (cardHistory && cardHistory[cardHistory.length - 1]) ? Math.floor(
           (now.getTime() - new Date(cardHistory[cardHistory.length - 1].date).getTime()) /
           (1000 * 60 * 60 * 24)
-     );
+     ) : null;
 
      const loadings = (isCreating || isUpdating || isDeleting || isHistoryUpdating)
 
@@ -218,7 +218,11 @@ const CardDialogContent = forwardRef(({
 
                               {type === CardListFilter.all && (
                                    <div
-                                        onClick={() => handleWrapperClick(() => handleAddCard())}
+                                        onClick={() => handleWrapperClick(() => {
+                                             handleAddCard()
+
+                                             setIsFlipped(false)
+                                        })}
                                         className={cn(
                                              "group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center",
                                              loadings && "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed"
@@ -287,14 +291,13 @@ const CardDialogContent = forwardRef(({
                                                                                           </div>
                                                                                      )}
 
-                                                                                     {((cardHistory && cardHistory.length === 0) || (daysSinceLastReview && daysSinceLastReview < 1)) ? (
+                                                                                     {((cardHistory && cardHistory.length === 0) || (daysSinceLastReview !== null && daysSinceLastReview === 0)) ? (
                                                                                           <div
                                                                                                onClick={() => handleFlip()}
                                                                                                className={cn(
                                                                                                     "flex gap-x-[8px] items-center text-text font-medium cursor-pointer hover:opacity-80 bg-primary/5 px-[5px] py-[5px] rounded-full border-[2px] border-primary/10 transition-all duration-500 hover:bg-primary/10 hover:border-primary/20",
                                                                                                     isFlipped && "bg-primary/15 border-primary/20 hover:bg-primary/20 hover:border-primary/25",
-                                                                                               )}
-                                                                                          >
+                                                                                               )}>
                                                                                                <FlipHorizontalIcon className="h-[15px] w-[15px]" />
                                                                                           </div>
                                                                                      ) : (<></>)}
@@ -356,7 +359,7 @@ const CardDialogContent = forwardRef(({
 
                                              <div
                                                   onClick={() => setShowHistory(true)}
-                                                  className="text-text font-medium">
+                                                  className="text-text font-medium cursor-pointer">
                                                   Last Review was at 3 days ago
                                              </div>
                                         </div>
@@ -445,17 +448,18 @@ const CardDialogContent = forwardRef(({
                                    className="w-[15px] cursor-pointer hover:opacity-50 transition-all duration-500" />
                          </div>
 
-                         {(cardHistory && cardHistory.length > 0) ? cardHistory.map((history, index) => (
-                              <div
-                                   key={index}
-                                   className="text-slate-800 text-[15px] font-normal bg-primary/5 rounded-[10px] px-[15px] py-[10px] cursor-pointer border-[2px] border-text/5 hover:bg-primary/10 transition-all duration-500 hover:border-text/10">
-                                   Reviewed at {`${history.date.toLocaleDateString()}`} - <span className="font-semibold">{history.status ? `Checked` : `Wrong`}</span>
-                              </div>
-                         )) : (
-                              <div className="font-extralight text-slate-600">
-                                   Please review this card to show history
-                              </div>
-                         )}
+                         {(cardHistory && cardHistory.length > 0) ?
+                              cardHistory.map((history, index) => (
+                                   <div
+                                        key={index}
+                                        className="text-slate-800 text-[15px] font-normal bg-primary/5 rounded-[10px] px-[15px] py-[10px] cursor-pointer border-[2px] border-text/5 hover:bg-primary/10 transition-all duration-500 hover:border-text/10">
+                                        Reviewed at {`${history.date.toLocaleDateString()}`} - <span className="font-semibold">{history.status ? `Checked` : `Wrong`}</span>
+                                   </div>
+                              )).reverse() : (
+                                   <div className="font-extralight text-slate-600">
+                                        Please review this card to show history
+                                   </div>
+                              )}
                     </div>
                )}
           </div>

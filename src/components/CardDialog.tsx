@@ -11,8 +11,8 @@ import { trpc } from "@/lib/trpc/client";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { CardListFilter } from "@/lib/cards";
-import Loading from "@/app/(routes)/loading";
 import { useCardDialog } from "@/hooks/use-card-dialog-store";
+import Loader from "./Loader";
 
 const CardDialog = ({
      children,
@@ -43,7 +43,7 @@ const CardDialog = ({
                                    type={CardListFilter.all}
                                    index={cards.length - 1} />
                          ) : (
-                              <Loading />
+                              <Loader />
                          )}
                     </DialogPrimitive.Content>
 

@@ -1,17 +1,30 @@
-import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { getRequestConfig } from "next-intl/server";
+import { locales } from "./config";
+import { mainRoutes } from "./config/routes";
+import { getUserLocale } from "./db";
 
-// Can be imported from a shared config
-// const locales = ["en", "fa"];
-
-export default getRequestConfig(async () => {
-  // Validate that the incoming `locale` parameter is valid
-  // if (!locales.includes(locale as any)) notFound;
-
-  const locale = "en";
+async function getConfig(locale: string) {
+  if (!locales.includes(locale as any)) redirect(mainRoutes.default);
 
   return {
-    locale,
     messages: (await import(`../translations/${locale}.json`)).default,
   };
+}
+
+export default getRequestConfig(async (params) => {
+  const isAppRoute = headers().get("x-app-route") === "true";
+
+  if (isAppRoute) {
+    const locale = await getUserLocale();
+
+    return {
+      locale,
+      ...(await getConfig(locale)),
+    };
+  } else {
+    const locale = params.locale;
+    return getConfig(locale);
+  }
 });
