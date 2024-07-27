@@ -78,44 +78,49 @@ export const authOptions: NextAuthOptions = {
     },
     async createUser(data) {
       /* user created */
-      // const collection = await db.collection.create({
-      //   data: {
-      //     userId: data.user.id,
-      //     name: "default collection",
-      //     default: true,
-      //   },
-      // });
-      // // Create a default box for the user
-      // const box = await db.box.create({
-      //   data: {
-      //     userId: data.user.id,
-      //   },
-      // });
-      // // Define the sections and their respective parts
-      // const sectionsData = [
-      //   { type: "one", partCount: 1 },
-      //   { type: "two", partCount: 2 },
-      //   { type: "three", partCount: 4 },
-      //   { type: "four", partCount: 8 },
-      //   { type: "five", partCount: 15 },
-      // ];
-      // // Create sections and parts
-      // for (const sectionData of sectionsData) {
-      //   const section = await db.section.create({
-      //     data: {
-      //       boxId: box.id,
-      //       type: sectionData.type as SectionType,
-      //     },
-      //   });
-      //   const partsData = Array.from({ length: sectionData.partCount }).map(
-      //     () => ({
-      //       sectionId: section.id,
-      //     })
-      //   );
-      //   await db.part.createMany({
-      //     data: partsData,
-      //   });
-      // }
+      const collection = await db.collection.create({
+        data: {
+          userId: data.user.id,
+          name: "default collection",
+          default: true,
+        },
+      });
+
+      // Create a default box for the user
+      const box = await db.box.create({
+        data: {
+          userId: data.user.id,
+        },
+      });
+
+      // Define the sections and their respective parts
+      const sectionsData = [
+        { type: "one", partCount: 1 },
+        { type: "two", partCount: 2 },
+        { type: "three", partCount: 4 },
+        { type: "four", partCount: 8 },
+        { type: "five", partCount: 15 },
+      ];
+
+      // Create sections and parts
+      for (const sectionData of sectionsData) {
+        const section = await db.section.create({
+          data: {
+            boxId: box.id,
+            type: sectionData.type as SectionType,
+          },
+        });
+
+        const partsData = Array.from({ length: sectionData.partCount }).map(
+          () => ({
+            sectionId: section.id,
+          })
+        );
+
+        await db.part.createMany({
+          data: partsData,
+        });
+      }
     },
     async updateUser(message) {
       /* user updated - e.g. their email was verified */
