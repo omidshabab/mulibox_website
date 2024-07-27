@@ -9,6 +9,7 @@ import EmailProvider from "next-auth/providers/email";
 import { resend } from "../email";
 import VerifyEmail from "emails/verify";
 import { authRoutes } from "@/config/routes";
+import { SectionType } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session {
@@ -77,242 +78,44 @@ export const authOptions: NextAuthOptions = {
     },
     async createUser(data) {
       /* user created */
-      const collection = await db.collection.create({
-        data: {
-          userId: data.user.id,
-          name: "default collection",
-          default: true,
-        },
-      });
-
-      const box = await db.box.create({
-        data: {
-          userId: data.user.id,
-        },
-      });
-
-      /* Section One */
-      const sectionOne = await db.section.create({
-        data: {
-          boxId: box.id,
-          type: "one",
-        },
-      });
-
-      const partOneSectionOne = await db.part.create({
-        data: {
-          sectionId: sectionOne.id,
-        },
-      });
-
-      /* Section Two */
-      const sectionTwo = await db.section.create({
-        data: {
-          boxId: box.id,
-          type: "two",
-        },
-      });
-
-      const partOneSectionTwo = await db.part.create({
-        data: {
-          sectionId: sectionTwo.id,
-        },
-      });
-
-      const partTwoSectionTwo = await db.part.create({
-        data: {
-          sectionId: sectionTwo.id,
-        },
-      });
-
-      /* Section Three */
-      const sectionThree = await db.section.create({
-        data: {
-          boxId: box.id,
-          type: "three",
-        },
-      });
-
-      const partOneSectionThree = await db.part.create({
-        data: {
-          sectionId: sectionThree.id,
-        },
-      });
-
-      const partTwoSectionThree = await db.part.create({
-        data: {
-          sectionId: sectionThree.id,
-        },
-      });
-
-      const partThreeSectionThree = await db.part.create({
-        data: {
-          sectionId: sectionThree.id,
-        },
-      });
-
-      const partFourSectionThree = await db.part.create({
-        data: {
-          sectionId: sectionThree.id,
-        },
-      });
-
-      /* Section Four */
-      const sectionFour = await db.section.create({
-        data: {
-          boxId: box.id,
-          type: "four",
-        },
-      });
-
-      const partOneSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      const partTwoSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      const partThreeSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      const partFourSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      const partFiveSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      const partSixSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      const partSevenSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      const partEightSectionFour = await db.part.create({
-        data: {
-          sectionId: sectionFour.id,
-        },
-      });
-
-      /* Section Four */
-      const sectionFive = await db.section.create({
-        data: {
-          boxId: box.id,
-          type: "five",
-        },
-      });
-
-      const partOneSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partTwoSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partThreeSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partFourSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partFiveSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partSixSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partSevenSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partEightSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partNineSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partTenSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partElevenSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partTwelveSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partThirteenSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partFourteenSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      const partFifteenSectionFive = await db.part.create({
-        data: {
-          sectionId: sectionFive.id,
-        },
-      });
-
-      console.log(`collection created: ${collection.id}`);
-      console.log(`box created: ${box.id}`);
+      // const collection = await db.collection.create({
+      //   data: {
+      //     userId: data.user.id,
+      //     name: "default collection",
+      //     default: true,
+      //   },
+      // });
+      // // Create a default box for the user
+      // const box = await db.box.create({
+      //   data: {
+      //     userId: data.user.id,
+      //   },
+      // });
+      // // Define the sections and their respective parts
+      // const sectionsData = [
+      //   { type: "one", partCount: 1 },
+      //   { type: "two", partCount: 2 },
+      //   { type: "three", partCount: 4 },
+      //   { type: "four", partCount: 8 },
+      //   { type: "five", partCount: 15 },
+      // ];
+      // // Create sections and parts
+      // for (const sectionData of sectionsData) {
+      //   const section = await db.section.create({
+      //     data: {
+      //       boxId: box.id,
+      //       type: sectionData.type as SectionType,
+      //     },
+      //   });
+      //   const partsData = Array.from({ length: sectionData.partCount }).map(
+      //     () => ({
+      //       sectionId: section.id,
+      //     })
+      //   );
+      //   await db.part.createMany({
+      //     data: partsData,
+      //   });
+      // }
     },
     async updateUser(message) {
       /* user updated - e.g. their email was verified */
