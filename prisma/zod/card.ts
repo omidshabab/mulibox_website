@@ -1,20 +1,22 @@
 import * as z from "zod"
-import { CompleteHistory, relatedHistorySchema, CompleteCollection, relatedCollectionSchema, CompleteUser, relatedUserSchema } from "./index"
+import { CompleteUser, relatedUserSchema, CompleteCollection, relatedCollectionSchema, CompletePart, relatedPartSchema, CompleteHistory, relatedHistorySchema } from "./index"
 
 export const cardSchema = z.object({
   id: z.string(),
   userId: z.string(),
   collectionId: z.string(),
+  partId: z.string().nullish(),
   front: z.string(),
   back: z.string(),
-  createdAt: z.date().nullish(),
-  updatedAt: z.date().nullish(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 })
 
 export interface CompleteCard extends z.infer<typeof cardSchema> {
-  history: CompleteHistory[]
-  collection: CompleteCollection
   user: CompleteUser
+  collection: CompleteCollection
+  part?: CompletePart | null
+  history: CompleteHistory[]
 }
 
 /**
@@ -23,7 +25,8 @@ export interface CompleteCard extends z.infer<typeof cardSchema> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const relatedCardSchema: z.ZodSchema<CompleteCard> = z.lazy(() => cardSchema.extend({
-  history: relatedHistorySchema.array(),
-  collection: relatedCollectionSchema,
   user: relatedUserSchema,
+  collection: relatedCollectionSchema,
+  part: relatedPartSchema.nullish(),
+  history: relatedHistorySchema.array(),
 }))
