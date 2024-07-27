@@ -17,7 +17,7 @@ const AddNewCard = ({
 }) => {
      const setCardDialogOpen = useCardDialog((state) => state.setOpen)
 
-     const collection = trpc.collections.getDefaultCollection.useQuery().data?.collection;
+     const collection = trpc.collections.getCollection.useQuery().data?.collection;
 
      const utils = trpc.useUtils();
 

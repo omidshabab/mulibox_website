@@ -11,7 +11,7 @@ import { api } from "@/lib/trpc/api";
 export const revalidate = 0;
 
 const Page = async () => {
-     const { cards } = await api.cards.getCards.query()
+     const { box } = await api.box.getBox.query()
 
      return (
           <div className="flex w-full px-[30px] lg:px-[20px] max-w-6xl">
@@ -55,11 +55,11 @@ const Page = async () => {
                          </div>
                     </div>
 
-                    {cards && (
-                         <Box cards={cards} />
+                    {box && (
+                         <Box box={box} />
                     )}
 
-                    {!cards && (
+                    {!box && (
                          <div>loading box ...</div>
                     )}
                </div>

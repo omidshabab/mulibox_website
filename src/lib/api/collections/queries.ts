@@ -2,14 +2,9 @@ import { db } from "@/lib/db/index";
 import { getUserAuth } from "@/lib/auth/utils";
 import { type CollectionId, collectionIdSchema } from "@/lib/db/schema/collections";
 
-export const getCollections = async () => {
+export const getCollection = async () => {
   const { session } = await getUserAuth();
-  const p = await db.collection.findMany({ where: {userId: session?.user.id!}});
-  return { collections: p };
-};
-
-export const getDefaultCollection = async () => {
-  const { session } = await getUserAuth();
+  
   const p = await db.collection.findMany({ where: {userId: session?.user.id!}});
 
   for (const collection of p) {
@@ -17,6 +12,12 @@ export const getDefaultCollection = async () => {
       return { collection };
     }
   }
+};
+
+export const getCollections = async () => {
+  const { session } = await getUserAuth();
+  const p = await db.collection.findMany({ where: {userId: session?.user.id!}});
+  return { collections: p };
 };
 
 export const getCollectionById = async (id: CollectionId) => {

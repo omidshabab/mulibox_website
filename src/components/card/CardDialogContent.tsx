@@ -77,7 +77,7 @@ const CardDialogContent = forwardRef(({
      const handleEditMode = () => setEditMode(!editMode);
      const handleShowHistory = () => setShowHistory(!showHistory);
 
-     const collection = trpc.collections.getDefaultCollection.useQuery().data?.collection;
+     const collection = trpc.collections.getCollection.useQuery().data?.collection;
 
      const utils = trpc.useUtils();
 

@@ -1,7 +1,6 @@
 import {
   getCollectionById,
-  getCollections,
-  getDefaultCollection,
+  getCollection,
 } from "@/lib/api/collections/queries";
 import { publicProcedure, router } from "@/lib/server/trpc";
 import {
@@ -16,11 +15,8 @@ import {
 } from "@/lib/api/collections/mutations";
 
 export const collectionsRouter = router({
-  getCollections: publicProcedure.query(async () => {
-    return getCollections();
-  }),
-  getDefaultCollection: publicProcedure.query(async () => {
-    return getDefaultCollection();
+  getCollection: publicProcedure.query(async () => {
+    return getCollection();
   }),
   getCollectionById: publicProcedure
     .input(collectionIdSchema)

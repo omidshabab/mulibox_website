@@ -93,7 +93,6 @@ export function LangFont(locale: string): string {
 }
 
 export function LangDir(locale: string): string {
-  console.log(`lang: --- ${locale}`);
   switch (locale) {
     case "en" || "da":
       return "ltr";

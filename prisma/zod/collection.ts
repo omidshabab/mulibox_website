@@ -10,8 +10,8 @@ export const collectionSchema = z.object({
   slug: z.string().nullish(),
   default: z.boolean().nullish(),
   tags: z.string().array(),
-  createdAt: z.date().nullish(),
-  updatedAt: z.date().nullish(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 })
 
 export interface CompleteCollection extends z.infer<typeof collectionSchema> {

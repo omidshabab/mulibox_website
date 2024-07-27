@@ -6,8 +6,8 @@ export const historySchema = z.object({
   cardId: z.string(),
   date: z.date(),
   status: z.boolean(),
-  createdAt: z.date().nullish(),
-  updatedAt: z.date().nullish(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 })
 
 export interface CompleteHistory extends z.infer<typeof historySchema> {

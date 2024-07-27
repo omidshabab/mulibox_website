@@ -36,7 +36,7 @@ export const updateCard = async (id: CardId, card: UpdateCardParams) => {
 
   const { id: cardId } = cardIdSchema.parse({ id });
 
-  const p = await api.collections.getDefaultCollection.query();
+  const p = await api.collections.getCollection.query();
 
   const newCard = updateCardSchema.parse({
     ...card,
