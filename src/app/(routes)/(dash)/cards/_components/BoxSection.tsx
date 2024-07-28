@@ -3,24 +3,30 @@
 import React from "react";
 import PreviewCard from "./PreviewCard";
 import { BoxSectionType, CardProps } from "@/lib/cards";
-import { Card } from "@/lib/db/schema/cards";
+import { CompletePart } from "@/lib/db/schema/parts";
 
 const BoxSection = ({
      type,
-     cards
+     parts
 }: {
      type: BoxSectionType,
-     cards: Array<Card>
+     parts?: Array<CompletePart>
 }) => {
      return (
           <div className="col-span-4 md:col-span-2 h-min flex flex-col gap-y-[15px] font-medium text-[15px] text-slate-800">
                {type}
-               {cards.length > 0 ? (
+               {parts && parts.length > 0 ? (
                     <>
-                         {cards.map((card, index) => (
-                              <PreviewCard
-                                   key={index}
-                                   content={card.front} />
+                         {parts.map((part, index) => (
+                              <>
+                                   {part && part.cards.map((card, index) => (
+                                        <PreviewCard
+                                             key={index}
+                                             content={card.front} />
+                                   ))}
+
+                                   <div key={index} className="w-full h-[15px] rounded-full bg-primary/50" />
+                              </>
                          ))}
                     </>
                ) : (

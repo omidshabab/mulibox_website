@@ -44,14 +44,9 @@ const AddNewCard = ({
           onError: (err) => onError("create", { error: err.message }),
      });
 
-     const { mutate: updateCard, isLoading: isUpdating } = trpc.cards.updateCard.useMutation({
-          onSuccess: () => onSuccess("update"),
-          onError: (err) => onError("update", { error: err.message }),
-     });
-
      const handleAddCard = async () => {
           if (collection) {
-               const newCardParams: NewCardParams = { front: "front", back: "back", collectionId: collection.id }
+               const newCardParams: NewCardParams = { front: "", back: "", collectionId: collection.id }
 
                createCard(newCardParams);
           }

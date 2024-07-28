@@ -1,29 +1,29 @@
-import { boxSchema } from "@/zodAutoGenSchemas";
+import { partSchema } from "@/zodAutoGenSchemas";
 import { z } from "zod";
 import { timestamps } from "@/lib/utils";
-import { getBox } from "@/lib/api/box/queries";
+import { getParts } from "@/lib/api/parts/queries";
 
 // Schema for card - used to validate API requests
-const baseSchema = boxSchema.omit(timestamps);
+const baseSchema = partSchema.omit(timestamps);
 
-export const insertBoxSchema = baseSchema.omit({ id: true });
-export const insertBoxParams = baseSchema.extend({}).omit({
+export const insertPartSchema = baseSchema.omit({ id: true });
+export const insertPartParams = baseSchema.extend({}).omit({
   id: true,
-  userId: true,
+  sectionId: true,
 });
 
-export const updateBoxSchema = baseSchema;
-export const updateBoxParams = updateBoxSchema.extend({}).omit({
-  userId: true,
+export const updatePartSchema = baseSchema;
+export const updatePartParams = updatePartSchema.extend({}).omit({
+  sectionId: true,
 });
-export const boxIdSchema = baseSchema.pick({ id: true });
+export const partIdSchema = baseSchema.pick({ id: true });
 
 // Types for card - used to type API request params and within Components
-export type Box = z.infer<typeof boxSchema>;
-export type NewBox = z.infer<typeof insertBoxSchema>;
-export type NewBoxParams = z.infer<typeof insertBoxParams>;
-export type UpdateBoxParams = z.infer<typeof updateBoxParams>;
-export type BoxId = z.infer<typeof boxIdSchema>["id"];
+export type Part = z.infer<typeof partSchema>;
+export type NewPart = z.infer<typeof insertPartSchema>;
+export type NewPartParams = z.infer<typeof insertPartParams>;
+export type UpdatePartParams = z.infer<typeof updatePartParams>;
+export type PartId = z.infer<typeof partIdSchema>["id"];
 
 // this type infers the return from getCard() - meaning it will include any joins
-export type CompleteBox = Awaited<ReturnType<typeof getBox>>["box"];
+export type CompletePart = Awaited<ReturnType<typeof getParts>>["parts"];

@@ -1,10 +1,9 @@
 import TextGenerateEffect from "@/components/TextGenerateEffect";
-import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import GetStartedButton from "./GetStartedButton";
 
 const Hero = () => {
-     const tHome = useTranslations("home")
+     const tHome = useTranslations("home_page")
 
      const desc = tHome("desc");
 
