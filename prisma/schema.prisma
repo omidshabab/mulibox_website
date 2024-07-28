@@ -17,6 +17,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Locale {
+  en
+  fa
+  da
+}
+
 model Account {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -69,6 +75,8 @@ model User {
   boxes         Box[]
   outs          String[]
 
+  locale        Locale? @default(en)
+
   subscription Subscription?
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -82,6 +90,10 @@ model Notification {
 
   accountId String @db.ObjectId @map("account_id")
   account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  content String
+
+  locale Locale? @default(en)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -101,6 +113,8 @@ model Collection {
   tags    String[] @default([])
   cards   Card[]
 
+  locale  Locale? @default(en)
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -116,6 +130,8 @@ model Box {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   sections Section[]
+
+  default Boolean? @default(false)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -164,13 +180,13 @@ model Part {
 model Card {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId String @db.ObjectId @map("user_id")
+  userId       String @db.ObjectId @map("user_id")
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   collectionId String @db.ObjectId @map("collection_id")
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
-  partId String? @db.ObjectId @map("part_id")
+  partId       String? @db.ObjectId @map("part_id")
   part         Part? @relation(fields: [partId], references: [id], onDelete: Cascade)
 
   front        String

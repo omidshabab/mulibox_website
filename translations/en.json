@@ -44,12 +44,12 @@
     "home": "Home",
     "about": "About"
   },
-  "home": {
-    "title": "mulibox",
+  "home_page": {
+    "title": "mulibox.",
     "desc": "Create. Manage. Automate.",
     "signup_now": "Sign up for Free"
   },
-  "register": {
+  "register_page": {
     "title": "Register to account",
     "desc": "Doesn't matter if you have an account or not. To register, enter your email address, and we will send you a verification link via email.",
     "submit_email": "Send a verification email",

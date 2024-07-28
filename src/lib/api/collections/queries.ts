@@ -12,6 +12,8 @@ export const getCollection = async () => {
       return { collection };
     }
   }
+
+  return { collection: null };
 };
 
 export const getCollections = async () => {

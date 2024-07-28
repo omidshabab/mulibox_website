@@ -7,11 +7,14 @@ import { Spacer } from "@nextui-org/react";
 import MenuDrawer from "./_components/MenuDrawer";
 import MyCards from './_components/MyCards';
 import { api } from "@/lib/trpc/api";
+import { getTranslations } from "next-intl/server";
 
 export const revalidate = 0;
 
 const Page = async () => {
      const { box } = await api.box.getBox.query()
+
+     const tGeneral = await getTranslations("general")
 
      return (
           <div className="flex w-full px-[30px] lg:px-[20px] max-w-6xl">
@@ -23,7 +26,7 @@ const Page = async () => {
                                         <Link
                                              href={mainRoutes.default}
                                              className="flex-grow text-[22px] font-bold text-text focus:outline-none">
-                                             mulibox.
+                                             {tGeneral("mulibox")}.
                                         </Link>
                                    </div>
 

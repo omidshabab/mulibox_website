@@ -14,7 +14,7 @@ import GoogleButton from "./GoogleButton"
 import { signIn } from "next-auth/react"
 
 const AuthForm = () => {
-     const tRegister = useTranslations("register")
+     const tRegister = useTranslations("register_page")
 
      const [isLoading, setIsLoading] = React.useState<boolean>(false)
      const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)

@@ -196,25 +196,27 @@ const CardDialogContent = forwardRef(({
                          </div>
 
                          <div className="flex gap-x-[20px]">
-                              <div
-                                   onClick={() => handleWrapperClick(() => handleDeleteCard(cards[activeIndex]?.id))}
-                                   className={cn(
-                                        "group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center",
-                                        loadings && "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed"
-                                   )}>
-                                   <IconButton
-                                        disabled={loadings}
-                                        icon={Delete}
+                              {cards.length > 0 && (
+                                   <div
+                                        onClick={() => handleWrapperClick(() => handleDeleteCard(cards[activeIndex]?.id))}
                                         className={cn(
-                                             loadings && "group-hover/new-button:cursor-not-allowed"
-                                        )} />
-                                   <p className={cn(
-                                        "w-full text-[15px] text-text font-semibold opacity-30 group-hover/new-button:opacity-100 transition-all duration-500 leading-[1.0rem]",
-                                        loadings && "group-hover/new-button:opacity-30 group-hover/new-button:cursor-not-allowed"
-                                   )}>
-                                        Delete
-                                   </p>
-                              </div>
+                                             "group/new-button flex flex-col justify-center items-center gap-y-[10px] text-center",
+                                             loadings && "group-hover/new-button:opacity-50 group-hover/new-button:cursor-not-allowed"
+                                        )}>
+                                        <IconButton
+                                             disabled={loadings}
+                                             icon={Delete}
+                                             className={cn(
+                                                  loadings && "group-hover/new-button:cursor-not-allowed"
+                                             )} />
+                                        <p className={cn(
+                                             "w-full text-[15px] text-text font-semibold opacity-30 group-hover/new-button:opacity-100 transition-all duration-500 leading-[1.0rem]",
+                                             loadings && "group-hover/new-button:opacity-30 group-hover/new-button:cursor-not-allowed"
+                                        )}>
+                                             Delete
+                                        </p>
+                                   </div>
+                              )}
 
                               {type === CardListFilter.all && (
                                    <div
