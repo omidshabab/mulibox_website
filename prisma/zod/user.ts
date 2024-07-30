@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { Locale } from "@prisma/client"
 import { CompleteAccount, relatedAccountSchema, CompleteCard, relatedCardSchema, CompleteCollection, relatedCollectionSchema, CompleteSession, relatedSessionSchema, CompleteBox, relatedBoxSchema, CompleteSubscription, relatedSubscriptionSchema } from "./index"
 
 export const userSchema = z.object({
@@ -8,6 +9,7 @@ export const userSchema = z.object({
   emailVerified: z.date().nullish(),
   image: z.string().nullish(),
   outs: z.string().array(),
+  locale: z.nativeEnum(Locale).nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

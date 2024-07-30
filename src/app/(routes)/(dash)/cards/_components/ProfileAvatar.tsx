@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogOverlay, DialogPortal, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ProfileModal from "./ProfileModal";
 import { getUser } from "@/lib/auth/user";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -29,7 +29,7 @@ const ProfileAvatar = async ({
                     )}
                </DialogTrigger>
 
-               <DialogContent className="max-w-[250px] backdrop-blur-3xl">
+               <DialogContent className="max-w-[350px] sm:max-w-[450px] backdrop-blur-3xl px-[35px] py-[30px]">
                     <ProfileModal
                          title={user?.name}
                          image={user?.image} />

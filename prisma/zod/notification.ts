@@ -1,9 +1,12 @@
 import * as z from "zod"
+import { Locale } from "@prisma/client"
 import { CompleteAccount, relatedAccountSchema } from "./index"
 
 export const notificationSchema = z.object({
   id: z.string(),
   accountId: z.string(),
+  content: z.string(),
+  locale: z.nativeEnum(Locale).nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

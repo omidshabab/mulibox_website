@@ -81,7 +81,7 @@ export const authOptions: NextAuthOptions = {
       const collection = await db.collection.create({
         data: {
           userId: data.user.id,
-          name: "default collection",
+          name: "my collection",
           default: true,
         },
       });
@@ -90,6 +90,7 @@ export const authOptions: NextAuthOptions = {
       const box = await db.box.create({
         data: {
           userId: data.user.id,
+          default: true,
         },
       });
 

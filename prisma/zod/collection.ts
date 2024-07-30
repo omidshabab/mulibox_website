@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { Locale } from "@prisma/client"
 import { CompleteCard, relatedCardSchema, CompleteUser, relatedUserSchema } from "./index"
 
 export const collectionSchema = z.object({
@@ -10,6 +11,7 @@ export const collectionSchema = z.object({
   slug: z.string().nullish(),
   default: z.boolean().nullish(),
   tags: z.string().array(),
+  locale: z.nativeEnum(Locale).nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
