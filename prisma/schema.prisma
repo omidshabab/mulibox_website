@@ -73,11 +73,14 @@ model User {
   collections   Collection[]
   sessions      Session[]
   boxes         Box[]
-  outs          String[]
+  outs          String[] @db.ObjectId
 
   locale        Locale? @default(en)
 
   subscription Subscription?
+
+  collection  String? @db.ObjectId
+  box String? @db.ObjectId
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -109,7 +112,6 @@ model Collection {
   desc    String?
   price   Float?   @default(0)
   slug    String?
-  default Boolean? @default(false)
   tags    String[] @default([])
   cards   Card[]
 
@@ -130,8 +132,6 @@ model Box {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   sections Section[]
-
-  default Boolean? @default(false)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

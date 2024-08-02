@@ -28,9 +28,8 @@ export const env = createEnv({
   client: {
     GOOGLE_ANALYTICS_ID: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
-    NEXT_PUBLIC_STRIPE_PRO_PRICE_ID: z.string().min(1),
-    NEXT_PUBLIC_STRIPE_MAX_PRICE_ID: z.string().min(1),
-    NEXT_PUBLIC_STRIPE_ULTRA_PRICE_ID: z.string().min(1), // NEXT_PUBLIC_PUBLISHABLE_KEY: z.string().min(1),
+    NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID: z.string().min(1),
+    NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1), // NEXT_PUBLIC_PUBLISHABLE_KEY: z.string().min(1),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // runtimeEnv: {
@@ -41,11 +40,9 @@ export const env = createEnv({
   experimental__runtimeEnv: {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    NEXT_PUBLIC_STRIPE_PRO_PRICE_ID:
-      process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
-    NEXT_PUBLIC_STRIPE_MAX_PRICE_ID:
-      process.env.NEXT_PUBLIC_STRIPE_MAX_PRICE_ID,
-    NEXT_PUBLIC_STRIPE_ULTRA_PRICE_ID:
-      process.env.NEXT_PUBLIC_STRIPE_ULTRA_PRICE_ID, // NEXT_PUBLIC_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID:
+      process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID,
+    NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID:
+      process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID, // NEXT_PUBLIC_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_PUBLISHABLE_KEY,
   },
 });

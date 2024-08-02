@@ -4,7 +4,6 @@ import { CompleteUser, relatedUserSchema, CompleteSection, relatedSectionSchema 
 export const boxSchema = z.object({
   id: z.string(),
   userId: z.string(),
-  default: z.boolean().nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

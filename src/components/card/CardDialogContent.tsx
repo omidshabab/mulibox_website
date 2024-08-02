@@ -13,7 +13,7 @@ import CardItem from "@/components/CardItem";
 import { Card, NewCardParams } from "@/lib/db/schema/cards";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
-import { useCardDialog } from "@/hooks/use-card-dialog-store";
+import { useCardDialog } from "@/hooks/use-dialog-store";
 
 const CardDialogContent = forwardRef(({
      cards = [],
@@ -32,7 +32,6 @@ const CardDialogContent = forwardRef(({
      const [editMode, setEditMode] = useState<boolean>(false);
      const [isFlipped, setIsFlipped] = useState<boolean>(false);
      const [showHistory, setShowHistory] = useState(false);
-     const [activeCardHistory, setActiveCardHistory] = useState<undefined | null>();
 
      const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
      const containerRef = useRef<HTMLDivElement | null>(null);
@@ -126,7 +125,7 @@ const CardDialogContent = forwardRef(({
 
      const handleAddCard = () => {
           if (collection) {
-               const newCardParams: NewCardParams = { front: "front", back: "back", collectionId: collection.id }
+               const newCardParams: NewCardParams = { front: "", back: "", collectionId: collection.id }
 
                createCard(newCardParams);
           }

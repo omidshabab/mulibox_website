@@ -1,6 +1,5 @@
-import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ProfileModal from "./ProfileModal";
-import { getUser } from "@/lib/auth/user";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User } from "lucide-react";
 
@@ -9,10 +8,6 @@ const ProfileAvatar = async ({
 }: {
      isMobile?: boolean
 }) => {
-     const { session } = await getUser()
-
-     const user = session?.user;
-
      return (
           <Dialog>
                <DialogTrigger className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0">
@@ -30,9 +25,7 @@ const ProfileAvatar = async ({
                </DialogTrigger>
 
                <DialogContent className="max-w-[350px] sm:max-w-[450px] backdrop-blur-3xl px-[35px] py-[30px]">
-                    <ProfileModal
-                         title={user?.name}
-                         image={user?.image} />
+                    <ProfileModal />
                </DialogContent>
           </Dialog>
      );

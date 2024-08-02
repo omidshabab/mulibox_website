@@ -4,8 +4,10 @@ export const authRoutes = {
   error: "/register?status=error",
 };
 
-export const mainRoutes = {
+export const defaultRoutes = {
   default: "/",
+  community: "/community",
+  guide: "/guide"
 };
 
 export const dashRoutes = {
