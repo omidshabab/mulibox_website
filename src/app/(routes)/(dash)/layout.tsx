@@ -7,7 +7,6 @@ import TrpcProvider from "@/lib/trpc/Provider";
 import { cookies } from "next/headers";
 import Providers from "@/components/Providers";
 import { NextIntlClientProvider } from "next-intl";
-import { capitalize } from "@/lib/utils";
 
 // Dynamic Metadata based on locales
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
      return {
           title: {
-               default: `${(await tMetadata)("title")}${(await tGeneral)("separator")} ${capitalize((await tGeneral)("mulibox"))}`,
+               default: `${(await tMetadata)("title")}${(await tGeneral)("separator")} ${(await tGeneral)("mulibox")}.`,
                template: `%s${(await tGeneral)("separator")} ${(await tMetadata)("title")}.`,
           },
           description: (await tMetadata)("desc"),

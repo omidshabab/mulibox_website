@@ -2,6 +2,7 @@
 
 import React, { forwardRef } from "react";
 import { Collection } from "@/lib/db/schema/collections";
+import ContentWrapper from "../ContentWrapper";
 
 const CollectionDialogContent = forwardRef(({
      collections = [],
@@ -9,8 +10,12 @@ const CollectionDialogContent = forwardRef(({
      collections?: Collection[],
 }, ref) => {
      return (
-          <div>
-               collection dialog content
+          <div className="flex w-full justify-center">
+               <ContentWrapper>
+                    <div className="w-full bg-primary/5">
+                         collection dialog content
+                    </div>
+               </ContentWrapper>
           </div>
      );
 })
