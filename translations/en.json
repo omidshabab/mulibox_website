@@ -1,6 +1,6 @@
 {
   "general": {
-    "mulibox": "mulibox.",
+    "mulibox": "mulibox",
     "muliboxcom": "mulibox.com",
     "dashboard": "dashboard",
     "language": "language",
@@ -26,11 +26,11 @@
     "desc": "Your ultimate tool for mastering the Leitner Box system. Get ready to revolutionize your study habits with this innovative app."
   },
   "register_metadata": {
-    "title": "Register",
+    "title": "register",
     "desc": ""
   },
   "cards_metadata": {
-    "title": "Cards",
+    "title": "cards",
     "desc": ""
   },
   "guide_metadata": {

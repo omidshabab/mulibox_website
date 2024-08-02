@@ -3,6 +3,7 @@ import AddNewCard from "@/components/AddNewCard";
 import { api } from "@/lib/trpc/api";
 import { getTranslations } from "next-intl/server";
 import Navbar from "./_components/Navbar";
+import ContentWrapper from "@/components/ContentWrapper";
 
 export const revalidate = 0;
 
@@ -12,7 +13,7 @@ const Page = async () => {
      const tGeneral = getTranslations("general")
 
      return (
-          <div className="flex w-full px-[30px] lg:px-[20px] max-w-6xl">
+          <ContentWrapper>
                <div className="flex flex-col w-full h-full items-center mb-[80px]">
                     <div className="mx-auto flex justify-center w-full z-[20]">
                          <div className="flex flex-col w-full items-center">
@@ -35,7 +36,7 @@ const Page = async () => {
                <div className="block sm:hidden absolute bottom-0 right-0 pb-[15px] pr-[15px]">
                     <AddNewCard type="icon" />
                </div>
-          </div>
+          </ContentWrapper>
      );
 }
 
