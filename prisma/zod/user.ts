@@ -10,6 +10,8 @@ export const userSchema = z.object({
   image: z.string().nullish(),
   outs: z.string().array(),
   locale: z.nativeEnum(Locale).nullish(),
+  collection: z.string().nullish(),
+  box: z.string().nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

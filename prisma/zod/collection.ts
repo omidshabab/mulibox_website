@@ -9,7 +9,6 @@ export const collectionSchema = z.object({
   desc: z.string().nullish(),
   price: z.number().nullish(),
   slug: z.string().nullish(),
-  default: z.boolean().nullish(),
   tags: z.string().array(),
   locale: z.nativeEnum(Locale).nullish(),
   createdAt: z.date(),

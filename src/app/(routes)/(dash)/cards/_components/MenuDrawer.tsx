@@ -2,12 +2,14 @@
 
 import * as React from "react"
 import MenuIcon from "@/components/icons/Menu"
-import IconButton from "@/components/IconButton";
-import { CalendarDaysIcon, ChevronFirstIcon, GroupIcon, HelpCircleIcon } from "lucide-react";
-import MyCards from "./MyCards";
 import { Drawer } from "./Drawer";
-import { useCardDialog } from "@/hooks/use-card-dialog-store";
-import { Activity } from "react-iconly";
+import { useCardDialog } from "@/hooks/use-dialog-store";
+import MyCards from "./MenuItems/MyCards";
+import TodayCards from "./MenuItems/TodayCards";
+import MyCollections from "./MenuItems/MyCollections";
+import ExploreCommunity from "./MenuItems/ExploreCommunity";
+import MyStatus from "./MenuItems/MyStatus";
+import MyBoxes from "./MenuItems/MyBoxes";
 
 const MenuDrawer = () => {
      const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -37,43 +39,18 @@ const MenuDrawer = () => {
 
                          <div className="grid grid-cols-2 w-full gap-x-[10px] gap-y-[10px]">
                               <div onClick={handleClose}>
-                                   <MyCards isMobile />
+                                   <MyCards />
                               </div>
 
-                              <div className="group/close-button w-full flex flex-grow justify-center items-center text-start gap-x-[10px] bg-primary/5 hover:bg-primary/10 px-[15px] py-[10px] rounded-[15px]">
-                                   <IconButton icon={CalendarDaysIcon} />
-                                   <p className="w-full text-[15px] text-text font-semibold opacity-50 group-hover/close-button:opacity-100 transition-all duration-500 leading-[1.25rem] line-clamp-2 text-ellipsis">
-                                        today&apos;s cards
-                                   </p>
-                              </div>
+                              <TodayCards />
 
-                              <div className="group/close-button w-full flex flex-grow justify-center items-center text-start gap-x-[10px] bg-primary/5 hover:bg-primary/10 px-[15px] py-[10px] rounded-[15px]">
-                                   <IconButton icon={ChevronFirstIcon} />
-                                   <p className="w-full text-[15px] text-text font-semibold opacity-50 group-hover/close-button:opacity-100 transition-all duration-500 leading-[1.25rem] line-clamp-2 text-ellipsis">
-                                        my collects
-                                   </p>
-                              </div>
+                              <MyCollections />
 
-                              <div className="group/close-button w-full flex flex-grow justify-center items-center text-start gap-x-[10px] bg-primary/5 hover:bg-primary/10 px-[15px] py-[10px] rounded-[15px]">
-                                   <IconButton icon={ChevronFirstIcon} />
-                                   <p className="w-full text-[15px] text-text font-semibold opacity-50 group-hover/close-button:opacity-100 transition-all duration-500 leading-[1.25rem] line-clamp-2 text-ellipsis">
-                                        explore commununity
-                                   </p>
-                              </div>
+                              <ExploreCommunity />
 
-                              <div className="group/close-button w-full flex flex-grow justify-center items-center text-start gap-x-[10px] bg-primary/5 hover:bg-primary/10 px-[15px] py-[10px] rounded-[15px]">
-                                   <IconButton icon={Activity} />
-                                   <p className="w-full text-[15px] text-text font-semibold opacity-50 group-hover/close-button:opacity-100 transition-all duration-500 leading-[1.25rem] line-clamp-2 text-ellipsis">
-                                        my status
-                                   </p>
-                              </div>
+                              <MyBoxes />
 
-                              <div className="group/close-button w-full flex flex-grow justify-center items-center text-start gap-x-[10px] bg-primary/5 hover:bg-primary/10 px-[15px] py-[10px] rounded-[15px]">
-                                   <IconButton icon={HelpCircleIcon} />
-                                   <p className="w-full text-[15px] text-text font-semibold opacity-50 group-hover/close-button:opacity-100 transition-all duration-500 leading-[1.25rem] line-clamp-2 text-ellipsis">
-                                        ultimate guide
-                                   </p>
-                              </div>
+                              <MyStatus />
                          </div>
                     </div>
                </Drawer>

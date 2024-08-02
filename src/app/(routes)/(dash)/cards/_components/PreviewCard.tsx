@@ -8,7 +8,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Delete, EditSquare } from "react-iconly";
-import { useCardDialog } from "@/hooks/use-card-dialog-store";
+import { useCardDialog } from "@/hooks/use-dialog-store";
 
 const PreviewCard = ({ content }: { content: string }) => {
   const setCardDialogOpen = useCardDialog((state) => state.setOpen)

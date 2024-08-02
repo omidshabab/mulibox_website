@@ -5,6 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function capitalize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export function absoluteUrl(path: string) {
   return `${
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"

@@ -68,11 +68,11 @@ export const VerifyEmail = ({ url }: VerifyEmailProps) => (
           </Text>
 
           <Text className="text-[15px] leading-[1.5rem] text-slate-800 sm:text-[20px] sm:leading-[2rem] font-normal">
-            If you did not sign up for a MuliBox account, please ignore this email.
+            If you did not sign up for a mulibox account, please ignore this email.
           </Text>
 
           <Text className="text-[15px] leading-[1.5rem] text-slate-800 sm:text-[20px] sm:leading-[2rem] font-normal">
-            Thank you for choosing MuliBox to help you enhance your learning process. We&apos;re here to support you every step of the way!
+            Thank you for choosing mulibox to help you enhance your learning process. We&apos;re here to support you every step of the way!
           </Text>
 
           <Container className="h-[40px] sm:h-[50px]" />

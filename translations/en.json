@@ -1,15 +1,21 @@
 {
   "general": {
-    "mulibox": "Mulibox",
+    "mulibox": "mulibox.",
     "muliboxcom": "mulibox.com",
     "dashboard": "dashboard",
     "language": "language",
     "create": "create",
     "manage": "manage",
     "automate": "automate",
+    "software": "software",
+    "menu": "menu",
+    "change_language": "change language",
     "separator": ",",
     "copyright": "Crafted with care by Mulibox. All Rights Preserved and Protected.",
     "lorem": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
+  },
+  "menu": {
+    "cards": "cards"
   },
   "metadata": {
     "title": "Mulibox.",

@@ -6,7 +6,7 @@ import IconButton from "./IconButton";
 import { toast } from "sonner";
 import { Card, NewCardParams } from "@/lib/db/schema/cards";
 import { trpc } from "@/lib/trpc/client";
-import { useCardDialog } from "@/hooks/use-card-dialog-store";
+import { useCardDialog } from "@/hooks/use-dialog-store";
 
 type AddCardButtonType = "default" | "icon"
 
@@ -64,7 +64,7 @@ const AddNewCard = ({
                     <Button
                          variant="secondary"
                          onClick={() => handleAddCard()}
-                         className="flex text-[12px] sm:text-[14px] gap-x-[5px] font-semibold">
+                         className="flex text-[12px] sm:text-[14px] gap-x-[5px] font-normal">
                          Add New Card
                          <Plus className="w-[15px] h-[15px]" />
                     </Button>

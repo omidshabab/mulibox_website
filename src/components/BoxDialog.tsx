@@ -6,22 +6,21 @@ import {
      DialogTitle,
      DialogTrigger,
 } from "@/components/ui/dialog";
-import CardDialogContent from "./card/CardDialogContent";
+import { useBoxDialog } from "@/hooks/use-dialog-store";
 import { trpc } from "@/lib/trpc/client";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import { CardListFilter } from "@/lib/cards";
-import { useCardDialog } from "@/hooks/use-dialog-store";
 import Loader from "./Loader";
+import BoxDialogContent from "./box/BoxDialogContent";
 
-const CardDialog = ({
-     children,
+const BoxDialog = ({
+     children
 }: {
-     children: React.ReactNode,
+     children: React.ReactNode
 }) => {
-     const cards = trpc.cards.getCards.useQuery().data?.cards;
+     const boxes = trpc.box.getBoxes.useQuery().data?.boxes;
 
-     const isOpen = useCardDialog((state) => state.isOpen)
+     const isOpen = useBoxDialog((state) => state.isOpen)
 
      return (
           <Dialog open={isOpen}>
@@ -37,11 +36,9 @@ const CardDialog = ({
 
                     <DialogOverlay />
                     <DialogPrimitive.Content className="fixed left-[50%] top-[50%] z-50 grid w-full h-full translate-x-[-50%] translate-y-[-50%] duration-200">
-                         {cards ? (
-                              <CardDialogContent
-                                   cards={cards}
-                                   type={CardListFilter.all}
-                                   index={cards.length - 1} />
+                         {boxes ? (
+                              <BoxDialogContent
+                                   boxes={boxes} />
                          ) : (
                               <Loader />
                          )}
@@ -52,4 +49,4 @@ const CardDialog = ({
      );
 }
 
-export default CardDialog
+export default BoxDialog;

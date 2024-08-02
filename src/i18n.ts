@@ -2,11 +2,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getRequestConfig } from "next-intl/server";
 import { locales } from "./config";
-import { mainRoutes } from "./config/routes";
+import { defaultRoutes } from "./config/routes";
 import { getUserLocale } from "./db";
 
 async function getConfig(locale: string) {
-  if (!locales.includes(locale as any)) redirect(mainRoutes.default);
+  if (!locales.includes(locale as any)) redirect(defaultRoutes.default);
 
   return {
     messages: (await import(`../translations/${locale}.json`)).default,

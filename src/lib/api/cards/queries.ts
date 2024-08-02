@@ -4,32 +4,37 @@ import { CardId, cardIdSchema } from "@/lib/db/schema/cards";
 
 export const getCards = async () => {
   const { session } = await getUserAuth();
-  const p = await db.card.findMany({
+
+  const cards = await db.card.findMany({
     where: { userId: session?.user.id! },
     include: {
-      history: true, // Include the history relation
+      history: true,
     },
   });
-  return { cards: p };
+
+  return { cards };
 };
 
 export const getCardById = async (id: CardId) => {
   const { session } = await getUserAuth();
+
   const { id: cardId } = cardIdSchema.parse({ id });
-  const p = await db.card.findFirst({
+
+  const card = await db.card.findFirst({
     where: { id: cardId, userId: session?.user.id! },
   });
-  return { card: p };
+
+  return { card };
 };
 
 export const getCardHistory = async (id: CardId) => {
   const { id: cardId } = cardIdSchema.parse({ id });
 
-  const p = await db.history.findMany({
+  const history = await db.history.findMany({
     where: { cardId },
   });
 
-  if (p === null) return { history: [] };
+  if (!history) return { history: [] };
 
-  return { history: p };
+  return { history };
 };

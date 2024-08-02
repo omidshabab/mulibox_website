@@ -70,19 +70,18 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   events: {
-    async signIn(message) {
+    async signIn(data) {
       /* on successful sign in */
     },
-    async signOut(message) {
+    async signOut(data) {
       /* on signout */
     },
-    async createUser(data) {
+    async createUser({ ...data }) {
       /* user created */
       const collection = await db.collection.create({
         data: {
           userId: data.user.id,
           name: "my collection",
-          default: true,
         },
       });
 
@@ -90,46 +89,55 @@ export const authOptions: NextAuthOptions = {
       const box = await db.box.create({
         data: {
           userId: data.user.id,
-          default: true,
         },
       });
 
-      // Define the sections and their respective parts
-      const sectionsData = [
-        { type: "one", partCount: 1 },
-        { type: "two", partCount: 2 },
-        { type: "three", partCount: 4 },
-        { type: "four", partCount: 8 },
-        { type: "five", partCount: 15 },
-      ];
+      // // Define the sections and their respective parts
+      // const sectionsData = [
+      //   { type: "one", partCount: 1 },
+      //   { type: "two", partCount: 2 },
+      //   { type: "three", partCount: 4 },
+      //   { type: "four", partCount: 8 },
+      //   { type: "five", partCount: 15 },
+      // ];
 
-      // Create sections and parts
-      for (const sectionData of sectionsData) {
-        const section = await db.section.create({
-          data: {
-            boxId: box.id,
-            type: sectionData.type as SectionType,
-          },
-        });
+      // // Create sections and parts
+      // for (const sectionData of sectionsData) {
+      //   const section = await db.section.create({
+      //     data: {
+      //       boxId: box.id,
+      //       type: sectionData.type as SectionType,
+      //     },
+      //   });
 
-        const partsData = Array.from({ length: sectionData.partCount }).map(
-          () => ({
-            sectionId: section.id,
-          })
-        );
+      //   const partsData = Array.from({ length: sectionData.partCount }).map(
+      //     () => ({
+      //       sectionId: section.id,
+      //     })
+      //   );
 
-        await db.part.createMany({
-          data: partsData,
-        });
-      }
+      //   await db.part.createMany({
+      //     data: partsData,
+      //   });
+      // }
+
+      await db.user.update({
+        where: {
+          id: data.user.id,
+        },
+        data: {
+          collection: collection.id,
+          box: box.id,
+        },
+      });
     },
-    async updateUser(message) {
+    async updateUser(data) {
       /* user updated - e.g. their email was verified */
     },
-    async linkAccount(message) {
+    async linkAccount(data) {
       /* account (e.g. Twitter) linked to a user */
     },
-    async session(message) {
+    async session(data) {
       /* session is active */
     },
   },

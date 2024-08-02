@@ -1,29 +1,37 @@
 "use client"
 
-import IconButton from "@/components/IconButton";
-import GoogleIcon from "@/components/icons/Google";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import { Spacer } from "@nextui-org/react";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import { CheckIcon, LogOutIcon, User, UserCheckIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { useState } from "react";
 
 const features = [
-     "Unlimited Completion Guide",
-     "Personalized recommendations",
-     "Advanced analytics",
-     "Access to exclusive offers",
+     "Unlimited collections to make money",
+     "Add and use unlimited cards and boxes",
+     "Get professional status analytics",
+     "Use AI to generate the back of cards",
 ]
 
 const ProfileModal = ({
-     title,
-     image,
+     plan = "free",
+     model = "yearly"
 }: {
-     title?: string
-     image?: string
+     plan?: SubscriptionPlanType,
+     model?: PriceModelType
 }) => {
+     const [isSigningOut, setIsSigningOut] = useState(false)
+
+     const handleSignOut = async () => {
+          setIsSigningOut(true)
+
+          await signOut()
+
+          setIsSigningOut(false)
+     }
+
      return (
           <>
                <VisuallyHidden.Root>
@@ -88,12 +96,24 @@ const ProfileModal = ({
 
                <DialogFooter className="flex items-center justify-center sm:justify-center border-t-[2px] border-primary/5 pt-[25px]">
                     <div className="flex flex-col gap-y-[10px] w-full">
-                         <div className="w-full rounded-[15px] font-medium text-[18px] bg-primary/5 text-center text-text py-[15px] px-[15px] hover:bg-primary/10 transition-all duration-500 cursor-pointer">
+                         <div className="w-full rounded-[15px] font-medium text-[18px] bg-primary/5 text-center text-text py-[15px] px-[15px] hover:bg-primary/10 transition-all duration-500 cursor-pointer select-none">
                               Upgrade Now
                          </div>
 
-                         <div className="text-[15px] text-slate-600 font-extralight text-center">
-                              keep using free plan / logout account
+                         <div className="flex gap-x-[8px] justify-center text-[15px] text-slate-600 font-extralight text-center">
+                              <DialogClose>
+                                   <span className={cn(
+                                        "hover:text-text cursor-pointer transition-all duration-500",
+                                        isSigningOut && "opacity-50"
+                                   )}>
+                                        keep using free plan
+                                   </span>
+                              </DialogClose>
+                              /
+                              <span className={cn(
+                                   "hover:text-text cursor-pointer transition-all duration-500",
+                                   isSigningOut && "opacity-50"
+                              )} onClick={() => !isSigningOut && handleSignOut()}>logout account</span>
                          </div>
                     </div>
                </DialogFooter>
@@ -102,3 +122,34 @@ const ProfileModal = ({
 }
 
 export default ProfileModal;
+
+type SubscriptionPlanType = "free" | "plus"
+type PriceModelType = "yearly" | "monthly"
+
+const PriceModels = {
+
+}
+
+const PriceBox = ({
+     type = "monthly"
+}: {
+     type?: PriceModelType
+}) => {
+     return (
+          <div className="flex justify-center items-center gap-x-[15px] w-full border-[1px] border-primary/15 px-[20px] py-[15px] rounded-[20px] text-start select-none cursor-pointer hover:bg-primary/5 hover:border-primary/10 transition-all duration-500">
+               <div className="flex w-[25px] h-auto aspect-square border-[2px] border-primary/10 rounded-full">
+
+               </div>
+
+               <div className="flex flex-col flex-grow w-full text-[15px] text-slate-800 font-light">
+                    <div>
+                         Yearly (10$/month)
+                    </div>
+
+                    <div className="text-[13px] font-extralight text-slate-600">
+                         Next billing will on 20 Feb, 2024
+                    </div>
+               </div>
+          </div>
+     )
+}

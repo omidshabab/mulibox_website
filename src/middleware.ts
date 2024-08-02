@@ -4,7 +4,15 @@ import { defaultLocale, locales } from "./config";
 
 export default function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const isAppRoute = pathname === "/cards" || pathname.startsWith("/cards/");
+  const isAppRoute =
+    pathname === "/cards" ||
+    pathname === "/boxes" ||
+    pathname === "/collections" ||
+    pathname === "/status" ||
+    pathname.startsWith("/cards/") ||
+    pathname.startsWith("/boxes/") ||
+    pathname.startsWith("/collections/") ||
+    pathname.startsWith("/status/");
 
   const intlMiddleware = createMiddleware({
     locales,
@@ -23,5 +31,17 @@ export default function middleware(request: NextRequest) {
 
 export const config = {
   // Match only internationalized pathnames
-  matcher: ["/", "/(en)/:path*", "/cards/:path*", "/register"],
+  matcher: [
+    "/",
+    "/(en)/:path*",
+    "/guide",
+    "/guide/:path*",
+    "/community",
+    "/community/:path*",
+    "/register",
+    "/cards/:path*",
+    "/boxes/:path*",
+    "/collections/:path*",
+    "/status/:path*",
+  ],
 };
