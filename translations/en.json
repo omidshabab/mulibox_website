@@ -4,9 +4,9 @@
     "muliboxcom": "mulibox.com",
     "dashboard": "dashboard",
     "language": "language",
-    "create": "create",
-    "manage": "manage",
-    "automate": "automate",
+    "memory": "Memory",
+    "digital": "Digital",
+    "leitner_box": "Leitner Box",
     "software": "software",
     "menu": "menu",
     "change_language": "change language",
@@ -22,7 +22,7 @@
     "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure mollitia at consectetur ducimus expedita minus debitis nisi perspiciatis accusantium asperiores, vero libero ab quisquam quod sed eius sequi rem nam!"
   },
   "homepage_metadata": {
-    "title": "The Free Online Leitner Box Tool",
+    "title": "leitner box with smart digital flashcards",
     "desc": "Your ultimate tool for mastering the Leitner Box system. Get ready to revolutionize your study habits with this innovative app."
   },
   "register_metadata": {
@@ -52,7 +52,7 @@
   },
   "home_page": {
     "title": "mulibox.",
-    "desc": "Create. Manage. Automate.",
+    "desc": "Optimize Your Memory Retention with Digital Leitner Box",
     "signup_now": "Sign up for Free"
   },
   "register_page": {

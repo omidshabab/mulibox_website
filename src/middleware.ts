@@ -40,8 +40,5 @@ export const config = {
     "/community/:path*",
     "/register",
     "/cards/:path*",
-    "/boxes/:path*",
-    "/collections/:path*",
-    "/status/:path*",
   ],
 };
