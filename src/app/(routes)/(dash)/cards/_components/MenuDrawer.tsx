@@ -14,11 +14,18 @@ import MyBoxes from "./MenuItems/MyBoxes";
 const MenuDrawer = () => {
      const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
-     const setCardDialogOpen = useCardDialog((state) => state.setOpen)
-
      const handleOpen = () => setIsDrawerOpen(true);
 
      const handleClose = () => setIsDrawerOpen(false);
+
+     const tabs: React.ReactNode[] = [
+          <MyCards />,
+          <TodayCards />,
+          <MyCollections />,
+          <ExploreCommunity />,
+          <MyBoxes />,
+          <MyStatus />
+     ];
 
      return (
           <div className="flex flex-col justify-center items-center">
@@ -38,19 +45,11 @@ const MenuDrawer = () => {
                          </div>
 
                          <div className="grid grid-cols-2 w-full gap-x-[10px] gap-y-[10px]">
-                              <div onClick={handleClose}>
-                                   <MyCards />
-                              </div>
-
-                              <TodayCards />
-
-                              <MyCollections />
-
-                              <ExploreCommunity />
-
-                              <MyBoxes />
-
-                              <MyStatus />
+                              {tabs.map((tab, index) => (
+                                   <div key={index} onClick={handleClose}>
+                                        {tab}
+                                   </div>
+                              ))}
                          </div>
                     </div>
                </Drawer>

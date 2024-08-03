@@ -35,7 +35,7 @@ const CardDialog = ({
                          <DialogDescription />
                     </VisuallyHidden.Root>
 
-                    <DialogOverlay />
+                    <DialogOverlay className="backdrop-blur-md" />
                     <DialogPrimitive.Content className="fixed left-[50%] top-[50%] z-50 grid w-full h-full translate-x-[-50%] translate-y-[-50%] duration-200">
                          {cards ? (
                               <CardDialogContent
