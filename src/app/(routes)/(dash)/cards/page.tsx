@@ -2,7 +2,7 @@ import Box from "./_components/Box";
 import AddNewCard from "@/components/AddNewCard";
 import { api } from "@/lib/trpc/api";
 import { getTranslations } from "next-intl/server";
-import Navbar from "./_components/Navbar";
+import Navbar from "@/components/Navbar";
 import ContentWrapper from "@/components/ContentWrapper";
 
 export const revalidate = 0;

@@ -3,7 +3,6 @@
 import * as React from "react"
 import MenuIcon from "@/components/icons/Menu"
 import { Drawer } from "./Drawer";
-import { useCardDialog } from "@/hooks/use-dialog-store";
 import MyCards from "./MenuItems/MyCards";
 import TodayCards from "./MenuItems/TodayCards";
 import MyCollections from "./MenuItems/MyCollections";

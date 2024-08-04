@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState, useEffect, forwardRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import ReactCardFlip from "react-card-flip";
 import { cn } from "@/lib/utils";
@@ -14,8 +14,9 @@ import { Card, NewCardParams } from "@/lib/db/schema/cards";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
 import { useCardDialog } from "@/hooks/use-dialog-store";
+// import { getSectionId } from "@/lib/cards/utils";
 
-const CardDialogContent = forwardRef(({
+const CardDialogContent = React.forwardRef(({
      cards = [],
      index,
      type,
@@ -167,6 +168,7 @@ const CardDialogContent = forwardRef(({
      const now = new Date();
 
      const cardHistory = trpc.cards.getCardHistory.useQuery({ id: cards[activeIndex]?.id }).data?.history
+     const userBox = trpc.box.getBox.useQuery().data?.box
 
      const daysSinceLastReview: number | null = (cardHistory && cardHistory[cardHistory.length - 1]) ? Math.floor(
           (now.getTime() - new Date(cardHistory[cardHistory.length - 1].date).getTime()) /
@@ -174,6 +176,7 @@ const CardDialogContent = forwardRef(({
      ) : null;
 
      const loadings = (isCreating || isUpdating || isDeleting || isHistoryUpdating)
+     const checks = loadings || (front === "" || back === "")
 
      return (
           <div
@@ -360,8 +363,8 @@ const CardDialogContent = forwardRef(({
 
                                              <div
                                                   onClick={() => setShowHistory(true)}
-                                                  className="text-text font-medium cursor-pointer">
-                                                  Last Review was at 3 days ago
+                                                  className="text-slate-600/80 font-light text-[15px] cursor-pointer">
+                                                  you reviewed 3 days ago
                                              </div>
                                         </div>
                                    </div>
@@ -381,8 +384,8 @@ const CardDialogContent = forwardRef(({
                                                        if (collection) {
                                                             updateCard({
                                                                  id: cards[activeIndex].id,
-                                                                 front: front,
-                                                                 back: back,
+                                                                 front,
+                                                                 back,
                                                                  collectionId: cards[activeIndex].collectionId,
                                                             })
 
@@ -399,14 +402,21 @@ const CardDialogContent = forwardRef(({
 
                                              <IconButton
                                                   icon={X}
-                                                  onClick={() => {
+                                                  onClick={async () => {
                                                        setChecked(false);
 
                                                        updateCardHistory({ cardId: cards[activeIndex].id, status: false });
 
+                                                       updateCard({
+                                                            id: cards[activeIndex].id,
+                                                            front: cards[activeIndex].front,
+                                                            back: cards[activeIndex].back,
+                                                            collectionId: cards[activeIndex].collectionId,
+                                                       })
+
                                                        setIsFlipped(true);
                                                   }}
-                                                  disabled={loadings}
+                                                  disabled={checks}
                                                   className={cn(
                                                        (cardHistory && cardHistory[cardHistory.length - 1]?.status === false) && "bg-red-800 bg-opacity-10 border-red-900 border-opacity-15 text-red-800 hover:bg-red-800 hover:bg-opacity-15 hover:border-red-900 hover:border-opacity-20"
                                                   )} />
@@ -420,7 +430,7 @@ const CardDialogContent = forwardRef(({
 
                                                        setIsFlipped(true);
                                                   }}
-                                                  disabled={loadings}
+                                                  disabled={checks}
                                                   className={cn(
                                                        (cardHistory && cardHistory[cardHistory.length - 1]?.status === true) && "bg-green-800 bg-opacity-10 border-green-900 border-opacity-15 text-green-800 hover:bg-green-800 hover:bg-opacity-15 hover:border-green-900 hover:border-opacity-20"
                                                   )} />

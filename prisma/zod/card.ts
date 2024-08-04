@@ -6,6 +6,8 @@ export const cardSchema = z.object({
   userId: z.string(),
   collectionId: z.string(),
   partId: z.string().nullish(),
+  boxId: z.string().nullish(),
+  sectionId: z.string().nullish(),
   front: z.string(),
   back: z.string(),
   createdAt: z.date(),

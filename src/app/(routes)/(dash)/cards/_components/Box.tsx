@@ -2,13 +2,12 @@
 
 import BoxSection from "./BoxSection"
 import { BoxSectionType } from "@/lib/cards"
-import AddNewCard from "@/components/AddNewCard"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { CompleteBox } from "@/lib/db/schema/boxes"
 import { trpc } from "@/lib/trpc/client"
-// import { categorizeCards } from "@/lib/cards/utils"
 import Loader from "@/components/Loader"
 import { BoxIcon } from "lucide-react"
+import ViewCardsButton from "./ViewCardsButton"
 
 const Box = ({ box }: { box: CompleteBox }) => {
      const { data: t } = trpc.box.getBox.useQuery(undefined, {
@@ -20,8 +19,6 @@ const Box = ({ box }: { box: CompleteBox }) => {
           return <Loader />
      }
 
-     // const categorizedCards = categorizeCards(t.cards);
-
      if (t.box?.sections.every(section => section.parts.every(part => part.cards.length === 0))) {
           return (
                <div className="flex justify-center items-center w-full h-full flex-grow">
@@ -29,10 +26,12 @@ const Box = ({ box }: { box: CompleteBox }) => {
                          <div className="flex items-center justify-center bg-primary/5 p-[20px] rounded-full backdrop-blur-[1px] border-primary/5 border-[5px] border-dashed">
                               <BoxIcon className="w-[80px] h-[80px] text-text opacity-10" />
                          </div>
+
                          <p className="text-[18px] text-slate-600 font-light">
                               Review your first cards to the leitner box and start using it
                          </p>
-                         <AddNewCard />
+
+                         <ViewCardsButton />
                     </div>
                </div>
           );
