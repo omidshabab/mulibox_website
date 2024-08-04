@@ -7,7 +7,7 @@ const Hero = () => {
 
      const desc = tHome("desc");
 
-     const boldWords = ["memory", "digital"]
+     const boldWords = ["memory"]
 
      const handleMouseOver = (e: React.MouseEvent<HTMLElement>) => {
           e.currentTarget.style.left = "15%";

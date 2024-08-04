@@ -1,47 +1,65 @@
-// import { BoxSectionType } from ".";
-// import { Card, CompleteCard } from "../db/schema/cards";
+// import { db } from "@/lib/db";
+// import { SectionType } from "@prisma/client";
 
-// export const categorizeCards = (
-//   cards: CompleteCard[]
-// ): { [key in BoxSectionType]: Card[] } => {
-//   const categorizedCards: { [key in BoxSectionType]: Card[] } = {
-//     [BoxSectionType.one]: [],
-//     [BoxSectionType.two]: [],
-//     [BoxSectionType.three]: [],
-//     [BoxSectionType.four]: [],
-//     [BoxSectionType.five]: [],
-//   };
-
-//   const now = new Date();
-
-//   cards.forEach((card) => {
-//     const history = card.history;
-
-//     if (!(history && history[history.length - 1])) return;
-
-//     if (history.length > 0) {
-//       const lastReview = history[history.length - 1]?.date;
-//       const daysSinceLastReview = Math.floor(
-//         (now.getTime() - new Date(lastReview).getTime()) / (1000 * 60 * 60 * 24)
-//       );
-
-//       if (daysSinceLastReview < 1) {
-//         categorizedCards[BoxSectionType.one].push(card);
-//       } else if (daysSinceLastReview < 2) {
-//         categorizedCards[BoxSectionType.two].push(card);
-//       } else if (daysSinceLastReview < 7) {
-//         categorizedCards[BoxSectionType.three].push(card);
-//       } else if (daysSinceLastReview < 14) {
-//         categorizedCards[BoxSectionType.four].push(card);
-//       } else if (daysSinceLastReview < 30) {
-//         categorizedCards[BoxSectionType.five].push(card);
-//       }
-//     } else {
-//       // If no review history, you can decide where to put the card.
-//       // For now, we'll put it in the 'every day' category
-//       categorizedCards[BoxSectionType.one].push(card);
-//     }
+// export async function getSectionId({
+//   cardId,
+//   status,
+// }: {
+//   cardId: string;
+//   status: boolean;
+// }): Promise<string> {
+//   const card = await db.card.findUnique({
+//     where: { id: cardId },
+//     include: { part: { include: { section: true } } },
 //   });
 
-//   return categorizedCards;
-// };
+//   if (!card || !card.part?.section) {
+//     throw new Error("Card or section not found");
+//   }
+
+//   const currentSection = card.part.section;
+
+//   if (status) {
+//     const nextSectionType = getNextSectionType(currentSection.type);
+//     const nextSection = await db.section.findFirst({
+//       where: {
+//         boxId: currentSection.boxId,
+//         type: nextSectionType,
+//       },
+//     });
+
+//     if (!nextSection) {
+//       throw new Error("Next section not found");
+//     }
+
+//     return nextSection.id;
+//   } else {
+//     const sectionOne = await db.section.findFirst({
+//       where: {
+//         boxId: currentSection.boxId,
+//         type: SectionType.one,
+//       },
+//     });
+
+//     if (!sectionOne) {
+//       throw new Error("Section one not found");
+//     }
+
+//     return sectionOne.id;
+//   }
+// }
+
+// function getNextSectionType(currentType: SectionType): SectionType {
+//   const sectionOrder = [
+//     SectionType.one,
+//     SectionType.two,
+//     SectionType.three,
+//     SectionType.four,
+//     SectionType.five,
+//   ];
+
+//   const currentIndex = sectionOrder.indexOf(currentType);
+//   const nextIndex = (currentIndex + 1) % sectionOrder.length;
+
+//   return sectionOrder[nextIndex];
+// }

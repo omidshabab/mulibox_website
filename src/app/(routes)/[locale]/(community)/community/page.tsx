@@ -1,8 +1,12 @@
+import { Container } from "@/components/craft";
+
 const Page = () => {
      return (
-          <div>
-               Page
-          </div>
+          <>
+               <Container>
+                    community
+               </Container>
+          </>
      );
 }
 

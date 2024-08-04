@@ -189,6 +189,9 @@ model Card {
   partId       String? @db.ObjectId @map("part_id")
   part         Part? @relation(fields: [partId], references: [id], onDelete: Cascade)
 
+  boxId        String? @db.ObjectId @map("box_id")
+  sectionId    String? @db.ObjectId @map("section_id")
+
   front        String
   back         String
 

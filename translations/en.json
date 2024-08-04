@@ -5,7 +5,9 @@
     "dashboard": "dashboard",
     "language": "language",
     "memory": "Memory",
-    "digital": "Digital",
+    "retention": "Retention",
+    "leitner": "Leitner",
+    "box": "Box",
     "leitner_box": "Leitner Box",
     "software": "software",
     "menu": "menu",
@@ -34,7 +36,11 @@
     "desc": ""
   },
   "guide_metadata": {
-    "title": "Guide",
+    "title": "guide",
+    "desc": ""
+  },
+  "community_metadata": {
+    "title": "community",
     "desc": ""
   },
   "not_found": {
