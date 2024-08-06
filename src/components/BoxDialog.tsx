@@ -34,15 +34,16 @@ const BoxDialog = ({
                          <DialogDescription />
                     </VisuallyHidden.Root>
 
-                    <DialogOverlay className="backdrop-blur-md" />
-                    <DialogPrimitive.Content className="fixed left-[50%] top-[50%] z-50 grid w-full h-full translate-x-[-50%] translate-y-[-50%] duration-200">
-                         {boxes ? (
-                              <BoxDialogContent
-                                   boxes={boxes} />
-                         ) : (
-                              <Loader />
-                         )}
-                    </DialogPrimitive.Content>
+                    <DialogOverlay className="grid place-items-center overflow-auto backdrop-blur-md none-scroll-bar">
+                         <DialogPrimitive.Content className="z-50 grid w-full h-full duration-200">
+                              {boxes ? (
+                                   <BoxDialogContent
+                                        boxes={boxes} />
+                              ) : (
+                                   <Loader />
+                              )}
+                         </DialogPrimitive.Content>
+                    </DialogOverlay>
 
                </DialogPortal>
           </Dialog>

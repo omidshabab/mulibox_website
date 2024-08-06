@@ -20,7 +20,7 @@ const DialogWrapper = ({
      return (
           <ContentWrapper>
                <div className="w-full">
-                    <div className="flex justify-between items-center py-[25px] gap-x-[20px]">
+                    <div className="sticky top-0 z-50 flex justify-between items-center py-[25px] gap-x-[20px]">
                          <div className="flex flex-col sm:flex-row sm:items-center gap-x-[5px] text-[18px] text-text font-normal">
                               {title}
                               <div className="text-[15px] text-slate-600 font-extralight">

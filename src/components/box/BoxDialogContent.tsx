@@ -7,6 +7,7 @@ import { useBoxDialog } from "@/hooks/use-dialog-store";
 import IconButton from "../IconButton";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "lucide-react";
+import { ScrollArea } from "../ui/scroll-area";
 
 const BoxDialogContent = React.forwardRef(({
      boxes = [],
@@ -34,8 +35,19 @@ const BoxDialogContent = React.forwardRef(({
                               )} />
                     </div>}
                onClose={() => setDialogClose()}>
-               <div>
-
+               <div className="flex w-full">
+                    <ScrollArea className="w-full">
+                         <div className="w-full grid grid-cols-4 gap-y-[25px] gap-x-[15px]">
+                              {[1, 2, 3, 4, 5, 6].map((index) => (
+                                   <div key={index} className="flex flex-col gap-y-[10px] cursor-pointer select-none">
+                                        {index}
+                                        <div className="flex justify-center items-center w-full aspect-video border-[1px] border-primary/10 px-[15px] py-[10px] rounded-[15px]">
+                                             {index}
+                                        </div>
+                                   </div>
+                              ))}
+                         </div>
+                    </ScrollArea>
                </div>
           </DialogWrapper>
      );

@@ -28,7 +28,7 @@ export default async function layout({
      if (session?.session) redirect(dashRoutes.default);
 
      return (
-          <div className="flex w-full h-full justify-center items-center">
+          <div className="flex w-full h-screen justify-center items-center">
                {children}
           </div>
      )

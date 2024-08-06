@@ -17,7 +17,7 @@ const Page = async () => {
                <div className="flex flex-col w-full h-full items-center mb-[80px]">
                     <div className="mx-auto flex justify-center w-full z-[20]">
                          <div className="flex flex-col w-full items-center">
-                              <Navbar />
+                              <Navbar type="dash" />
 
                               <div className="flex justify-center items-center w-full max-w-6xl px-[20px] py-[8px] text-center bg-primary/[3%] border-primary/5 border-b-[2px] font-medium text-text text-[15px]">
                                    Harry up! You need to review 24 cards today
