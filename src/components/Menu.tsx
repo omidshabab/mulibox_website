@@ -16,10 +16,13 @@ import MyCollections from "./MenuItems/MyCollections";
 import ExploreCommunity from "./MenuItems/ExploreCommunity";
 import MyStatus from "./MenuItems/MyStatus";
 import MyBoxes from "./MenuItems/MyBoxes";
+import { NavbarType } from "./Navbar";
 
 const Menu = ({
+     type = "default",
      dir = "ltr"
 }: {
+     type?: NavbarType
      dir?: "rtl" | "ltr"
 }) => {
      const tGeneral = useTranslations("general");
@@ -40,15 +43,17 @@ const Menu = ({
                     <NavigationMenuItem>
                          <NavigationMenuTrigger className="cursor-pointer">{tGeneral("menu")}</NavigationMenuTrigger>
                          <NavigationMenuContent>
-                              <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-2 lg:w-[300px] rtl:grid-rtl">
-                                   {tabs.map((tab, index) => (
-                                        <ListItem
-                                             key={index}
-                                             className="cursor-pointer">
-                                             {tab}
-                                        </ListItem>
-                                   ))}
-                              </ul>
+                              {type === "dash" && (
+                                   <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-2 lg:w-[300px] rtl:grid-rtl">
+                                        {tabs.map((tab, index) => (
+                                             <ListItem
+                                                  key={index}
+                                                  className="cursor-pointer">
+                                                  {tab}
+                                             </ListItem>
+                                        ))}
+                                   </ul>
+                              )}
                          </NavigationMenuContent>
                     </NavigationMenuItem>
                </NavigationMenuList>

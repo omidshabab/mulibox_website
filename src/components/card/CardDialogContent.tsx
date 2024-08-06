@@ -407,11 +407,17 @@ const CardDialogContent = React.forwardRef(({
 
                                                        updateCardHistory({ cardId: cards[activeIndex].id, status: false });
 
+                                                       const sectionId = ""
+                                                       // await getSectionId({ cardId: cards[activeIndex].id, status: false })
+
                                                        updateCard({
                                                             id: cards[activeIndex].id,
                                                             front: cards[activeIndex].front,
                                                             back: cards[activeIndex].back,
                                                             collectionId: cards[activeIndex].collectionId,
+                                                            boxId: userBox?.id,
+                                                            sectionId: sectionId,
+                                                            partId: userBox?.sections.find((section) => section.type === "one")?.parts[0].id
                                                        })
 
                                                        setIsFlipped(true);

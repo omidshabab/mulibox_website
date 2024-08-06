@@ -91,8 +91,8 @@ const Hero = () => {
                     </div>
                </div> */}
 
-               <div className="flex flex-col items-center justify-center h-full mx-auto max-w-5xl w-full px-[30px] lg:px-0 z-50">
-                    <div className="flex flex-col gap-y-[30px] md:gap-y-[50px] py-[50px] md:py-[100px]">
+               <div className="flex flex-col items-center justify-center h-full mx-auto max-w-5xl w-full px-[30px] lg:px-0">
+                    <div className="flex flex-col gap-y-[30px] md:gap-y-[50px]">
                          <div className="flex flex-col h-min gap-y-[15px]">
                               <div className="text-[50px] md:text-[80px] font-bold text-orange-800 mb-[-45px] md:mb-[-60px]">*</div>
 

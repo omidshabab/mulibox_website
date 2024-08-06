@@ -1,4 +1,6 @@
+import { Container } from "@/components/craft"
 import Footer from "@/components/Footer"
+import Navbar from "@/components/Navbar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
@@ -24,9 +26,13 @@ export default function layout({
 }) {
      return (
           <ScrollArea className="w-full h-screen">
+               <Container className="max-w-6xl">
+                    <Navbar type="community" />
+               </Container>
+
                {children}
 
-               <Footer />
+               <Footer className="max-w-6xl" />
           </ScrollArea>
      )
 }

@@ -12,6 +12,7 @@ import React from "react"
 import { AuthFormSchema } from "@/types"
 import GoogleButton from "./GoogleButton"
 import { signIn } from "next-auth/react"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const AuthForm = () => {
      const tRegister = useTranslations("register_page")
@@ -66,7 +67,7 @@ const AuthForm = () => {
      }
 
      return (
-          <div className="flex flex-col gap-y-10">
+          <div className="flex-1 flex flex-col justify-center w-full gap-y-10 py-[50px]">
                <div className="flex gap-2">
                     <GoogleButton
                          onClick={googleRegister}

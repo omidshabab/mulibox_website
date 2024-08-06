@@ -24,7 +24,7 @@ const ProfileAvatar = async ({
                     )}
                </DialogTrigger>
 
-               <DialogContent className="max-w-[350px] sm:max-w-[450px] backdrop-blur-3xl px-[35px] py-[30px]">
+               <DialogContent className="max-w-[350px] sm:max-w-[450px] backdrop-blur-3xl px-[35px] py-0">
                     <ProfileModal />
                </DialogContent>
           </Dialog>
