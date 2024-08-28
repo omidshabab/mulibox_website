@@ -1,10 +1,12 @@
 import * as z from "zod"
+import { SectionType } from "@prisma/client"
 import { CompleteCard, relatedCardSchema } from "./index"
 
 export const historySchema = z.object({
   id: z.string(),
   cardId: z.string(),
   date: z.date(),
+  section: z.nativeEnum(SectionType).nullish(),
   status: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),

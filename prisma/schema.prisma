@@ -26,39 +26,27 @@ enum Locale {
 model Account {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId            String @db.ObjectId @map("user_id")
+  userId            String  @map("user_id") @db.ObjectId
   type              String
   provider          String
-  providerAccountId String @map("provider_account_id")
-  refresh_token      String? @map("refresh_token")
-  access_token       String? @map("access_token")
-  expires_at         Int? @map("expires_at")
-  token_type         String? @map("token_type")
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @map("refresh_token")
+  access_token      String? @map("access_token")
+  expires_at        Int?    @map("expires_at")
+  token_type        String? @map("token_type")
   scope             String?
-  id_token           String? @map("id_token")
-  session_state      String? @map("session_state")
+  id_token          String? @map("id_token")
+  session_state     String? @map("session_state")
 
-  notifications     Notification[]
+  notifications Notification[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  
+
   @@unique([provider, providerAccountId])
-
   @@map("accounts")
-}
-
-model Session {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  sessionToken String   @unique @map("session_token")
-  userId       String   @db.ObjectId  @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
 }
 
 model User {
@@ -71,16 +59,15 @@ model User {
   accounts      Account[]
   cards         Card[]
   collections   Collection[]
-  sessions      Session[]
   boxes         Box[]
-  outs          String[] @db.ObjectId
+  outs          String[]     @db.ObjectId
 
-  locale        Locale? @default(en)
+  locale Locale? @default(en)
 
   subscription Subscription?
 
-  collection  String? @db.ObjectId
-  box String? @db.ObjectId
+  collection String? @db.ObjectId
+  box        String? @db.ObjectId
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -91,8 +78,8 @@ model User {
 model Notification {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  accountId String @db.ObjectId @map("account_id")
-  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String  @map("account_id") @db.ObjectId
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   content String
 
@@ -107,15 +94,15 @@ model Notification {
 model Collection {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId  String @db.ObjectId @map("user_id")
-  name    String
-  desc    String?
-  price   Float?   @default(0)
-  slug    String?
-  tags    String[] @default([])
-  cards   Card[]
+  userId String   @map("user_id") @db.ObjectId
+  name   String
+  desc   String?
+  price  Float?   @default(0)
+  slug   String?
+  tags   String[] @default([])
+  cards  Card[]
 
-  locale  Locale? @default(en)
+  locale Locale? @default(en)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -128,8 +115,8 @@ model Collection {
 model Box {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId String @db.ObjectId @map("user_id")
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id") @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   sections Section[]
 
@@ -142,12 +129,12 @@ model Box {
 model Section {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  boxId String @db.ObjectId @map("box_id")
-  box Box @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  boxId String @map("box_id") @db.ObjectId
+  box   Box    @relation(fields: [boxId], references: [id], onDelete: Cascade)
 
-  parts  Part[]
+  parts Part[]
 
-  type  SectionType
+  type SectionType
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -166,10 +153,12 @@ enum SectionType {
 model Part {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  sectionId String @db.ObjectId @map("section_id")
-  section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId String  @map("section_id") @db.ObjectId
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
-  cards     Card[]
+  cards Card[]
+
+  reviewAt DateTime @map("review_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -180,22 +169,22 @@ model Part {
 model Card {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId       String @db.ObjectId @map("user_id")
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id") @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  collectionId String @db.ObjectId @map("collection_id")
+  collectionId String     @map("collection_id") @db.ObjectId
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
-  partId       String? @db.ObjectId @map("part_id")
-  part         Part? @relation(fields: [partId], references: [id], onDelete: Cascade)
+  partId String? @map("part_id") @db.ObjectId
+  part   Part?   @relation(fields: [partId], references: [id], onDelete: Cascade)
 
-  boxId        String? @db.ObjectId @map("box_id")
-  sectionId    String? @db.ObjectId @map("section_id")
+  boxId     String? @map("box_id") @db.ObjectId
+  sectionId String? @map("section_id") @db.ObjectId
 
-  front        String
-  back         String
+  front String
+  back  String
 
-  history      History[]
+  history History[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -206,11 +195,12 @@ model Card {
 model History {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  cardId String @db.ObjectId @map("card_id")
-  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  cardId String @map("card_id") @db.ObjectId
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
-  date   DateTime @default(now())
-  status Boolean
+  date    DateTime    @default(now())
+  section SectionType?
+  status  Boolean
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -218,7 +208,7 @@ model History {
   @@map("history")
 }
 
-model VerificationToken {
+model VerificationTokens {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   identifier String
@@ -226,14 +216,13 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-
   @@map("tokens")
 }
 
 model Subscription {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  userId                 String    @unique @db.ObjectId @map("user_id")
+  userId                 String    @unique @map("user_id") @db.ObjectId
   user                   User      @relation(fields: [userId], references: [id])
   stripeCustomerId       String    @unique @map("stripe_customer_id")
   stripeSubscriptionId   String?   @map("stripe_subscription_id")

@@ -11,15 +11,18 @@ const Providers = ({
      children: React.ReactNode
 }) => {
      return (
+         <div
+             onContextMenu={(e)=>e.preventDefault()}>
           <BoxDialog>
                <CollectionDialog>
                     <StatusDialog>
                          <CardDialog>
-                              {children}
+                                   {children}
                          </CardDialog>
                     </StatusDialog>
                </CollectionDialog>
           </BoxDialog>
+         </div>
      );
 }
 

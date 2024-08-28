@@ -4,6 +4,7 @@ import { api } from "@/lib/trpc/api";
 import { getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import ContentWrapper from "@/components/ContentWrapper";
+import Loader from "@/components/Loader";
 
 export const revalidate = 0;
 
@@ -30,7 +31,9 @@ const Page = async () => {
                     )}
 
                     {!box && (
-                         <div>loading box ...</div>
+                         <div className="flex flex-grow h-full">
+                             <Loader />
+                         </div>
                     )}
                </div>
                <div className="block sm:hidden absolute bottom-0 right-0 pb-[15px] pr-[15px]">

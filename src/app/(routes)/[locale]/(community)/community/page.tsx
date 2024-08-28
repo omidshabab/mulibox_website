@@ -1,41 +1,82 @@
+"use client"
+
 import { Container } from "@/components/craft";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Squircle } from "corner-smoothing"
+import { motion } from "framer-motion";
+import {useRouter} from "next/navigation";
+import {defaultRoutes} from "@/config/routes";
 
 const Page = () => {
+    const router = useRouter();
+
      return (
           <>
-               <Container className="max-w-6xl">
-                    <div className="flex flex-col gap-y-[45px] py-[50px]">
-                         <div className="flex flex-col gap-y-[10px] max-w-[500px]">
-                              <div className="text-[22px] text-slate-800">
-                                   Dicover Community-Made Collections
-                              </div>
-                              <div className="text-[18px] text-slate-600 font-extralight leading-[2rem]">
-                                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed commodi nostrum sunt sequi odio consequatur dolor, perspiciatis excepturi dolore dignissimos, fugit, aspernatur.
+               <Container>
+                    <div className="flex flex-col gap-y-[45px] py-[80px]">
+                         <div className="flex gap-x-[5px]">
+                                   <motion.div
+                                        initial={{
+                                             opacity: 0
+                                        }}
+                                        whileInView={{
+                                             opacity: 1
+                                        }}
+                                        viewport={{
+                                             amount: "all"
+                                        }}
+                                        className="text-[85px] bg-gradient-to-b from-orange-400 to-orange-600 inline-block text-transparent bg-clip-text font-medium tracking-tighter transition-all duration-500">
+                                        community
+                                   </motion.div>
                               </div>
                          </div>
+               </Container>
 
-                         <Input
-                              placeholder={`search for resources like "english flashcards"`}
-                              className="relative bg-primary/5 rounded-full font-extralight text-[18px] text-text px-[25px] py-[15px] max-w-[550px]" />
-                    </div>
+               <Container>
+                   <div className="w-full grid grid-cols-3 gap-y-[45px] gap-x-[35px] pb-[50px]">
+                              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((index) => (
+                                   <motion.div key={index}
+                                        initial={{ translateY: 15 * index }}
+                                        animate={{ translateY: 0 }}
+                                        transition={{
+                                             type: "spring",
+                                             stiffness: 260,
+                                             damping: 20,
+                                             delay: index * 0.1
+                                        }}
+                                               onClick={()=>router.push(defaultRoutes.community + "/english-cards")}
+                                        className="flex flex-col gap-y-[10px] cursor-pointer select-none">
+                                        <Squircle cornerRadius={35} borderWidth={1}>
+                                             <div className="ugly-child-wrapper relative group flex flex-col justify-center items-center text-start aspect-square w-full border-[1px] border-primary/5 bg-gradient-to-b from-transparent to-primary/5 px-[15px] py-[10px] bg-primary/[3%] hover:bg-primary/5 transition-all duration-500">
+                                                  <div className="absolute w-full top-[10px] text-[25px] px-[45px] py-[25px] bg-gradient-to-b from-slate-600 to-slate-800 inline-block text-transparent bg-clip-text">
+                                                       community
+                                                  </div>
 
-                    <div className="w-full">
-                         <ScrollArea className="w-full">
-                              <div className="w-full grid grid-cols-4 gap-y-[25px] gap-x-[15px]">
-                                   {[1, 2, 3, 4, 5, 6].map((index) => (
-                                        <div key={index} className="flex flex-col gap-y-[10px] cursor-pointer select-none">
-                                             <div className="flex justify-center items-center aspect-square w-full border-[1px] border-primary/10 px-[15px] py-[10px] rounded-[15px]">
+                                                  <div className="flex w-full justify-center items-center">
+                                                       <Squircle cornerRadius={20} className="absolute scale-90 w-[280px] h-[150px] bottom-[-35px] bg-primary/[3%] rounded-[20px] backdrop-blur-[2px] group-hover:scale-95 transition-all duration-500">
+                                                            <div className="ugly-child-wrapper w-full h-full border-[1px] border-primary/5">
 
+                                                            </div>
+                                                       </Squircle>
+
+                                                       <Squircle cornerRadius={20} className="absolute scale-95 w-[280px] h-[150px] bottom-[-45px] bg-primary/[3%] rounded-[20px] backdrop-blur-[2px] group-hover:scale-100 transition-all duration-500">
+                                                            <div className="ugly-child-wrapper w-full h-full border-[1px] border-primary/5">
+
+                                                            </div>
+                                                       </Squircle>
+
+                                                       <Squircle cornerRadius={20} className="absolute w-[280px] h-[150px] bottom-[-60px] bg-primary/[3%] rounded-[20px] backdrop-blur-[2px] group-hover:scale-105 transition-all duration-500">
+                                                            <div className="ugly-child-wrapper w-full h-full border-[1px] border-primary/5">
+                                                                 <div className="px-[25px] py-[20px] bg-gradient-to-b from-orange-400 to-orange-800 inline-block text-transparent bg-clip-text">
+                                                                      community
+                                                                 </div>
+                                                            </div>
+                                                       </Squircle>
+                                                  </div>
                                              </div>
-
-                                             {index}
-                                        </div>
-                                   ))}
-                              </div>
-                         </ScrollArea>
-                    </div>
+                                        </Squircle>
+                                   </motion.div>
+                              ))}
+                         </div>
                </Container>
           </>
      );

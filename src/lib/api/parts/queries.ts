@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/index";
+import { db } from "@/lib/db";
 import { PartId, partIdSchema } from "@/lib/db/schema/parts";
 
 export const getParts = async (sectionId: string) => {

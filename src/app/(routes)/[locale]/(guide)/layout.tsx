@@ -26,13 +26,11 @@ export default function layout({
 }) {
      return (
           <ScrollArea className="flex w-full h-screen">
-               <Container className="max-w-6xl">
-                    <Navbar type="guide" />
-               </Container>
+               <Navbar type="guide" />
 
                {children}
 
-               <Footer className="max-w-6xl" />
+               {/* <Footer className="max-w-6xl" /> */}
           </ScrollArea>
      )
 }

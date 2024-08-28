@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-export const verificationTokenSchema = z.object({
+export const verificationTokensSchema = z.object({
   id: z.string(),
   identifier: z.string(),
   token: z.string(),

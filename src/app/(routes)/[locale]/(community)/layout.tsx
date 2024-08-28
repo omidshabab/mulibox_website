@@ -25,14 +25,14 @@ export default function layout({
      children: React.ReactNode
 }) {
      return (
-          <ScrollArea className="w-full h-screen">
-               <Container className="max-w-6xl">
-                    <Navbar type="community" />
-               </Container>
+          <div className="w-full min-h-screen flex flex-col justify-start items-start">
+               <Navbar type="community" />
 
-               {children}
+               <div className="w-full h-full">
+                    {children}
+               </div>
 
-               <Footer className="max-w-6xl" />
-          </ScrollArea>
+                <Footer />
+          </div>
      )
 }

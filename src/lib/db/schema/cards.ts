@@ -18,6 +18,10 @@ export const updateCardParams = updateCardSchema.extend({}).omit({
   userId: true,
 });
 export const cardIdSchema = baseSchema.pick({ id: true });
+export const updateCardReviewSchema = historyBaseSchema.pick({
+  cardId: true,
+  status: true,
+});
 export const historyStatusSchema = historyBaseSchema.pick({
   cardId: true,
   status: true,

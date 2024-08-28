@@ -1,5 +1,5 @@
 import { CardType } from "@/lib/cards";
-import { englishBricolageGrotesqueFont } from "@/lib/fonts";
+import {englishBricolageGrotesqueFont, isRTL, persianEstedadFont} from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { Input } from "antd";
 import { ChangeEventHandler } from "react";
@@ -19,6 +19,9 @@ const CardItem = ({
   readOnly?: boolean,
   type?: CardType
 }) => {
+  const isValueRTL = Array.from(value).some(char => isRTL(char));
+  const font = isValueRTL ? persianEstedadFont.className : englishBricolageGrotesqueFont.className;
+
   return (
     <div className={cn(
       "w-[250px] h-[350px] border-[2px] border-primary/5 px-[20px] py-[20px] flex justify-center items-center bg-primary/5 rounded-[20px] backdrop-blur-md hover:bg-primary/10 transition-all duration-500 cursor-pointer ease-in-out transform backface-hidden",
@@ -40,7 +43,7 @@ const CardItem = ({
         onChange={onChange}
         className={cn(
           "text-center text-[18px] leading-[2.0rem] text-ellipsis text-text none-scroll-bar overflow-y-hidden",
-          englishBricolageGrotesqueFont.className,
+          font,
         )}
       />
     </div>

@@ -33,14 +33,12 @@ export default async function layout({
      if (session?.session) redirect(dashRoutes.default);
 
      return (
-          <ScrollArea className="w-full h-screen">
-               <Container>
-                    <Navbar />
-               </Container>
+          <div className="w-full h-screen">
+               <Navbar />
 
                {children}
 
                <Footer />
-          </ScrollArea>
+          </div>
      )
 }

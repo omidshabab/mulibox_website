@@ -17,6 +17,7 @@ import ExploreCommunity from "./MenuItems/ExploreCommunity";
 import MyStatus from "./MenuItems/MyStatus";
 import MyBoxes from "./MenuItems/MyBoxes";
 import { NavbarType } from "./Navbar";
+import LeitnerGuide from "./MenuItems/LeitnerGuide";
 
 const Menu = ({
      type = "default",
@@ -31,10 +32,11 @@ const Menu = ({
      const tabs: React.ReactNode[] = [
           <MyCards />,
           <TodayCards />,
-          <MyCollections />,
-          <ExploreCommunity />,
-          <MyBoxes />,
-          <MyStatus />
+          // <MyCollections />,
+          // <ExploreCommunity />,
+          // <MyBoxes />,
+          // <MyStatus />,
+          // <LeitnerGuide />
      ];
 
      return (

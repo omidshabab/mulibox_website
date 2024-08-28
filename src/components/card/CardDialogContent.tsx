@@ -14,7 +14,7 @@ import { Card, NewCardParams } from "@/lib/db/schema/cards";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
 import { useCardDialog } from "@/hooks/use-dialog-store";
-// import { getSectionId } from "@/lib/cards/utils";
+import AddNewCard from "@/components/AddNewCard";
 
 const CardDialogContent = React.forwardRef(({
      cards = [],
@@ -83,7 +83,7 @@ const CardDialogContent = React.forwardRef(({
 
      const onSuccess = async (action: "create" | "update" | "delete", data?: { error?: string, card: Card }) => {
           if (data?.error) {
-               toast.error(data.error);
+               toast.error(data.error, { duration: Infinity, closeButton: true });
                return;
           }
 
@@ -95,11 +95,11 @@ const CardDialogContent = React.forwardRef(({
 
      const onError = async (action: "create" | "update" | "delete", data?: { error?: string }) => {
           if (data?.error) {
-               toast.error(data.error);
+               toast.error(data.error, { duration: Infinity, closeButton: true });
                return;
           }
 
-          toast.error(`Card ${action} failed!`);
+          toast.error(`Card ${action} failed!`, { duration: Infinity, closeButton: true });
      };
 
      const setCardDialogClose = useCardDialog((state) => state.setClose)
@@ -119,7 +119,12 @@ const CardDialogContent = React.forwardRef(({
           onError: (err) => onError("delete", { error: err.message }),
      });
 
-     const { mutate: updateCardHistory, isLoading: isHistoryUpdating } = trpc.cards.updateCardHistory.useMutation({
+     // const { mutate: updateCardHistory, isLoading: isHistoryUpdating } = trpc.cards.updateCardHistory.useMutation({
+     //      onSuccess: () => onSuccess("update"),
+     //      onError: (err) => onError("update", { error: err.message }),
+     // });
+
+     const { mutate: updateCardReview, isLoading: isReviewUpdating } = trpc.cards.updateCardReview.useMutation({
           onSuccess: () => onSuccess("update"),
           onError: (err) => onError("update", { error: err.message }),
      });
@@ -139,7 +144,7 @@ const CardDialogContent = React.forwardRef(({
      }
 
      const handleWrapperClick = (onClick: VoidFunction) => {
-          !(isCreating || isUpdating || isHistoryUpdating || isDeleting) && onClick()
+          !(isCreating || isUpdating || isReviewUpdating || isDeleting) && onClick()
      };
 
      useEffect(() => {
@@ -150,7 +155,7 @@ const CardDialogContent = React.forwardRef(({
           if (!(cards.length > 0)) {
                setShowHistory(false)
           }
-     }, [index])
+     }, [cards.length, index])
 
      useEffect(() => {
           const activeCard = itemsRef.current[activeIndex];
@@ -175,8 +180,8 @@ const CardDialogContent = React.forwardRef(({
           (1000 * 60 * 60 * 24)
      ) : null;
 
-     const loadings = (isCreating || isUpdating || isDeleting || isHistoryUpdating)
-     const checks = loadings || (front === "" || back === "")
+     const loadings = (isCreating || isUpdating || isDeleting || isReviewUpdating)
+     const checks = loadings || (cards[activeIndex] && (cards[activeIndex].front === "" || cards[activeIndex].back === ""))
 
      return (
           <div
@@ -362,7 +367,7 @@ const CardDialogContent = React.forwardRef(({
                                              </motion.div>
 
                                              <div
-                                                  onClick={() => setShowHistory(true)}
+                                                  onClick={() => (cardHistory && cardHistory.length > 0) && setShowHistory(true)}
                                                   className="text-slate-600/80 font-light text-[15px] cursor-pointer">
                                                   you reviewed 3 days ago
                                              </div>
@@ -405,24 +410,26 @@ const CardDialogContent = React.forwardRef(({
                                                   onClick={async () => {
                                                        setChecked(false);
 
-                                                       updateCardHistory({ cardId: cards[activeIndex].id, status: false });
+                                                       updateCardReview({ cardId: cards[activeIndex].id, status: false });
 
-                                                       const sectionId = ""
+                                                       // updateCardHistory({ cardId: cards[activeIndex].id, status: false });
+
+                                                       // const sectionId = ""
                                                        // await getSectionId({ cardId: cards[activeIndex].id, status: false })
 
-                                                       updateCard({
-                                                            id: cards[activeIndex].id,
-                                                            front: cards[activeIndex].front,
-                                                            back: cards[activeIndex].back,
-                                                            collectionId: cards[activeIndex].collectionId,
-                                                            boxId: userBox?.id,
-                                                            sectionId: sectionId,
-                                                            partId: userBox?.sections.find((section) => section.type === "one")?.parts[0].id
-                                                       })
+                                                       // updateCard({
+                                                       //      id: cards[activeIndex].id,
+                                                       //      front: cards[activeIndex].front,
+                                                       //      back: cards[activeIndex].back,
+                                                       //      collectionId: cards[activeIndex].collectionId,
+                                                       //      boxId: userBox?.id,
+                                                       //      sectionId: sectionId,
+                                                       //      partId: userBox?.sections.find((section) => section.type === "one")?.parts[0].id
+                                                       // })
 
                                                        setIsFlipped(true);
                                                   }}
-                                                  disabled={checks}
+                                                  disabled={(checks || !cardHistory || (cardHistory && cardHistory.length === 0))}
                                                   className={cn(
                                                        (cardHistory && cardHistory[cardHistory.length - 1]?.status === false) && "bg-red-800 bg-opacity-10 border-red-900 border-opacity-15 text-red-800 hover:bg-red-800 hover:bg-opacity-15 hover:border-red-900 hover:border-opacity-20"
                                                   )} />
@@ -432,7 +439,9 @@ const CardDialogContent = React.forwardRef(({
                                                   onClick={() => {
                                                        setChecked(true);
 
-                                                       updateCardHistory({ cardId: cards[activeIndex].id, status: true });
+                                                       updateCardReview({ cardId: cards[activeIndex].id, status: false });
+
+                                                       // updateCardHistory({ cardId: cards[activeIndex].id, status: true });
 
                                                        setIsFlipped(true);
                                                   }}
@@ -448,7 +457,10 @@ const CardDialogContent = React.forwardRef(({
                          </>
                     ) : (
                          <div className="flex w-full h-full justify-center items-center">
-                              There is no card
+                              <div className="flex flex-col items-center justify-center text-center gap-y-[20px] max-w-[250px]">
+                                   Press the button below to Add your First Card
+                                   <AddNewCard type="default" />
+                              </div>
                          </div>
                     )}
                </div>

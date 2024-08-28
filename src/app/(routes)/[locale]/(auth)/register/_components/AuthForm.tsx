@@ -12,13 +12,11 @@ import React from "react"
 import { AuthFormSchema } from "@/types"
 import GoogleButton from "./GoogleButton"
 import { signIn } from "next-auth/react"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 const AuthForm = () => {
      const tRegister = useTranslations("register_page")
 
      const [isLoading, setIsLoading] = React.useState<boolean>(false)
-     const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
 
      const [email, setEmail] = React.useState<string>("")
 
@@ -51,12 +49,12 @@ const AuthForm = () => {
      }
 
      function googleRegister() {
-          setIsGoogleLoading(true);
+          setIsLoading(true);
 
           toast.promise(signIn("google", {
                redirect: false,
           }).then((_) => {
-               setIsGoogleLoading(false);
+               setIsLoading(false);
           }), {
                loading: `${tRegister("in_progress")}`,
           })
@@ -71,7 +69,7 @@ const AuthForm = () => {
                <div className="flex gap-2">
                     <GoogleButton
                          onClick={googleRegister}
-                         disabled={isLoading || isGoogleLoading}>
+                         disabled={isLoading}>
                          {tRegister("google")}
                     </GoogleButton>
                </div>
@@ -97,7 +95,7 @@ const AuthForm = () => {
                                         autoCorrect="off"
                                         autoFocus
                                         aria-autocomplete="none"
-                                        disabled={isLoading || isGoogleLoading}
+                                        disabled={isLoading}
                                         className={cn(
                                              "text-[25px] sm:text-[30px] caret-primary border-b text-slate-800 border-black/5 focus:border-black/10 transition-opacity duration-500 text-center py-3",
                                              englishBricolageGrotesqueFont.className,
@@ -110,7 +108,7 @@ const AuthForm = () => {
                               <Button
                                    onClick={() => { }}
                                    size="lg"
-                                   disabled={isLoading || isGoogleLoading}
+                                   disabled={isLoading}
                                    className="flex w-min font-bold px-[20px] py-[25px] sm:px-[25px] sm:py-[30px] rounded-[12px] transform hover:-translate-y-1"
                                    variant="default">
                                    {tRegister("submit_email")}
