@@ -17,8 +17,8 @@ const Page = () => {
                     </div>
 
                     <div className="w-full grid grid-cols-3 gap-[15px]">
-                         {[1, 2, 3, 4, 5, 6].map((index) => (
-                              <div className="w-full border-[1px] border-primary/10 px-[15px] py-[10px] rounded-[15px]">
+                         {[1, 2, 3, 4, 5, 6].map((item, index) => (
+                              <div key={index} className="w-full border-[1px] border-primary/10 px-[15px] py-[10px] rounded-[15px]">
                                    {index}
                               </div>
                          ))}

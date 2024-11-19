@@ -29,7 +29,8 @@ export const env = createEnv({
     GOOGLE_ANALYTICS_ID: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PRO_YEARLY_PLAN_ID: z.string().min(1),
-    NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1), // NEXT_PUBLIC_PUBLISHABLE_KEY: z.string().min(1),
+    NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1), 
+    // NEXT_PUBLIC_PUBLISHABLE_KEY: z.string().min(1),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // runtimeEnv: {

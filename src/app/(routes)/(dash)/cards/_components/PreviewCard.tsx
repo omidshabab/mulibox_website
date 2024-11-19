@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/context-menu";
 import { Delete, EditSquare } from "react-iconly";
 import { useCardDialog } from "@/hooks/use-dialog-store";
+import TextWidget from "@/components/TextWidget";
 
 const PreviewCard = ({ content }: { content: string }) => {
   const setCardDialogOpen = useCardDialog((state) => state.setOpen)
@@ -19,7 +20,8 @@ const PreviewCard = ({ content }: { content: string }) => {
         <ContextMenuTrigger>
           <div onClick={() => setCardDialogOpen()}>
             <div className="bg-primary/5 border-[2px] border-primary/10 rounded-[15px] px-[20px] py-[15px] text-start hover:bg-primary/10 transition-all duration-500 cursor-pointer text-[18px] font-medium text-text">
-              {content}
+              <TextWidget
+                text={content} />
             </div>
           </div>
         </ContextMenuTrigger>

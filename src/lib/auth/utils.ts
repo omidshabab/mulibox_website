@@ -1,36 +1,36 @@
-import { db } from "@/lib/db"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth"
-import { redirect } from "next/navigation"
-import { env } from "@/lib/env.mjs"
-import { Adapter } from "next-auth/adapters"
-import GoogleProvider from "next-auth/providers/google"
-import EmailProvider from "next-auth/providers/email"
-import { resend } from "../email"
-import { authRoutes } from "@/config/routes"
+import { db } from "@/lib/db";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
+import { redirect } from "next/navigation";
+import { env } from "@/lib/env.mjs";
+import { Adapter } from "next-auth/adapters";
+import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
+import { resend } from "../email";
+import { authRoutes } from "@/config/routes";
 import VerifyEmail from "../../../emails/verify";
-import {SectionType} from "@prisma/client";
+import { SectionType } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session {
     user: DefaultSession["user"] & {
       id: string;
-    },
+    };
   }
 }
 
 export type AuthSession = {
   session: {
     user: {
-      id: string
-      name?: string
-      email?: string
-      image?: string
+      id: string;
+      name?: string;
+      email?: string;
+      image?: string;
     };
-  } | null
+  } | null;
 };
 
-export const authOptions : NextAuthOptions ={
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db) as Adapter,
   pages: {
     signIn: authRoutes.default,
@@ -130,15 +130,15 @@ export const authOptions : NextAuthOptions ={
           },
         });
 
-      //   const partsData = Array.from({ length: sectionData.partCount }).map(
-      //     () => ({
-      //       sectionId: section.id,
-      //     })
-      //   );
+        //   const partsData = Array.from({ length: sectionData.partCount }).map(
+        //     () => ({
+        //       sectionId: section.id,
+        //     })
+        //   );
 
-      //   await db.part.createMany({
-      //     data: partsData,
-      //   });
+        //   await db.part.createMany({
+        //     data: partsData,
+        //   });
       }
 
       await db.user.update({
@@ -161,32 +161,21 @@ export const authOptions : NextAuthOptions ={
         },
         data: {
           emailVerified: new Date(),
-        }
-      })
+        },
+      });
     },
     async session(data) {
       /* session is active */
-    },
-  },
-  logger: {
-    error(code, metadata) {
-      //
-    },
-    warn(code) {
-      //
-    },
-    debug(code, metadata) {
-      //
     },
   },
 };
 
 export const getUserAuth = async () => {
   const session = await getServerSession(authOptions);
-  return { session } as AuthSession
+  return { session } as AuthSession;
 };
 
 export const checkAuth = async () => {
-  const { session } = await getUserAuth()
-  if (!session) redirect(authRoutes.default)
+  const { session } = await getUserAuth();
+  if (!session) redirect(authRoutes.default);
 };

@@ -38,7 +38,7 @@ export default async function layout({
 
                {children}
 
-               <Footer />
+               {/* <Footer /> */}
           </div>
      )
 }

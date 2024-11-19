@@ -7,6 +7,9 @@ export const getParts = async (sectionId: string) => {
     include: {
       cards: true,
     },
+    orderBy: {
+      createdAt: "asc",
+    },
   });
 
   return { parts: p };

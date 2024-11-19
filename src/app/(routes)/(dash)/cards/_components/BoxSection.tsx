@@ -15,7 +15,7 @@ const BoxSection = ({
      return (
           <div className="col-span-4 md:col-span-2 h-min flex flex-col gap-y-[15px] font-medium text-[15px] text-slate-800">
                {type}
-               {parts && parts.length > 0 ? (
+               {parts && parts.length > 0 && parts.every((part)=>part && part.cards.length>0) ? (
                     <>
                          {parts.map((part, index) => (
                               <>
@@ -25,7 +25,8 @@ const BoxSection = ({
                                              content={card.front} />
                                    ))}
 
-                                   <div key={index} className="w-full h-[15px] rounded-full bg-primary/50" />
+                                   {index !== (parts.length - 1) && (
+                                       <div className="border-b-[3px] border-dashed border-primary/10"/>)}
                               </>
                          ))}
                     </>

@@ -13,7 +13,7 @@ generator zod {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -24,67 +24,54 @@ enum Locale {
 }
 
 model Account {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  userId            String  @map("user_id") @db.ObjectId
+  id                String         @id @default(uuid()) @map("id")
+  userId            String         @map("user_id")
   type              String
   provider          String
-  providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @map("refresh_token")
-  access_token      String? @map("access_token")
-  expires_at        Int?    @map("expires_at")
-  token_type        String? @map("token_type")
+  providerAccountId String         @map("provider_account_id")
+  refresh_token     String?        @map("refresh_token")
+  access_token      String?        @map("access_token")
+  expires_at        Int?           @map("expires_at")
+  token_type        String?        @map("token_type")
   scope             String?
-  id_token          String? @map("id_token")
-  session_state     String? @map("session_state")
-
-  notifications Notification[]
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id_token          String?        @map("id_token")
+  session_state     String?        @map("session_state")
+  notifications     Notification[]
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime       @default(now()) @map("created_at")
+  updatedAt         DateTime       @updatedAt @map("updated_at")
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id            String        @id @default(uuid()) @map("id")
   name          String?
-  email         String?      @unique
-  emailVerified DateTime?    @map("email_verified")
+  email         String?       @unique
+  emailVerified DateTime?     @map("email_verified")
   image         String?
   accounts      Account[]
   cards         Card[]
   collections   Collection[]
   boxes         Box[]
-  outs          String[]     @db.ObjectId
-
-  locale Locale? @default(en)
-
-  subscription Subscription?
-
-  collection String? @db.ObjectId
-  box        String? @db.ObjectId
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  outs          String[]
+  locale        Locale?       @default(en)
+  subscription  Subscription?
+  collection    String?
+  box           String?
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model Notification {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  accountId String  @map("account_id") @db.ObjectId
-  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
-
-  content String
-
-  locale Locale? @default(en)
-
+  id        String   @id @default(uuid()) @map("id")
+  accountId String   @map("account_id")
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  content   String
+  locale    Locale?  @default(en)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -92,20 +79,16 @@ model Notification {
 }
 
 model Collection {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  userId String   @map("user_id") @db.ObjectId
-  name   String
-  desc   String?
-  price  Float?   @default(0)
-  slug   String?
-  tags   String[] @default([])
-  cards  Card[]
-
-  locale Locale? @default(en)
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(uuid()) @map("id")
+  userId    String   @map("user_id")
+  name      String
+  desc      String?
+  price     Float?   @default(0)
+  slug      String?
+  tags      String[] @default([])
+  cards     Card[]
+  locale    Locale?  @default(en)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -113,31 +96,24 @@ model Collection {
 }
 
 model Box {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  userId String @map("user_id") @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  sections Section[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(uuid()) @map("id")
+  userId    String    @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sections  Section[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   @@map("boxes")
 }
 
 model Section {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  boxId String @map("box_id") @db.ObjectId
-  box   Box    @relation(fields: [boxId], references: [id], onDelete: Cascade)
-
-  parts Part[]
-
-  type SectionType
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String      @id @default(uuid()) @map("id")
+  boxId     String      @map("box_id")
+  box       Box         @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  parts     Part[]
+  type      SectionType
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
 
   @@map("sections")
 }
@@ -151,15 +127,11 @@ enum SectionType {
 }
 
 model Part {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  sectionId String  @map("section_id") @db.ObjectId
-  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-
-  cards Card[]
-
-  reviewAt DateTime @map("review_at")
-
+  id        String   @id @default(uuid()) @map("id")
+  sectionId String   @map("section_id")
+  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  cards     Card[]
+  reviewAt  DateTime @map("review_at")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -167,50 +139,39 @@ model Part {
 }
 
 model Card {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  userId String @map("user_id") @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  collectionId String     @map("collection_id") @db.ObjectId
+  id           String     @id @default(uuid()) @map("id")
+  userId       String     @map("user_id")
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collectionId String     @map("collection_id")
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-
-  partId String? @map("part_id") @db.ObjectId
-  part   Part?   @relation(fields: [partId], references: [id], onDelete: Cascade)
-
-  boxId     String? @map("box_id") @db.ObjectId
-  sectionId String? @map("section_id") @db.ObjectId
-
-  front String
-  back  String
-
-  history History[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  partId       String?    @map("part_id")
+  part         Part?      @relation(fields: [partId], references: [id], onDelete: Cascade)
+  boxId        String?    @map("box_id")
+  sectionId    String?    @map("section_id")
+  front        String
+  back         String
+  history      History[]
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
 
   @@map("cards")
 }
 
 model History {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  cardId String @map("card_id") @db.ObjectId
-  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
-
-  date    DateTime    @default(now())
-  section SectionType?
-  status  Boolean
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String       @id @default(uuid()) @map("id")
+  cardId    String       @map("card_id")
+  card      Card         @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  date      DateTime     @default(now())
+  section   SectionType?
+  status    Boolean
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
 
   @@map("history")
 }
 
-model VerificationTokens {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+model VerificationToken {
+  id         String   @id @default(uuid()) @map("id")
   identifier String
   token      String   @unique
   expires    DateTime
@@ -220,9 +181,8 @@ model VerificationTokens {
 }
 
 model Subscription {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  userId                 String    @unique @map("user_id") @db.ObjectId
+  id                     String    @id @default(uuid()) @map("id")
+  userId                 String    @unique @map("user_id")
   user                   User      @relation(fields: [userId], references: [id])
   stripeCustomerId       String    @unique @map("stripe_customer_id")
   stripeSubscriptionId   String?   @map("stripe_subscription_id")

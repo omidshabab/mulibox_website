@@ -7,19 +7,19 @@ import { Spacer } from "@nextui-org/react";
 import MenuDrawer from "./MenuDrawer";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import {authRoutes, defaultRoutes} from "@/config/routes";
+import { authRoutes, defaultRoutes } from "@/config/routes";
 import Menu from "./Menu";
 // import ChangeLanguage from "./ChangeLanguage";
 import { cn } from "@/lib/utils";
 import RegisterButton from "./auth/RegisterButton";
 import { Container } from "./craft";
 import { BoxIcon } from "lucide-react";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 // import Notifications from "./Notifications";
 
 export type NavbarType = "default" | "guide" | "community" | "dash";
 
-const Navbar =  ({
+const Navbar = ({
   dir,
   type = "default",
 }: {
@@ -107,19 +107,23 @@ const Navbar =  ({
       {type !== "dash" && (
         <Container>
           <div className="flex w-full justify-center items-center pt-[20px]">
-            <div className="flex justify-between items-center rounded-full min-w-[350px] bg-transparent backdrop-blur-sm border-primary/5 border-[1px] px-[20px] py-[15px]">
-              <div
-                  onClick={()=>router.push(defaultRoutes.default)}
-                  className="flex flex-grow gap-x-[5px] cursor-pointer">
-                 <BoxIcon className="text-primary opacity-10 font-extralight" /> <span className="bg-gradient-to-b from-orange-400 to-orange-800 inline-block text-transparent bg-clip-text">/</span>
-                <div className="bg-gradient-to-b from-orange-400 to-orange-800 inline-block text-transparent bg-clip-text">
-                  mulibox.
+            <div className="flex items-center rounded-full min-w-[380px] bg-transparent backdrop-blur-sm border-primary/5 border-[1px] px-[20px] py-[15px]">
+              <div className="flex flex-grow items-center gap-x-[20px]">
+                <div
+                  onClick={() => router.push(defaultRoutes.default)}
+                  className="flex gap-x-[5px] cursor-pointer">
+                  <BoxIcon className="text-primary opacity-10 font-extralight" /> <span className="bg-gradient-to-b from-orange-400 to-orange-800 inline-block text-transparent bg-clip-text">/</span>
+                  <div className="bg-gradient-to-b from-orange-400 to-orange-800 inline-block text-transparent bg-clip-text">
+                    mulibox.
+                  </div>
                 </div>
+
+                <Menu />
               </div>
 
               <div
-                  onClick={()=>router.push(authRoutes.default)}
-                  className="text-[15px] text-slate-600 px-[15px] py-[6px] rounded-full border-[1px] border-primary/5 cursor-pointer">
+                onClick={() => router.push(authRoutes.default)}
+                className="text-[15px] text-slate-600 px-[15px] py-[6px] rounded-full border-[1px] border-primary/5 cursor-pointer">
                 register
               </div>
             </div>

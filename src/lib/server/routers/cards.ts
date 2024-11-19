@@ -15,7 +15,7 @@ import {
   updateCard,
   updateCardHistory,
 } from "@/lib/api/cards/mutations";
-import { updateCardReview } from "@/lib/cards/utils";
+import { reviewCard } from "@/lib/cards/utils";
 
 export const cardsRouter = router({
   getCards: publicProcedure.query(async () => {
@@ -34,10 +34,10 @@ export const cardsRouter = router({
     .mutation(async ({ input }) => {
       return createCard(input);
     }),
-  updateCardReview: publicProcedure
+  reviewCard: publicProcedure
     .input(updateCardReviewSchema)
     .mutation(async ({ input }) => {
-      return updateCardReview({ cardId: input.cardId, status: input.status });
+      return reviewCard({ cardId: input.cardId, status: input.status });
     }),
   updateCardHistory: publicProcedure
     .input(historyStatusSchema)

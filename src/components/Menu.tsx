@@ -32,10 +32,10 @@ const Menu = ({
      const tabs: React.ReactNode[] = [
           <MyCards />,
           <TodayCards />,
-          // <MyCollections />,
-          // <ExploreCommunity />,
-          // <MyBoxes />,
-          // <MyStatus />,
+          <MyCollections />,
+          <ExploreCommunity />,
+          <MyBoxes />,
+          <MyStatus />,
           // <LeitnerGuide />
      ];
 

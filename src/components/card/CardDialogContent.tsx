@@ -16,6 +16,8 @@ import { toast } from "sonner";
 import { useCardDialog } from "@/hooks/use-dialog-store";
 import AddNewCard from "@/components/AddNewCard";
 
+const today = new Date();
+
 const CardDialogContent = React.forwardRef(({
      cards = [],
      index,
@@ -88,6 +90,7 @@ const CardDialogContent = React.forwardRef(({
           }
 
           await utils.cards.getCards.invalidate();
+          await utils.box.getBox.invalidate();
           await utils.cards.getCardHistory.invalidate()
 
           action === "create" && setActiveIndex(cards.length)
@@ -119,12 +122,7 @@ const CardDialogContent = React.forwardRef(({
           onError: (err) => onError("delete", { error: err.message }),
      });
 
-     // const { mutate: updateCardHistory, isLoading: isHistoryUpdating } = trpc.cards.updateCardHistory.useMutation({
-     //      onSuccess: () => onSuccess("update"),
-     //      onError: (err) => onError("update", { error: err.message }),
-     // });
-
-     const { mutate: updateCardReview, isLoading: isReviewUpdating } = trpc.cards.updateCardReview.useMutation({
+     const { mutate: reviewCard, isLoading: isReviewUpdating } = trpc.cards.reviewCard.useMutation({
           onSuccess: () => onSuccess("update"),
           onError: (err) => onError("update", { error: err.message }),
      });
@@ -188,7 +186,7 @@ const CardDialogContent = React.forwardRef(({
                className="relative flex flex-col sm:flex-grow w-full h-full overflow-hidden">
                <div className={cn(
                     "pl-0 flex flex-col flex-grow w-full",
-                    showHistory && "pl-[350px]"
+                    showHistory && "ltr:lg:pl-[350px] rtl:lg:pr-[350px]"
                )}>
                     <div className="flex justify-between md:justify-center items-center px-[25px] py-[25px] gap-x-[20px]">
                          <div
@@ -368,7 +366,10 @@ const CardDialogContent = React.forwardRef(({
 
                                              <div
                                                   onClick={() => (cardHistory && cardHistory.length > 0) && setShowHistory(true)}
-                                                  className="text-slate-600/80 font-light text-[15px] cursor-pointer">
+                                                  className={cn(
+                                                       "text-slate-600/80 font-light text-[15px]",
+                                                       (cardHistory && cardHistory.length > 0) && "cursor-pointer"
+                                                  )}>
                                                   you reviewed 3 days ago
                                              </div>
                                         </div>
@@ -410,28 +411,15 @@ const CardDialogContent = React.forwardRef(({
                                                   onClick={async () => {
                                                        setChecked(false);
 
-                                                       updateCardReview({ cardId: cards[activeIndex].id, status: false });
-
-                                                       // updateCardHistory({ cardId: cards[activeIndex].id, status: false });
-
-                                                       // const sectionId = ""
-                                                       // await getSectionId({ cardId: cards[activeIndex].id, status: false })
-
-                                                       // updateCard({
-                                                       //      id: cards[activeIndex].id,
-                                                       //      front: cards[activeIndex].front,
-                                                       //      back: cards[activeIndex].back,
-                                                       //      collectionId: cards[activeIndex].collectionId,
-                                                       //      boxId: userBox?.id,
-                                                       //      sectionId: sectionId,
-                                                       //      partId: userBox?.sections.find((section) => section.type === "one")?.parts[0].id
-                                                       // })
+                                                       reviewCard({ cardId: cards[activeIndex].id, status: false });
 
                                                        setIsFlipped(true);
                                                   }}
-                                                  disabled={(checks || !cardHistory || (cardHistory && cardHistory.length === 0))}
+                                                  disabled={(checks || !cardHistory || (cardHistory && cardHistory.length === 0) || (cardHistory[cardHistory.length - 1] && cardHistory[cardHistory.length - 1].date.toISOString().slice(0, 10) === today.toISOString().slice(0, 10) && cardHistory[cardHistory.length - 1].status === false) || (cardHistory.length === 1 && cardHistory[cardHistory.length - 1].date.toISOString().slice(0, 10) === today.toISOString().slice(0, 10)))}
                                                   className={cn(
-                                                       (cardHistory && cardHistory[cardHistory.length - 1]?.status === false) && "bg-red-800 bg-opacity-10 border-red-900 border-opacity-15 text-red-800 hover:bg-red-800 hover:bg-opacity-15 hover:border-red-900 hover:border-opacity-20"
+                                                       (cardHistory && cardHistory[cardHistory.length - 1] && cardHistory[cardHistory.length - 1].createdAt
+                                                            .toISOString()
+                                                            .slice(0, 10) === today.toISOString().slice(0, 10) && cardHistory[cardHistory.length - 1].status === false) && "bg-red-800 bg-opacity-10 border-red-900 border-opacity-15 text-red-800 hover:bg-red-800 hover:bg-opacity-15 hover:border-red-900 hover:border-opacity-20"
                                                   )} />
 
                                              <IconButton
@@ -439,15 +427,15 @@ const CardDialogContent = React.forwardRef(({
                                                   onClick={() => {
                                                        setChecked(true);
 
-                                                       updateCardReview({ cardId: cards[activeIndex].id, status: false });
-
-                                                       // updateCardHistory({ cardId: cards[activeIndex].id, status: true });
+                                                       reviewCard({ cardId: cards[activeIndex].id, status: true });
 
                                                        setIsFlipped(true);
                                                   }}
-                                                  disabled={checks}
+                                                  disabled={(checks || !cardHistory || (cardHistory[cardHistory.length - 1] && cardHistory[cardHistory.length - 1].date.toISOString().slice(0, 10) === today.toISOString().slice(0, 10) && cardHistory[cardHistory.length - 1].status === true))}
                                                   className={cn(
-                                                       (cardHistory && cardHistory[cardHistory.length - 1]?.status === true) && "bg-green-800 bg-opacity-10 border-green-900 border-opacity-15 text-green-800 hover:bg-green-800 hover:bg-opacity-15 hover:border-green-900 hover:border-opacity-20"
+                                                       (cardHistory && cardHistory[cardHistory.length - 1] && cardHistory[cardHistory.length - 1].createdAt
+                                                            .toISOString()
+                                                            .slice(0, 10) === today.toISOString().slice(0, 10) && cardHistory[cardHistory.length - 1].status === true) && "bg-green-800 bg-opacity-10 border-green-900 border-opacity-15 text-green-800 hover:bg-green-800 hover:bg-opacity-15 hover:border-green-900 hover:border-opacity-20"
                                                   )} />
 
                                              <IconButton disabled={!canScrollNext || loadings} onClick={scrollNext} icon={ArrowRight} />
@@ -467,8 +455,8 @@ const CardDialogContent = React.forwardRef(({
 
                {(cards.length > 0) && (
                     <div className={cn(
-                         "absolute flex flex-grow flex-col gap-y-[10px] bg-primary/5 max-w-[350px] w-full h-full px-[25px] py-[20px] font-medium text-text backdrop-blur-md -translate-x-full ease-in-out duration-300 z-30",
-                         showHistory && "translate-x-0"
+                         "absolute flex flex-grow flex-col gap-y-[10px] bg-primary/5 max-w-[350px] w-full h-full px-[25px] py-[20px] font-medium text-text backdrop-blur-md ltr:-translate-x-full rtl:translate-x-full ease-in-out duration-300 z-30",
+                         showHistory && "ltr:translate-x-0 rtl:translate-x-0"
                     )}>
                          <div className="flex justify-between items-center">
                               History of this Card

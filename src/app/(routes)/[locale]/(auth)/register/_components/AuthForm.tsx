@@ -106,7 +106,6 @@ const AuthForm = () => {
                          <div
                               className="relative flex gap-5">
                               <Button
-                                   onClick={() => { }}
                                    size="lg"
                                    disabled={isLoading}
                                    className="flex w-min font-bold px-[20px] py-[25px] sm:px-[25px] sm:py-[30px] rounded-[12px] transform hover:-translate-y-1"

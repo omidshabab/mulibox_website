@@ -15,7 +15,7 @@ export async function GET() {
   try {
     const { cards } = await getCards();
 
-    revalidatePath(dashRoutes.default); // optional - assumes you will have named route same as entity
+    revalidatePath(dashRoutes.default);
 
     return NextResponse.json(cards, { status: 200 });
   } catch (err) {
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     const validatedData = insertCardParams.parse(await req.json());
     const { card } = await createCard(validatedData);
 
-    revalidatePath(dashRoutes.default); // optional - assumes you will have named route same as entity
+    revalidatePath(dashRoutes.default);
 
     return NextResponse.json(card, { status: 201 });
   } catch (err) {

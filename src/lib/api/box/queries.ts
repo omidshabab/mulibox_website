@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/index";
+import { db } from "@/lib/db";
 import { getUserAuth } from "@/lib/auth/utils";
 import { BoxId, boxIdSchema } from "@/lib/db/schema/boxes";
 
@@ -12,11 +12,21 @@ export const getBox = async () => {
         include: {
           parts: {
             include: {
-              cards: true,
+              cards: {
+                orderBy: {
+                  updatedAt: "asc",
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "asc",
             },
           },
         },
-      }, // Include the sections relation
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
     },
   });
 
@@ -35,9 +45,18 @@ export const getBoxes = async () => {
             include: {
               cards: true,
             },
+            orderBy: {
+              updatedAt: "asc",
+            },
           },
         },
+        orderBy: {
+          updatedAt: "asc",
+        },
       },
+    },
+    orderBy: {
+      createdAt: "asc",
     },
   });
 
