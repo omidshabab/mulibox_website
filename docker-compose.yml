@@ -1,0 +1,14 @@
+services: 
+  db: 
+    image: postgres 
+    ports:
+      - "9732:5432" 
+    volumes:
+      - pgdata:/var/lib/postgresql/data 
+    environment: 
+      - POSTGRES_DB=development 
+      - POSTGRES_USER=mulibox 
+      - POSTGRES_PASSWORD=root 
+
+volumes: 
+  pgdata: 

@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/index";
+import { db } from "@/lib/db";
 import { getUserAuth } from "@/lib/auth/utils";
 import { CardId, cardIdSchema } from "@/lib/db/schema/cards";
 
@@ -9,6 +9,9 @@ export const getCards = async () => {
     where: { userId: session?.user.id! },
     include: {
       history: true,
+    },
+    orderBy: {
+      createdAt: "asc",
     },
   });
 

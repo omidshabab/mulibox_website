@@ -3,6 +3,7 @@ import { LangDir, LangFont } from "@/lib/fonts";
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { Toaster } from "@/components/ui/sonner";
 import { env } from "@/lib/env.mjs";
+import { cn } from "@/lib/utils";
 
 type Props = {
      children: React.ReactNode;
@@ -19,11 +20,11 @@ const Document = ({
      return (
           <html lang={locale} dir={dir}>
                <body
-                    className={font}>
+                    className={cn(font, "antialiased")}>
                     <main
-                         className="w-full h-screen bg-grid-black/[0.1] relative flex items-center justify-center">
+                         className="w-full min-h-screen bg-grid-black/[0.1] relative flex items-center justify-center">
                          <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
-                         <div className="w-full h-full z-20">
+                         <div className="w-full z-20">
                               {children}
                          </div>
                     </main>

@@ -3,6 +3,7 @@ import { publicProcedure, router } from "@/lib/server/trpc";
 
 import {
   cardIdSchema,
+  updateCardReviewSchema,
   historyStatusSchema,
   insertCardParams,
   updateCardParams,
@@ -14,6 +15,7 @@ import {
   updateCard,
   updateCardHistory,
 } from "@/lib/api/cards/mutations";
+import { reviewCard } from "@/lib/cards/utils";
 
 export const cardsRouter = router({
   getCards: publicProcedure.query(async () => {
@@ -31,6 +33,11 @@ export const cardsRouter = router({
     .input(insertCardParams)
     .mutation(async ({ input }) => {
       return createCard(input);
+    }),
+  reviewCard: publicProcedure
+    .input(updateCardReviewSchema)
+    .mutation(async ({ input }) => {
+      return reviewCard({ cardId: input.cardId, status: input.status });
     }),
   updateCardHistory: publicProcedure
     .input(historyStatusSchema)

@@ -17,6 +17,7 @@ import ExploreCommunity from "./MenuItems/ExploreCommunity";
 import MyStatus from "./MenuItems/MyStatus";
 import MyBoxes from "./MenuItems/MyBoxes";
 import { NavbarType } from "./Navbar";
+import LeitnerGuide from "./MenuItems/LeitnerGuide";
 
 const Menu = ({
      type = "default",
@@ -34,7 +35,8 @@ const Menu = ({
           <MyCollections />,
           <ExploreCommunity />,
           <MyBoxes />,
-          <MyStatus />
+          <MyStatus />,
+          // <LeitnerGuide />
      ];
 
      return (

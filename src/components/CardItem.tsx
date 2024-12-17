@@ -1,5 +1,5 @@
 import { CardType } from "@/lib/cards";
-import { englishBricolageGrotesqueFont } from "@/lib/fonts";
+import { dirByValue, englishBricolageGrotesqueFont, fontByValue, isRTL, persianEstedadFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { Input } from "antd";
 import { ChangeEventHandler } from "react";
@@ -31,6 +31,7 @@ const CardItem = ({
       </div>
 
       <TextArea
+        dir={dirByValue(value)}
         value={value}
         readOnly={readOnly}
         placeholder={`type ${type} of the card here ...`}
@@ -40,7 +41,7 @@ const CardItem = ({
         onChange={onChange}
         className={cn(
           "text-center text-[18px] leading-[2.0rem] text-ellipsis text-text none-scroll-bar overflow-y-hidden",
-          englishBricolageGrotesqueFont.className,
+          fontByValue(value),
         )}
       />
     </div>

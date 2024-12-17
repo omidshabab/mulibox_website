@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { Locale } from "@prisma/client"
-import { CompleteAccount, relatedAccountSchema, CompleteCard, relatedCardSchema, CompleteCollection, relatedCollectionSchema, CompleteSession, relatedSessionSchema, CompleteBox, relatedBoxSchema, CompleteSubscription, relatedSubscriptionSchema } from "./index"
+import { CompleteAccount, relatedAccountSchema, CompleteCard, relatedCardSchema, CompleteCollection, relatedCollectionSchema, CompleteBox, relatedBoxSchema, CompleteSubscription, relatedSubscriptionSchema } from "./index"
 
 export const userSchema = z.object({
   id: z.string(),
@@ -20,7 +20,6 @@ export interface CompleteUser extends z.infer<typeof userSchema> {
   accounts: CompleteAccount[]
   cards: CompleteCard[]
   collections: CompleteCollection[]
-  sessions: CompleteSession[]
   boxes: CompleteBox[]
   subscription?: CompleteSubscription | null
 }
@@ -34,7 +33,6 @@ export const relatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() => userSch
   accounts: relatedAccountSchema.array(),
   cards: relatedCardSchema.array(),
   collections: relatedCollectionSchema.array(),
-  sessions: relatedSessionSchema.array(),
   boxes: relatedBoxSchema.array(),
   subscription: relatedSubscriptionSchema.nullish(),
 }))

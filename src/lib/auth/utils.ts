@@ -1,4 +1,4 @@
-import { db } from "@/lib/db/index";
+import { db } from "@/lib/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import { redirect } from "next/navigation";
@@ -7,8 +7,8 @@ import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import { resend } from "../email";
-import VerifyEmail from "emails/verify";
 import { authRoutes } from "@/config/routes";
+import VerifyEmail from "../../../emails/verify";
 import { SectionType } from "@prisma/client";
 
 declare module "next-auth" {
@@ -36,10 +36,30 @@ export const authOptions: NextAuthOptions = {
     signIn: authRoutes.default,
     error: authRoutes.error,
   },
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    session: ({ session, user }) => {
-      session.user.id = user.id;
-      return session;
+    jwt: ({ token, user }) => {
+      if (user) {
+        const u = user as unknown as any;
+        return {
+          ...token,
+          id: u.id,
+          randomKey: u.randomKey,
+        };
+      }
+      return token;
+    },
+    session(params) {
+      return {
+        ...params.session,
+        user: {
+          ...params.session.user,
+          id: params.token.id as string,
+          randomKey: params.token.randomKey,
+        },
+      };
     },
   },
   providers: [
@@ -93,33 +113,33 @@ export const authOptions: NextAuthOptions = {
       });
 
       // // Define the sections and their respective parts
-      // const sectionsData = [
-      //   { type: "one", partCount: 1 },
-      //   { type: "two", partCount: 2 },
-      //   { type: "three", partCount: 4 },
-      //   { type: "four", partCount: 8 },
-      //   { type: "five", partCount: 15 },
-      // ];
+      const sectionsData = [
+        { type: "one", partCount: 1 },
+        { type: "two", partCount: 2 },
+        { type: "three", partCount: 4 },
+        { type: "four", partCount: 8 },
+        { type: "five", partCount: 15 },
+      ];
 
       // // Create sections and parts
-      // for (const sectionData of sectionsData) {
-      //   const section = await db.section.create({
-      //     data: {
-      //       boxId: box.id,
-      //       type: sectionData.type as SectionType,
-      //     },
-      //   });
+      for (const sectionData of sectionsData) {
+        const section = await db.section.create({
+          data: {
+            boxId: box.id,
+            type: sectionData.type as SectionType,
+          },
+        });
 
-      //   const partsData = Array.from({ length: sectionData.partCount }).map(
-      //     () => ({
-      //       sectionId: section.id,
-      //     })
-      //   );
+        //   const partsData = Array.from({ length: sectionData.partCount }).map(
+        //     () => ({
+        //       sectionId: section.id,
+        //     })
+        //   );
 
-      //   await db.part.createMany({
-      //     data: partsData,
-      //   });
-      // }
+        //   await db.part.createMany({
+        //     data: partsData,
+        //   });
+      }
 
       await db.user.update({
         where: {
@@ -134,22 +154,18 @@ export const authOptions: NextAuthOptions = {
     async updateUser(data) {
       /* user updated - e.g. their email was verified */
     },
-    async linkAccount(data) {
-      /* account (e.g. Twitter) linked to a user */
+    async linkAccount({ user, account }) {
+      await db.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          emailVerified: new Date(),
+        },
+      });
     },
     async session(data) {
       /* session is active */
-    },
-  },
-  logger: {
-    error(code, metadata) {
-      //
-    },
-    warn(code) {
-      //
-    },
-    debug(code, metadata) {
-      //
     },
   },
 };

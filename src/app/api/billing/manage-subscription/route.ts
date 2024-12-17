@@ -1,4 +1,4 @@
-import { stripe } from "@/lib/stripe/index";
+import { stripe } from "@/lib/stripe";
 import { absoluteUrl } from "@/lib/utils";
 
 interface ManageStripeSubscriptionActionProps {

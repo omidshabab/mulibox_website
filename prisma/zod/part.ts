@@ -4,6 +4,7 @@ import { CompleteSection, relatedSectionSchema, CompleteCard, relatedCardSchema 
 export const partSchema = z.object({
   id: z.string(),
   sectionId: z.string(),
+  reviewAt: z.date(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

@@ -9,6 +9,7 @@ import MyCollections from "./MenuItems/MyCollections";
 import ExploreCommunity from "./MenuItems/ExploreCommunity";
 import MyStatus from "./MenuItems/MyStatus";
 import MyBoxes from "./MenuItems/MyBoxes";
+import LeitnerGuide from "./MenuItems/LeitnerGuide";
 
 const MenuDrawer = () => {
      const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -20,10 +21,11 @@ const MenuDrawer = () => {
      const tabs: React.ReactNode[] = [
           <MyCards />,
           <TodayCards />,
-          <MyCollections />,
-          <ExploreCommunity />,
-          <MyBoxes />,
-          <MyStatus />
+          // <MyCollections />,
+          // <ExploreCommunity />,
+          // <MyBoxes />,
+          // <MyStatus />,
+          // <LeitnerGuide />
      ];
 
      return (

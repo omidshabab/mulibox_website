@@ -46,9 +46,9 @@ const AddNewCard = ({
 
      const handleAddCard = async () => {
           if (collection) {
-               const newCardParams: NewCardParams = { front: "", back: "", collectionId: collection.id }
+               const newCard: NewCardParams = { front: "", back: "", collectionId: collection.id }
 
-               createCard(newCardParams);
+               createCard(newCard);
           }
      };
 

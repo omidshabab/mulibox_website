@@ -33,7 +33,7 @@ export const config = {
   // Match only internationalized pathnames
   matcher: [
     "/",
-    "/(en)/:path*",
+    "/(en|fa)/:path*",
     "/guide",
     "/guide/:path*",
     "/community",
