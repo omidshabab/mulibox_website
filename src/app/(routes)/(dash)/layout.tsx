@@ -1,4 +1,4 @@
-import NextAuthProvider from "@/lib/auth/Provider";
+import AuthProvider from "@/lib/auth/Provider";
 import { checkAuth } from "@/lib/auth/utils";
 import { Metadata } from "next";
 import Document from "@/components/Document";
@@ -36,7 +36,7 @@ export default async function layout({
      return (
           <Document locale={locale}>
                <NextIntlClientProvider messages={messages}>
-                    <NextAuthProvider>
+                    <AuthProvider>
                          <TrpcProvider cookies={cookies().toString()}>
                               <Providers>
                                    <div className="flex w-full h-screen justify-center">
@@ -44,7 +44,7 @@ export default async function layout({
                                    </div>
                               </Providers>
                          </TrpcProvider>
-                    </NextAuthProvider>
+                    </AuthProvider>
                </NextIntlClientProvider>
           </Document>
      )

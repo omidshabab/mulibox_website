@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { dirByValue, englishBricolageGrotesqueFont, fontByValue, isRTL, persianEstedadFont } from "@/lib/fonts";
+import { dirByValue, fontByValue } from "@/lib/fonts";
 
 const TextWidget = ({
     text

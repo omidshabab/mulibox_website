@@ -29,15 +29,15 @@ const Menu = ({
      const tGeneral = useTranslations("general");
      const tMenu = useTranslations("menu");
 
-     const tabs: React.ReactNode[] = [
-          <MyCards />,
-          <TodayCards />,
-          <MyCollections />,
-          <ExploreCommunity />,
-          <MyBoxes />,
-          <MyStatus />,
-          // <LeitnerGuide />
-     ];
+    const tabs: React.ReactNode[] = [
+         <MyCards key="my-cards" />,
+         <TodayCards key="today-cards" />,
+         <MyCollections key="my-collections" />,
+         <ExploreCommunity key="explore-community" />,
+         <MyBoxes key="my-boxes" />,
+         <MyStatus key="my-status" />,
+         // <LeitnerGuide key="leitner-guide" />
+    ];
 
      return (
           <NavigationMenu dir={dir}>

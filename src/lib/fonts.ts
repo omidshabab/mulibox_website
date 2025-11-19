@@ -44,6 +44,24 @@ export const englishBricolageGrotesqueFont = localFont({
   variable: "--font-heading",
 });
 
+export const englishPallyFont = localFont({
+  src: [
+    {
+      path: "../assets/fonts/en/Pally/Pally-Regular.ttf",
+      weight: "400",
+    },
+    {
+      path: "../assets/fonts/en/Pally/Pally-Medium.ttf",
+      weight: "500",
+    },
+    {
+      path: "../assets/fonts/en/Pally/Pally-Bold.ttf",
+      weight: "700",
+    },
+  ],
+  variable: "--font-heading",
+});
+
 // PERSIAN FONTS
 export const persianEstedadFont = localFont({
   src: [
@@ -91,11 +109,11 @@ export const persianEstedadFont = localFont({
 export function LangFont(locale: string): string {
   switch (locale) {
     case "en":
-      return englishBricolageGrotesqueFont.className;
+      return englishPallyFont.className;
     case "fa":
       return persianEstedadFont.className;
     default:
-      return englishBricolageGrotesqueFont.className;
+      return englishPallyFont.className;
   }
 }
 
@@ -106,7 +124,7 @@ export function fontByValue(value: string): string {
     case true:
       return persianEstedadFont.className;
     default:
-      return englishBricolageGrotesqueFont.className;
+      return englishPallyFont.className;
   }
 }
 

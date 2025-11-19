@@ -18,14 +18,16 @@ import AddNewCard from "@/components/AddNewCard";
 
 const today = new Date();
 
-const CardDialogContent = React.forwardRef(({
-     cards = [],
-     index,
-     type,
-}: {
+type CardDialogContentProps = {
      cards?: Card[],
      index?: number,
      type?: CardListFilter
+};
+
+const CardDialogContent = React.forwardRef<HTMLDivElement, CardDialogContentProps>(({
+     cards = [],
+     index,
+     type,
 }, ref) => {
      const [activeIndex, setActiveIndex] = useState(cards.length);
 
@@ -181,8 +183,9 @@ const CardDialogContent = React.forwardRef(({
      const loadings = (isCreating || isUpdating || isDeleting || isReviewUpdating)
      const checks = loadings || (cards[activeIndex] && (cards[activeIndex].front === "" || cards[activeIndex].back === ""))
 
-     return (
-          <div
+    return (
+         <div
+              ref={ref}
                className="relative flex flex-col sm:flex-grow w-full h-full overflow-hidden">
                <div className={cn(
                     "pl-0 flex flex-col flex-grow w-full",
@@ -481,6 +484,8 @@ const CardDialogContent = React.forwardRef(({
                )}
           </div>
      );
-})
+});
+
+CardDialogContent.displayName = "CardDialogContent";
 
 export default CardDialogContent;

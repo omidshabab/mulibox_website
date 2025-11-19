@@ -24,24 +24,24 @@ enum Locale {
 }
 
 model Account {
-  id                String         @id @default(uuid()) @map("id")
-  userId            String         @map("user_id")
-  type              String
-  provider          String
-  providerAccountId String         @map("provider_account_id")
-  refresh_token     String?        @map("refresh_token")
-  access_token      String?        @map("access_token")
-  expires_at        Int?           @map("expires_at")
-  token_type        String?        @map("token_type")
-  scope             String?
-  id_token          String?        @map("id_token")
-  session_state     String?        @map("session_state")
-  notifications     Notification[]
-  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt         DateTime       @default(now()) @map("created_at")
-  updatedAt         DateTime       @updatedAt @map("updated_at")
+  id                   String         @id @default(uuid()) @map("id")
+  userId               String         @map("user_id")
+  type                 String         @default("oauth") @map("type")
+  providerId           String         @map("provider")
+  accountId            String         @map("provider_account_id")
+  refreshToken         String?        @map("refresh_token")
+  accessToken          String?        @map("access_token")
+  accessTokenExpiresAt DateTime?      @map("expires_at")
+  tokenType            String?        @map("token_type")
+  scope                String?
+  idToken              String?        @map("id_token")
+  sessionState         String?        @map("session_state")
+  notifications        Notification[]
+  user                 User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt            DateTime       @default(now()) @map("created_at")
+  updatedAt            DateTime       @updatedAt @map("updated_at")
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, accountId])
   @@map("accounts")
 }
 
@@ -49,12 +49,13 @@ model User {
   id            String        @id @default(uuid()) @map("id")
   name          String?
   email         String?       @unique
-  emailVerified DateTime?     @map("email_verified")
+  emailVerified Boolean       @default(false) @map("email_verified")
   image         String?
   accounts      Account[]
   cards         Card[]
   collections   Collection[]
   boxes         Box[]
+  sessions      Session[]
   outs          String[]
   locale        Locale?       @default(en)
   subscription  Subscription?
@@ -76,6 +77,20 @@ model Notification {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("notifications")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @map("id")
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("sessions")
 }
 
 model Collection {
@@ -170,13 +185,15 @@ model History {
   @@map("history")
 }
 
-model VerificationToken {
+model Verification {
   id         String   @id @default(uuid()) @map("id")
   identifier String
-  token      String   @unique
-  expires    DateTime
+  value      String   @map("token")
+  expiresAt  DateTime @map("expires")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  @@unique([identifier, token])
+  @@unique([identifier, value])
   @@map("tokens")
 }
 

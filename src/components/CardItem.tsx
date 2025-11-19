@@ -1,5 +1,5 @@
 import { CardType } from "@/lib/cards";
-import { dirByValue, englishBricolageGrotesqueFont, fontByValue, isRTL, persianEstedadFont } from "@/lib/fonts";
+import { dirByValue, fontByValue, isRTL, persianEstedadFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { Input } from "antd";
 import { ChangeEventHandler } from "react";

@@ -18,15 +18,15 @@ const MenuDrawer = () => {
 
      const handleClose = () => setIsDrawerOpen(false);
 
-     const tabs: React.ReactNode[] = [
-          <MyCards />,
-          <TodayCards />,
-          // <MyCollections />,
-          // <ExploreCommunity />,
-          // <MyBoxes />,
-          // <MyStatus />,
-          // <LeitnerGuide />
-     ];
+    const tabs: React.ReactNode[] = [
+         <MyCards key="my-cards" />,
+         <TodayCards key="today-cards" />,
+         // <MyCollections key="my-collections" />,
+         // <ExploreCommunity key="explore-community" />,
+         // <MyBoxes key="my-boxes" />,
+         // <MyStatus key="my-status" />,
+         // <LeitnerGuide key="leitner-guide" />
+    ];
 
      return (
           <div className="flex flex-col justify-center items-center">

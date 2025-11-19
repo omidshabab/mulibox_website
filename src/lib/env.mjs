@@ -8,20 +8,21 @@ export const env = createEnv({
       .default("development"),
     DATABASE_URL: z.string().min(1),
 
-    NEXTAUTH_SECRET:
+    BETTER_AUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
         : z.string().min(1).optional(),
-    NEXTAUTH_URL: z.preprocess(
-      // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
-      // Since NextAuth.js automatically uses the VERCEL_URL if present.
+    BETTER_AUTH_URL: z.preprocess(
       (str) => process.env.VERCEL_URL ?? str,
-      // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL_URL ? z.string().min(1) : z.string().url()
     ),
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
+    RESEND_FROM_EMAIL: z
+      .string()
+      .min(1)
+      .default("Mulibox <onboarding@resend.dev>"),
     STRIPE_SECRET_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
   },

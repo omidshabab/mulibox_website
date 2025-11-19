@@ -7,7 +7,10 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc/client";
 import { useState } from "react";
-import { signOut } from "next-auth/react";
+import { signOut } from "@/lib/auth/client";
+import { useRouter } from "next/navigation";
+import { authRoutes } from "@/config/routes";
+import { toast } from "sonner";
 
 const ProfileAvatar = ({
     isMobile = false
@@ -15,11 +18,20 @@ const ProfileAvatar = ({
     isMobile?: boolean
 }) => {
     const [isSigningOut, setIsSigningOut] = useState(false);
+    const router = useRouter();
 
     const handleSignOut = async () => {
         setIsSigningOut(true);
-        await signOut();
-        setIsSigningOut(false);
+        try {
+            await signOut();
+            router.replace(authRoutes.default);
+            router.refresh();
+        } catch (error) {
+            toast.error("Unable to log out. Please try again.");
+            console.error(error);
+        } finally {
+            setIsSigningOut(false);
+        }
     };
 
     const user = trpc.account.getUser.useQuery().data?.user;

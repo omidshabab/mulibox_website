@@ -1,181 +1,171 @@
-import { db } from "@/lib/db";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
-import { redirect } from "next/navigation";
-import { env } from "@/lib/env.mjs";
-import { Adapter } from "next-auth/adapters";
-import GoogleProvider from "next-auth/providers/google";
-import EmailProvider from "next-auth/providers/email";
-import { resend } from "../email";
 import { authRoutes } from "@/config/routes";
+import { db } from "@/lib/db";
+import { resend } from "@/lib/email";
+import { env } from "@/lib/env.mjs";
 import VerifyEmail from "../../../emails/verify";
 import { SectionType } from "@prisma/client";
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { nextCookies } from "better-auth/next-js";
+import { magicLink } from "better-auth/plugins/magic-link";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-declare module "next-auth" {
-  interface Session {
-    user: DefaultSession["user"] & {
-      id: string;
-    };
+const createDefaultResources = async (userId: string) => {
+  const collection = await db.collection.create({
+    data: {
+      userId,
+      name: "my collection",
+    },
+  });
+
+  const box = await db.box.create({
+    data: {
+      userId,
+    },
+  });
+
+  const sectionsData = [
+    { type: "one" },
+    { type: "two" },
+    { type: "three" },
+    { type: "four" },
+    { type: "five" },
+  ];
+
+  for (const sectionData of sectionsData) {
+    await db.section.create({
+      data: {
+        boxId: box.id,
+        type: sectionData.type as SectionType,
+      },
+    });
   }
-}
 
-export type AuthSession = {
-  session: {
-    user: {
-      id: string;
-      name?: string;
-      email?: string;
-      image?: string;
-    };
-  } | null;
+  await db.user.update({
+    where: { id: userId },
+    data: {
+      collection: collection.id,
+      box: box.id,
+    },
+  });
 };
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(db) as Adapter,
-  pages: {
-    signIn: authRoutes.default,
-    error: authRoutes.error,
-  },
-  session: {
-    strategy: "jwt",
-  },
-  callbacks: {
-    jwt: ({ token, user }) => {
-      if (user) {
-        const u = user as unknown as any;
-        return {
-          ...token,
-          id: u.id,
-          randomKey: u.randomKey,
-        };
-      }
-      return token;
-    },
-    session(params) {
-      return {
-        ...params.session,
-        user: {
-          ...params.session.user,
-          id: params.token.id as string,
-          randomKey: params.token.randomKey,
-        },
-      };
-    },
-  },
-  providers: [
-    GoogleProvider({
+export const auth = betterAuth({
+  appName: "Mulibox",
+  secret: env.BETTER_AUTH_SECRET,
+  baseURL: env.BETTER_AUTH_URL,
+  database: prismaAdapter(db, {
+    provider: "postgresql",
+  }),
+  socialProviders: {
+    google: {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
-    EmailProvider({
-      sendVerificationRequest: async ({ identifier, url }) => {
-        const payload = {
-          email: identifier,
-          url,
-        };
+    },
+  },
+  user: {
+    modelName: "user",
+  },
+  session: {
+    modelName: "session",
+  },
+  account: {
+    modelName: "account",
+  },
+  verification: {
+    modelName: "verification",
+  },
+  plugins: [
+    nextCookies(),
+    magicLink({
+      async sendMagicLink({ email, url }) {
+        try {
+          const result = await resend.emails.send({
+            from: env.RESEND_FROM_EMAIL,
+            to: [email],
+            subject: "Confirm Your Email to Access Your Leitner Box Account",
+            react: VerifyEmail({ url }),
+          });
 
-        const result = await resend.emails.send({
-          from: "mulibox. <hey@mulibox.com>",
-          to: [payload.email],
-          subject: "Confirm Your Email to Access Your Leitner Box Account",
-          react: VerifyEmail({ url: payload.url }),
-        });
+          if (result.error) {
+            throw new Error(result.error.message ?? "Failed to send magic link");
+          }
+        } catch (error) {
+          if (env.NODE_ENV !== "production") {
+            console.warn(
+              "[auth] Failed to send magic-link email via Resend. Logging link instead.",
+              error
+            );
+            console.info(`[auth] Magic link for ${email}: ${url}`);
+            return;
+          }
 
-        if (result.error) {
-          console.log(`ERROR::NextAuth-EmailProvider: ${result.error}`);
-
-          throw new Error(`${result.error}`);
+          throw error instanceof Error
+            ? error
+            : new Error("Failed to send magic link");
         }
       },
     }),
   ],
-  events: {
-    async signIn(data) {
-      /* on successful sign in */
-    },
-    async signOut(data) {
-      /* on signout */
-    },
-    async createUser({ ...data }) {
-      /* user created */
-      const collection = await db.collection.create({
-        data: {
-          userId: data.user.id,
-          name: "my collection",
+  databaseHooks: {
+    user: {
+      create: {
+        async after(user) {
+          await createDefaultResources(user.id);
         },
-      });
-
-      // Create a default box for the user
-      const box = await db.box.create({
-        data: {
-          userId: data.user.id,
-        },
-      });
-
-      // // Define the sections and their respective parts
-      const sectionsData = [
-        { type: "one", partCount: 1 },
-        { type: "two", partCount: 2 },
-        { type: "three", partCount: 4 },
-        { type: "four", partCount: 8 },
-        { type: "five", partCount: 15 },
-      ];
-
-      // // Create sections and parts
-      for (const sectionData of sectionsData) {
-        const section = await db.section.create({
-          data: {
-            boxId: box.id,
-            type: sectionData.type as SectionType,
-          },
-        });
-
-        //   const partsData = Array.from({ length: sectionData.partCount }).map(
-        //     () => ({
-        //       sectionId: section.id,
-        //     })
-        //   );
-
-        //   await db.part.createMany({
-        //     data: partsData,
-        //   });
-      }
-
-      await db.user.update({
-        where: {
-          id: data.user.id,
-        },
-        data: {
-          collection: collection.id,
-          box: box.id,
-        },
-      });
-    },
-    async updateUser(data) {
-      /* user updated - e.g. their email was verified */
-    },
-    async linkAccount({ user, account }) {
-      await db.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          emailVerified: new Date(),
-        },
-      });
-    },
-    async session(data) {
-      /* session is active */
+      },
     },
   },
+});
+
+type SessionUser = {
+  id: string;
+  email?: string;
+  name?: string;
+  image?: string | null;
 };
 
-export const getUserAuth = async () => {
-  const session = await getServerSession(authOptions);
-  return { session } as AuthSession;
+type SessionPayload = {
+  user: SessionUser;
+  token: string;
+  expiresAt: Date;
+};
+
+export type AuthSession = {
+  session: SessionPayload | null;
+};
+
+export const getUserAuth = async (): Promise<AuthSession> => {
+  "use server";
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.session || !session?.user) {
+      return { session: null };
+    }
+
+    return {
+      session: {
+        user: {
+          id: session.user.id,
+          email: session.user.email ?? undefined,
+          name: session.user.name ?? undefined,
+          image: session.user.image ?? null,
+        },
+        token: session.session.token,
+        expiresAt: session.session.expiresAt,
+      },
+    };
+  } catch {
+    return { session: null };
+  }
 };
 
 export const checkAuth = async () => {
+  "use server";
   const { session } = await getUserAuth();
   if (!session) redirect(authRoutes.default);
 };

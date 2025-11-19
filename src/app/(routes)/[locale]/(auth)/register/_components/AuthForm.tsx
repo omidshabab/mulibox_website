@@ -2,7 +2,7 @@ import { Form, FormField } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { englishBricolageGrotesqueFont } from "@/lib/fonts"
+import { englishPallyFont } from "@/lib/fonts"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
@@ -11,7 +11,7 @@ import { registerSchema } from "@/lib/validations/auth"
 import React from "react"
 import { AuthFormSchema } from "@/types"
 import GoogleButton from "./GoogleButton"
-import { signIn } from "next-auth/react"
+import { signIn } from "@/lib/auth/client"
 
 const AuthForm = () => {
      const tRegister = useTranslations("register_page")
@@ -32,17 +32,17 @@ const AuthForm = () => {
 
           toast.loading(`${tRegister("in_progress")}`,)
 
-          const signInResult = await signIn("email", {
+          const signInResult = await signIn.magicLink({
                email: values.email,
-               redirect: false,
           })
 
           setIsLoading(false)
 
           toast.dismiss()
 
-          if (!signInResult?.ok) {
-               return toast.error("Something went wrong. Try again later.", { duration: Infinity, closeButton: true })
+          if (signInResult?.error || !signInResult?.data?.status) {
+               const message = signInResult?.error?.message ?? "Something went wrong. Try again later.";
+               return toast.error(message, { duration: Infinity, closeButton: true })
           }
 
           return toast.success("Check your email to verify and register", { duration: Infinity, closeButton: true })
@@ -51,12 +51,12 @@ const AuthForm = () => {
      function googleRegister() {
           setIsLoading(true);
 
-          toast.promise(signIn("google", {
-               redirect: false,
-          }).then((_) => {
-               setIsLoading(false);
-          }), {
+          toast.promise(signIn.social({
+               provider: "google",
+          }).finally(() => setIsLoading(false)), {
                loading: `${tRegister("in_progress")}`,
+               success: "Redirecting to Google...",
+               error: "Unable to start Google sign in. Try again later.",
           })
      }
 
@@ -98,7 +98,7 @@ const AuthForm = () => {
                                         disabled={isLoading}
                                         className={cn(
                                              "text-[25px] sm:text-[30px] caret-primary border-b text-slate-800 border-black/5 focus:border-black/10 transition-opacity duration-500 text-center py-3",
-                                             englishBricolageGrotesqueFont.className,
+                                             englishPallyFont.className,
                                         )}
                                         {...field} />
                               )}

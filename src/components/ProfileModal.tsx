@@ -5,9 +5,12 @@ import { cn } from "@/lib/utils";
 import { Spacer } from "@nextui-org/react";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { CheckIcon } from "lucide-react";
-import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { ScrollArea } from "./ui/scroll-area";
+import { signOut } from "@/lib/auth/client";
+import { useRouter } from "next/navigation";
+import { authRoutes } from "@/config/routes";
+import { toast } from "sonner";
 
 const features = [
      "Unlimited collections to make money",
@@ -24,13 +27,22 @@ const ProfileModal = ({
      model?: PriceModelType
 }) => {
      const [isSigningOut, setIsSigningOut] = useState(false);
+     const router = useRouter();
      const [userPlan, setUserPlan] = useState<SubscriptionPlanType | null>(null);
      const [userModel, setUserModel] = useState<PriceModelType>(model);
 
      const handleSignOut = async () => {
           setIsSigningOut(true);
-          await signOut();
-          setIsSigningOut(false);
+          try {
+               await signOut();
+               router.replace(authRoutes.default);
+               router.refresh();
+          } catch (error) {
+               toast.error("Unable to log out. Please try again.");
+               console.error(error);
+          } finally {
+               setIsSigningOut(false);
+          }
      };
 
      const handleModelChange = (model: PriceModelType) => {
