@@ -1,6 +1,95 @@
 import { randomUUID } from "crypto";
+import type { GenericEndpointContext } from "better-auth";
 import { auth } from "@/lib/auth/utils";
 import { db } from "@/lib/db";
+
+function createSessionContext(
+  ctx: Awaited<typeof auth.$context>,
+  request: Request,
+): GenericEndpointContext {
+  const responseHeaders = new Headers();
+  const getCookie: GenericEndpointContext["getCookie"] = (key, prefix) => {
+    const cookieHeader = request.headers.get("cookie");
+    if (!cookieHeader) {
+      return null;
+    }
+
+    const cookies = cookieHeader
+      .split(";")
+      .map((cookie) => cookie.trim())
+      .filter(Boolean)
+      .map((cookie) => {
+        const [cookieKey, ...valueParts] = cookie.split("=");
+        return [cookieKey, valueParts.join("=")] as const;
+      });
+
+    const cookieMap = new Map(cookies);
+    const prefixedKey =
+      prefix === "secure"
+        ? `__Secure-${key}`
+        : prefix === "host"
+          ? `__Host-${key}`
+          : key;
+
+    return cookieMap.get(prefixedKey) ?? cookieMap.get(key) ?? null;
+  };
+
+  const setCookie: GenericEndpointContext["setCookie"] = (
+    key,
+    value,
+    _options,
+  ) => {
+    const cookie = `${key}=${value}`;
+    responseHeaders.append("set-cookie", cookie);
+    return cookie;
+  };
+
+  const getSignedCookie: GenericEndpointContext["getSignedCookie"] = async (
+    key,
+    _secret,
+    prefix,
+  ) => getCookie(key, prefix);
+
+  const setSignedCookie: GenericEndpointContext["setSignedCookie"] = async (
+    key,
+    value,
+    _secret,
+    options,
+  ) => setCookie(key, value, options);
+
+  const json: GenericEndpointContext["json"] = async (payload, _response) =>
+    payload;
+
+  const redirect: GenericEndpointContext["redirect"] = () => {
+    throw new Error("Redirect is not supported in auth smoke tests.");
+  };
+
+  const error: GenericEndpointContext["error"] = () => {
+    throw new Error("API errors are not supported in auth smoke tests.");
+  };
+
+  return {
+    method: "POST",
+    path: "/api/auth/smoke",
+    body: undefined as never,
+    query: undefined,
+    params: {} as Record<string, any>,
+    request,
+    headers: request.headers,
+    setHeader: (key, value) => {
+      responseHeaders.set(key, value);
+    },
+    getHeader: (key) => responseHeaders.get(key),
+    getCookie,
+    getSignedCookie,
+    setCookie,
+    setSignedCookie,
+    json,
+    context: ctx,
+    redirect,
+    error,
+  };
+}
 
 async function authSmokeTest() {
   const ctx = await auth.$context;
@@ -22,13 +111,11 @@ async function authSmokeTest() {
     }),
   });
 
+  const sessionContext = createSessionContext(ctx, request);
+
   const session = await ctx.internalAdapter.createSession(
     user.id,
-    {
-      headers: request.headers,
-      request,
-      context: ctx,
-    },
+    sessionContext,
     false,
     {
       token: randomUUID(),
