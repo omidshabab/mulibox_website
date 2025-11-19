@@ -1,6 +1,17 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
+const normalizeBetterAuthUrl = (input) => {
+  const vercelUrl = process.env.VERCEL_URL;
+
+  if (vercelUrl) {
+    const hasProtocol = /^https?:\/\//i.test(vercelUrl);
+    return hasProtocol ? vercelUrl : `https://${vercelUrl}`;
+  }
+
+  return input;
+};
+
 export const env = createEnv({
   server: {
     NODE_ENV: z
@@ -12,10 +23,7 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
         : z.string().min(1).optional(),
-    BETTER_AUTH_URL: z.preprocess(
-      (str) => process.env.VERCEL_URL ?? str,
-      process.env.VERCEL_URL ? z.string().min(1) : z.string().url()
-    ),
+    BETTER_AUTH_URL: z.preprocess(normalizeBetterAuthUrl, z.string().url()),
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
